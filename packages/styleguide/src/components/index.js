@@ -6,6 +6,7 @@ export { default as ColorPalette, ColorPaletteItem } from './ColorPalette';
 export { default as ComponentDocs } from './ComponentDocs';
 export { default as ComponentInfo } from './ComponentInfo';
 export { default as Icon } from './Icon';
+export { default as Link } from './Link';
 export { default as Note, NoteWarning, NoteError, Dos, Donts } from './Note';
 export { default as Page } from './Page';
 export { default as Preview } from './Preview';

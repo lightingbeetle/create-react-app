@@ -51,14 +51,3 @@ export const P = styled.p`
   margin-bottom: ${props => props.theme.spaces.medium};
   max-width: ${props => props.theme.contentWidth};
 `;
-
-export const Link = styled.a`
-  font-family: ${props => props.theme.fontFamily};
-  color: ${props => props.theme.colors.accent};
-  line-height: ${props => props.theme.lineHeights.base};
-
-  &:focus,
-  &:hover {
-    text-decoration: none;
-  }
-`;

@@ -1,8 +1,9 @@
 import React, { createElement } from 'react';
 import md from 'react-markings';
 import Code, { CodeBlock } from './../components/Code';
+import Link from './../components/Link';
 
-import { H1, H2, H3, H4, H5, P, Link } from './../components/Typography';
+import { H1, H2, H3, H4, H5, P } from './../components/Typography';
 
 export default md.customize({
   renderers: {
