@@ -2,16 +2,21 @@ import React from 'react';
 
 import Note from './Note';
 
-export const NoteWarning = props => <Note type="warning" {...props} />;
+export const NoteWarning = props => <Note variant="warning" {...props} />;
 NoteWarning.displayName = 'NoteWarning';
 
-export const NoteError = props => <Note type="error" {...props} />;
-NoteWarning.displayName = 'NoteWarning';
+export const NoteError = props => <Note variant="error" {...props} />;
+NoteError.displayName = 'NoteError';
 
-export const Dos = props => <Note type="success" title="Do's" {...props} />;
+export const NoteInfo = props => <Note variant="info" {...props} />;
+NoteInfo.displayName = 'NoteInfo';
+
+export const Dos = props => <Note variant="success" title="Do's" {...props} />;
 Dos.displayName = 'Dos';
 
-export const Donts = props => <Note type="error" title="Dont's" {...props} />;
+export const Donts = props => (
+  <Note variant="error" title="Dont's" {...props} />
+);
 Donts.displayName = 'Donts';
 
 export default Note;
