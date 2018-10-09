@@ -1,16 +1,13 @@
 import React from 'react';
 import { object, arrayOf, oneOf } from 'prop-types';
 
-import styled from 'styled-components';
-
 import unescape from 'unescape-html';
 import reactElementToJSXString from 'react-element-to-jsx-string';
 import pretty from 'pretty';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { CodeBlock } from '../Code/';
-
-import { ButtonBaseCSS } from '../../style/common';
+import Button from '../Button';
 
 const getJSXAsStringFromMarkup = (markup, options) => {
   const reactElementToJSXStringOptions = {
@@ -83,14 +80,15 @@ export default class CodeExample extends React.Component {
     return (
       <div {...other}>
         {codeTypes.map(codeType => (
-          <StyledCodeTypeToggle
+          <Button
+            variant="code-toggle"
             key={codeType}
             role="button"
             onClick={e => this.handleCodePreviewTypeToggle(e, codeType)}
             className={this.state.codePreviewType === codeType && 'is-active'}
           >
             {codeType.toUpperCase()}
-          </StyledCodeTypeToggle>
+          </Button>
         ))}
         <CodeBlock language={this.state.codePreviewType}>
           {codeToShow}
@@ -99,20 +97,3 @@ export default class CodeExample extends React.Component {
     );
   }
 }
-
-const StyledCodeTypeToggle = styled.button`
-  ${ButtonBaseCSS};
-
-  margin-bottom: 0;
-  border-top-left-radius: ${props => props.theme.borderRadius.default};
-  border-top-right-radius: ${props => props.theme.borderRadius.default};
-
-  &:hover {
-    background: ${props => props.theme.colors.grey};
-  }
-
-  &.is-active {
-    background-color: ${props => props.theme.colors.black};
-    color: ${props => props.theme.colors.white};
-  }
-`;
