@@ -49,13 +49,53 @@ export default class CodeExample extends React.Component {
   };
 
   state = {
-    codePreviewType: this.props.codeTypes && this.props.codeTypes[0]
+    codePreviewType: this.props.codeTypes && this.props.codeTypes[0],
+    copyButtonText: 'Copy to clipboard'
   };
 
   handleCodePreviewTypeToggle(e, type) {
     this.setState({
       codePreviewType: type
     });
+  }
+
+  handleCopyCode(e, selector) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    const element = document.querySelector(selector);
+    range.selectNodeContents(element);
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    const button = e.target;
+    let newText = 'Copied!';
+    let newClass = 'success';
+
+    try {
+      document.execCommand('copy');
+      // selection.removeAllRanges();
+    } catch (e) {
+      newText = 'Error! Press Ctrl + C';
+      newClass = 'error';
+    }
+
+    button.classList.add(newClass);
+
+    const original = this.state.copyButtonText;
+
+    this.setState(
+      {
+        copyButtonText: newText
+      },
+      () => {
+        setTimeout(() => {
+          this.setState({
+            copyButtonText: original
+          });
+          button.classList.remove(newClass);
+        }, 1200);
+      }
+    );
   }
 
   render() {
@@ -81,7 +121,7 @@ export default class CodeExample extends React.Component {
     }
 
     return (
-      <div {...other}>
+      <StyledWrapper {...other}>
         {codeTypes.map(codeType => (
           <StyledCodeTypeToggle
             key={codeType}
@@ -92,13 +132,40 @@ export default class CodeExample extends React.Component {
             {codeType.toUpperCase()}
           </StyledCodeTypeToggle>
         ))}
-        <CodeBlock language={this.state.codePreviewType}>
+        <StyledCopyButton onClick={e => this.handleCopyCode(e, '#code-block')}>
+          {this.state.copyButtonText}
+        </StyledCopyButton>
+        <CodeBlock id="code-block" language={this.state.codePreviewType}>
           {codeToShow}
         </CodeBlock>
-      </div>
+      </StyledWrapper>
     );
   }
 }
+
+const StyledCopyButton = styled.button`
+  ${ButtonBaseCSS};
+
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translateY(100%);
+  margin-bottom: 0;
+
+  background: ${props => props.theme.colors.white};
+
+  &:hover {
+    background: ${props => props.theme.colors.grey};
+  }
+
+  &.success {
+    background: ${props => props.theme.colors.success};
+  }
+`;
+
+const StyledWrapper = styled.div`
+  position: relative;
+`;
 
 const StyledCodeTypeToggle = styled.button`
   ${ButtonBaseCSS};
