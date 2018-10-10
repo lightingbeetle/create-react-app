@@ -81,11 +81,12 @@ export default class CodeExample extends React.Component {
       <div {...other}>
         {codeTypes.map(codeType => (
           <Button
-            variant="code-toggle"
             key={codeType}
             role="button"
             onClick={e => this.handleCodePreviewTypeToggle(e, codeType)}
-            className={this.state.codePreviewType === codeType && 'is-active'}
+            className={`code-toggle ${
+              this.state.codePreviewType === codeType ? 'is-active' : ''
+            }`}
           >
             {codeType.toUpperCase()}
           </Button>

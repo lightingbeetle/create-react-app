@@ -157,7 +157,7 @@ class Preview extends Component {
 
     if (hasCodePreview) {
       actions.push(
-        <Button variant="preview" onClick={this.handleToggleCode}>
+        <Button onClick={this.handleToggleCode}>
           <Icon name="code" fill={theme.colors.accent} />
           {this.state.isCodeShown ? 'Hide code' : 'Show code'}
         </Button>
