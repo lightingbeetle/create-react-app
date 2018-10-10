@@ -159,7 +159,7 @@ class Preview extends Component {
       actions.push(
         <Button onClick={this.handleToggleCode}>
           <Icon name="code" fill={theme.colors.accent} />
-          {this.state.isCodeShown ? 'Hide code' : 'Show code'}
+          {this.state.isCodeShown ? 'HIDE CODE' : 'SHOW CODE'}
         </Button>
       );
     }
