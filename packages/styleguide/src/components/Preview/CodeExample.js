@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { object, arrayOf, oneOf } from 'prop-types';
 
 import styled from 'styled-components';
@@ -8,7 +9,7 @@ import reactElementToJSXString from 'react-element-to-jsx-string';
 import pretty from 'pretty';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { CodeBlock } from '../Code/';
+import Code from '../Code/';
 
 import { ButtonBaseCSS } from '../../style/common';
 
@@ -16,7 +17,7 @@ const getJSXAsStringFromMarkup = (markup, options) => {
   const reactElementToJSXStringOptions = {
     ...options,
     showFunctions: true,
-    functionValue: () => ''
+    functionValue: () => '',
   };
 
   // valid element can be passed to reactElementToJSXString directly
@@ -41,33 +42,39 @@ export default class CodeExample extends React.Component {
 
   static propTypes = {
     codeJSXOptions: object,
-    codeTypes: arrayOf(oneOf(['jsx', 'html']))
+    codeTypes: arrayOf(oneOf(['jsx', 'html'])),
   };
 
   static defaultProps = {
-    codeTypes: ['jsx', 'html']
+    codeTypes: ['jsx', 'html'],
   };
 
   state = {
     codePreviewType: this.props.codeTypes && this.props.codeTypes[0],
-    copyButtonText: 'Copy to clipboard'
+    copyButtonText: 'Copy to clipboard',
+    copyButtonClass: '',
   };
+
+  constructor(props) {
+    super(props);
+
+    this.codeBlockRef = React.createRef();
+  }
 
   handleCodePreviewTypeToggle(e, type) {
     this.setState({
-      codePreviewType: type
+      codePreviewType: type,
     });
   }
 
-  handleCopyCode(e, selector) {
+  handleCopyCode(e, element) {
     const selection = window.getSelection();
     const range = document.createRange();
-    const element = document.querySelector(selector);
-    range.selectNodeContents(element);
+    const elem = ReactDOM.findDOMNode(element);
+    range.selectNodeContents(elem);
     selection.removeAllRanges();
     selection.addRange(range);
 
-    const button = e.target;
     let newText = 'Copied!';
     let newClass = 'success';
 
@@ -79,20 +86,22 @@ export default class CodeExample extends React.Component {
       newClass = 'error';
     }
 
-    button.classList.add(newClass);
-
-    const original = this.state.copyButtonText;
+    const {
+      copyButtonText: originalText,
+      copyButtonClass: originalClass,
+    } = this.state;
 
     this.setState(
       {
-        copyButtonText: newText
+        copyButtonText: newText,
+        copyButtonClass: newClass,
       },
       () => {
         setTimeout(() => {
           this.setState({
-            copyButtonText: original
+            copyButtonText: originalText,
+            copyButtonClass: originalClass,
           });
-          button.classList.remove(newClass);
         }, 1200);
       }
     );
@@ -109,7 +118,7 @@ export default class CodeExample extends React.Component {
             ? unescape(children)
             : renderToStaticMarkup(children),
           {
-            ocd: true
+            ocd: true,
           }
         );
         break;
@@ -132,12 +141,19 @@ export default class CodeExample extends React.Component {
             {codeType.toUpperCase()}
           </StyledCodeTypeToggle>
         ))}
-        <StyledCopyButton onClick={e => this.handleCopyCode(e, '#code-block')}>
+        <StyledCopyButton
+          className={this.state.copyButtonClass}
+          onClick={e => this.handleCopyCode(e, this.codeBlockRef.current)}
+        >
           {this.state.copyButtonText}
         </StyledCopyButton>
-        <CodeBlock id="code-block" language={this.state.codePreviewType}>
+        <Code
+          inline={false}
+          ref={this.codeBlockRef}
+          language={this.state.codePreviewType}
+        >
           {codeToShow}
-        </CodeBlock>
+        </Code>
       </StyledWrapper>
     );
   }
@@ -161,11 +177,13 @@ const StyledCopyButton = styled.button`
   &.success {
     background: ${props => props.theme.colors.success};
   }
+
+  &.error {
+    background: ${props => props.theme.colors.error};
+  }
 `;
 
-const StyledWrapper = styled.div`
-  position: relative;
-`;
+const StyledWrapper = styled.div`position: relative;`;
 
 const StyledCodeTypeToggle = styled.button`
   ${ButtonBaseCSS};
