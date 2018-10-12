@@ -12,9 +12,9 @@ import Button from '../Button';
 
 const getJSXAsStringFromMarkup = (markup, options) => {
   const reactElementToJSXStringOptions = {
-    ...options,
     showFunctions: true,
     functionValue: () => '',
+    ...options
   };
 
   // valid element can be passed to reactElementToJSXString directly
@@ -29,6 +29,11 @@ const getJSXAsStringFromMarkup = (markup, options) => {
         reactElementToJSXString(markupItem, reactElementToJSXStringOptions)
       )
       .join('\n');
+  }
+
+  // if it's pure text, return it
+  if (typeof markup === 'string') {
+    return markup;
   }
 
   return '';
