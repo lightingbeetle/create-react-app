@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { object, arrayOf, oneOf } from 'prop-types';
 
 import unescape from 'unescape-html';
@@ -13,7 +14,7 @@ const getJSXAsStringFromMarkup = (markup, options) => {
   const reactElementToJSXStringOptions = {
     ...options,
     showFunctions: true,
-    functionValue: () => ''
+    functionValue: () => '',
   };
 
   // valid element can be passed to reactElementToJSXString directly
@@ -38,20 +39,20 @@ export default class CodeExample extends React.Component {
 
   static propTypes = {
     codeJSXOptions: object,
-    codeTypes: arrayOf(oneOf(['jsx', 'html']))
+    codeTypes: arrayOf(oneOf(['jsx', 'html'])),
   };
 
   static defaultProps = {
-    codeTypes: ['jsx', 'html']
+    codeTypes: ['jsx', 'html'],
   };
 
   state = {
-    codePreviewType: this.props.codeTypes && this.props.codeTypes[0]
+    codePreviewType: this.props.codeTypes && this.props.codeTypes[0],
   };
 
   handleCodePreviewTypeToggle(e, type) {
     this.setState({
-      codePreviewType: type
+      codePreviewType: type,
     });
   }
 
@@ -66,7 +67,7 @@ export default class CodeExample extends React.Component {
             ? unescape(children)
             : renderToStaticMarkup(children),
           {
-            ocd: true
+            ocd: true,
           }
         );
         break;
@@ -80,16 +81,16 @@ export default class CodeExample extends React.Component {
     return (
       <div {...other}>
         {codeTypes.map(codeType => (
-          <Button
+          <StyledButton
             key={codeType}
             role="button"
             onClick={e => this.handleCodePreviewTypeToggle(e, codeType)}
-            className={`code-toggle ${
+            className={
               this.state.codePreviewType === codeType ? 'is-active' : ''
-            }`}
+            }
           >
             {codeType.toUpperCase()}
-          </Button>
+          </StyledButton>
         ))}
         <CodeBlock language={this.state.codePreviewType}>
           {codeToShow}
@@ -98,3 +99,18 @@ export default class CodeExample extends React.Component {
     );
   }
 }
+
+const StyledButton = styled(Button)`
+  margin-bottom: 0;
+  border-top-left-radius: ${props => props.theme.borderRadius.default};
+  border-top-right-radius: ${props => props.theme.borderRadius.default};
+
+  &:hover {
+    background: ${props => props.theme.colors.grey};
+  }
+
+  &.is-active {
+    background-color: ${props => props.theme.colors.black};
+    color: ${props => props.theme.colors.white};
+  }
+`;
