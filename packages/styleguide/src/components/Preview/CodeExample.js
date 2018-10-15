@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { object, arrayOf, oneOf } from 'prop-types';
-
 import styled from 'styled-components';
+import { object, arrayOf, oneOf } from 'prop-types';
 
 import unescape from 'unescape-html';
 import reactElementToJSXString from 'react-element-to-jsx-string';
@@ -10,14 +9,13 @@ import pretty from 'pretty';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import Code from '../Code/';
-
-import { ButtonBaseCSS } from '../../style/common';
+import Button from '../Button';
 
 const getJSXAsStringFromMarkup = (markup, options) => {
   const reactElementToJSXStringOptions = {
-    ...options,
     showFunctions: true,
     functionValue: () => '',
+    ...options
   };
 
   // valid element can be passed to reactElementToJSXString directly
@@ -32,6 +30,11 @@ const getJSXAsStringFromMarkup = (markup, options) => {
         reactElementToJSXString(markupItem, reactElementToJSXStringOptions)
       )
       .join('\n');
+  }
+
+  // if it's pure text, return it
+  if (typeof markup === 'string') {
+    return markup;
   }
 
   return '';
@@ -136,7 +139,9 @@ export default class CodeExample extends React.Component {
             key={codeType}
             role="button"
             onClick={e => this.handleCodePreviewTypeToggle(e, codeType)}
-            className={this.state.codePreviewType === codeType && 'is-active'}
+            className={
+              this.state.codePreviewType === codeType ? 'is-active' : ''
+            }
           >
             {codeType.toUpperCase()}
           </StyledCodeTypeToggle>
@@ -159,9 +164,7 @@ export default class CodeExample extends React.Component {
   }
 }
 
-const StyledCopyButton = styled.button`
-  ${ButtonBaseCSS};
-
+const StyledCopyButton = styled(Button)`
   position: absolute;
   bottom: 0;
   right: 0;
@@ -185,9 +188,7 @@ const StyledCopyButton = styled.button`
 
 const StyledWrapper = styled.div`position: relative;`;
 
-const StyledCodeTypeToggle = styled.button`
-  ${ButtonBaseCSS};
-
+const StyledCodeTypeToggle = styled(Button)`
   margin-bottom: 0;
   border-top-left-radius: ${props => props.theme.borderRadius.default};
   border-top-right-radius: ${props => props.theme.borderRadius.default};
