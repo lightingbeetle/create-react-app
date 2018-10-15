@@ -2,22 +2,18 @@ import React from 'react';
 
 import { md } from './../../utils';
 import { Code } from './../../components';
-import Table, { TablePropTypes } from './../Table';
-
-const propTypes = {
-  ...TablePropTypes
-};
+import Table from './../Table';
 
 const defaultProps = {
   columns: [
     {
       key: 'prop',
-      label: 'Prop'
+      label: 'Prop',
     },
     {
       key: 'type',
       label: 'Type',
-      render: (data, column) => <td key={column.key}>{md([data])}</td>
+      render: (data, column) => <td key={column.key}>{md([data])}</td>,
     },
     {
       key: 'default',
@@ -28,24 +24,21 @@ const defaultProps = {
             {data}
           </Code>
         </td>
-      )
+      ),
     },
     {
       key: 'description',
       label: 'Description',
-      render: (data, column) => <td key={column.key}>{md([data])}</td>
-    }
+      render: (data, column) => <td key={column.key}>{md([data])}</td>,
+    },
   ],
-  hasOutsideBorder: true
+  hasOutsideBorder: true,
 };
 
 const DocsTable = props => {
-  const { data, ...other } = props;
-
-  return <Table data={data} {...other} />;
+  return <Table {...props} />;
 };
 
-DocsTable.propTypes = propTypes;
 DocsTable.defaultProps = defaultProps;
 
 export default DocsTable;
