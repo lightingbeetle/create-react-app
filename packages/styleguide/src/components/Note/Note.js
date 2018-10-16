@@ -5,8 +5,8 @@ import cx from 'classnames';
 
 const propTypes = {
   title: string,
-  /* variant influences set styles */
-  variant: oneOf(['warning', 'success', 'error', 'info'])
+  /* type influences set styles */
+  type: oneOf(['warning', 'success', 'error', 'info']),
 };
 
 const CLASS_ROOT = 'note';
@@ -29,21 +29,21 @@ const StyledNote = styled.div`
 const StyledTitle = styled.div`
   margin: 0 0 ${props => props.theme.spaces.small};
   color: ${props =>
-    (props.variant === 'success' && props.theme.colors.success) ||
-    (props.variant === 'warning' && props.theme.colors.warning) ||
-    (props.variant === 'error' && props.theme.colors.error) ||
-    (props.variant === 'info' && props.theme.colors.info) ||
+    (props.type === 'success' && props.theme.colors.success) ||
+    (props.type === 'warning' && props.theme.colors.warning) ||
+    (props.type === 'error' && props.theme.colors.error) ||
+    (props.type === 'info' && props.theme.colors.info) ||
     props.theme.colors.greyText};
   text-transform: uppercase;
   font-weight: 700;
 `;
 
-const Note = ({ className, children, title, variant, ...other }) => {
+const Note = ({ className, children, title, type, ...other }) => {
   const classes = cx(CLASS_ROOT, className);
 
   return (
-    <StyledNote className={classes} variant={variant} {...other}>
-      <StyledTitle variant={variant}>{title}</StyledTitle>
+    <StyledNote className={classes} type={type} {...other}>
+      <StyledTitle type={type}>{title}</StyledTitle>
       {children}
     </StyledNote>
   );

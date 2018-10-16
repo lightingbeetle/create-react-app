@@ -10,7 +10,7 @@ import {
   NoteWarning,
   NoteInfo,
   Dos,
-  Donts
+  Donts,
 } from './../components';
 
 import scssConfig from './../components/ColorPalette/mockScssColorConfig';
@@ -69,9 +69,9 @@ ${(
 ${(
   <Preview>
     <Note title="Note" />
-    <NoteWarning title="NoteWarning" />
-    <NoteError title="NoteError" />
-    <NoteInfo title="NoteInfo" />
+    <NoteWarning title="Note Warning" />
+    <NoteError title="Note Error" />
+    <NoteInfo title="Note Info" />
     <Dos title="Dos" />
     <Donts title="Donts" />
   </Preview>
