@@ -1,4 +1,3 @@
-// eslint-disable-next-line strict
 module.exports = {
   parser: "babel-eslint",
   extends: ["airbnb", "prettier"],
