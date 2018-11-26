@@ -103,7 +103,6 @@ choosePort(HOST, DEFAULT_PORT)
       : [];
 
     // custom rewrite to serve /styleguide(/)* as styleguide.html
-    //
     serverConfig.historyApiFallback = {
       rewrites: [
         {
