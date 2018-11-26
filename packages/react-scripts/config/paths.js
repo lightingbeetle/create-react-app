@@ -72,6 +72,7 @@ module.exports = {
   servedPath: getServedPath(resolveApp('package.json')),
   styles: resolveApp('src/styles'),
   icons: resolveApp('src/assets/icons'),
+  pagesDir: resolveApp('src/pages'),
 };
 
 // @remove-on-eject-begin
@@ -103,6 +104,7 @@ module.exports = {
   servedPath: getServedPath(resolveApp('package.json')),
   styles: resolveApp('src/styles'),
   icons: resolveApp('src/assets/icons'),
+  pagesDir: resolveApp('src/pages'),
   // These properties only exist before ejecting:
   ownPath: resolveOwn('.'),
   ownNodeModules: resolveOwn('node_modules'), // This is empty on npm 3

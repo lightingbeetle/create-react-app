@@ -23,6 +23,7 @@ process.on('unhandledRejection', err => {
 require('../config/env');
 
 const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -66,6 +67,10 @@ if (process.env.HOST) {
   console.log();
 }
 
+const pages = fs.existsSync(paths.pagesDir) && fs.readdirSync(paths.pagesDir);
+const replacePageExtension = (page, ext = '.html') =>
+  `${path.basename(page, '.js')}${ext}`;
+
 // We attempt to use the default port but if it is busy, we offer the user to
 // run on a different port. `choosePort()` Promise resolves to the next free port.
 choosePort(HOST, DEFAULT_PORT)
@@ -88,13 +93,24 @@ choosePort(HOST, DEFAULT_PORT)
       urls.lanUrlForConfig
     );
 
+    const pagesRewrites = pages
+      ? pages.filter(page => page.match(/\.js$/)).map(page => {
+          return {
+            from: new RegExp('^/' + replacePageExtension(page, '') + '/?.*$'),
+            to: () => '/' + replacePageExtension(page),
+          };
+        })
+      : [];
+
     // custom rewrite to serve /styleguide(/)* as styleguide.html
+    //
     serverConfig.historyApiFallback = {
       rewrites: [
         {
           from: /^\/styleguide\/?.*$/,
           to: () => '/styleguide.html',
         },
+        ...pagesRewrites,
       ],
     };
 
