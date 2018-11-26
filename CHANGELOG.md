@@ -1,3 +1,16 @@
+## 2.4.2 (November 26, 2018)
+
+#### :rocket: New Feature
+* [lighter-styleguide] implement background selection on `Preview` component
+* [lighter-styleguide] exclude background colors functionality in `Preview` component
+* [lighter-styleguide] show pure text in code example of preview
+* [lighter-styleguide] new `Button` and `DocsTable` component
+* [lighter-styleguide] copy code example to clipboard
+* [lighter-styleguide] new `NoteInfo` variant
+
+#### :bug: Bug Fix
+* [lighter-styleguide] default font size and family for `ComponentDocs` table
+
 ## 2.4.2 (August 20, 2018)
 
 #### :bug: Bug Fix
