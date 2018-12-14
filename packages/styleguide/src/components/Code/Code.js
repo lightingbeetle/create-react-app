@@ -7,6 +7,7 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-diff';
 import 'prism-theme-one-dark/prism-onedark.css';
 import 'firacode/distr/fira_code.css';
 
@@ -30,7 +31,9 @@ export default class PreviewCode extends Component {
   state = {
     __html: Prism.highlight(
       this.props.children,
-      Prism.languages[this.props.language]
+      typeof Prism.languages[this.props.language] !== 'undefined'
+        ? Prism.languages[this.props.language]
+        : Prism.languages.html
     )
   };
 
