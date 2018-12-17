@@ -17,13 +17,11 @@ import { MDXProvider } from '@mdx-js/tag';
  * Turns into: hello-1-anchor-element-all-you-need
  */
 const createHeaderId = props => {
-  const children = props.children;
-  const text = Array.isArray(children)
-    ? children.reduce(
-        (acc, cur) => (typeof cur === 'string' ? acc + cur : acc),
-        ''
-      )
-    : children;
+  const childrenArr = React.Children.toArray(props.children);
+  const text = childrenArr.reduce(
+    (acc, cur) => (typeof cur === 'string' ? acc + cur : acc),
+    ''
+  );
   return `${text
     .toString()
     .trim()
