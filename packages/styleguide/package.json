@@ -46,7 +46,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "prebuild": "node ./prebuild.js"
+    "prebuild": "node ./prebuild.js",
+    "postinstall": "node ./prebuild.js"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
