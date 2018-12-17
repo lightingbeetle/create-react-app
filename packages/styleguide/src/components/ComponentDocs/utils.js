@@ -48,7 +48,7 @@ export async function getComponentInfo(path, getCode) {
 
           return await getComponentInfo(componentPath, getCode);
         })
-      )),
+      ))
     ];
   }
 
@@ -64,9 +64,14 @@ function printEnums(values) {
 function printShape(values) {
   const keyValues = Object.keys(values)
     .map(name => name + ': ' + getType(values[name]))
-    .join(', ');
+    .join(', \r\n');
+
   return codeBlock`
-    { ${keyValues} }
+    \`\`\`js
+    { 
+      ${keyValues.replace(/```js\n/g, '').replace(/\s+}\n```/g, '\n}')}
+    }
+    \`\`\`
   `;
 }
 
@@ -122,8 +127,8 @@ function getPropsData(props = {}) {
         prop: `${props[prop].required ? '* ' : ''}${prop}`,
         type: getType(props[prop].type),
         default: props[prop].defaultValue && props[prop].defaultValue.value,
-        description: props[prop].description,
-      },
+        description: props[prop].description
+      }
     ],
     []
   );
