@@ -44,6 +44,10 @@ class ComponentDocs extends Component {
     const { path } = this.props;
 
     if (path) {
+      console.warn(
+        'Support for `path` prop of `ComponentDocs` and runtime generation of props documentation is deprecated and will be removed in next major version. Please use `component` prop with `babel-plugin-react-docgen` instead.'
+      );
+
       let info;
 
       try {
