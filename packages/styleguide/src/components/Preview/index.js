@@ -5,8 +5,10 @@ import { ThemeConsumer } from 'styled-components';
 
 import Preview from './Preview';
 
-export default props => (
+const ThemedPreview = props => (
   <ThemeConsumer>
     {theme => <Preview bgThemeColors={theme.previewBackgrounds} {...props} />}
   </ThemeConsumer>
 );
+
+export default ThemedPreview;
