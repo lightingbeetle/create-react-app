@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { string, node, object, bool, arrayOf } from 'prop-types';
+import {
+  string,
+  node,
+  object,
+  bool,
+  func,
+  arrayOf,
+  oneOfType,
+} from 'prop-types';
 import cx from 'classnames';
 import Select from 'react-select';
 import styled from 'styled-components';
@@ -29,16 +37,27 @@ class Preview extends Component {
   static displayName = 'Preview';
 
   static propTypes = {
+    /** (deprecated) Title text for `Preview.` Instead of `title` prop, prefer regular html heading above `Preview`. */
     title: string,
-    code: node,
+    /** Pass custom code (JSX) which will be shown instead of visually previewed code. */
+    code: oneOfType([node, func]),
+    /** Pass [react-element-to-jsx-string](https://github.com/algolia/react-element-to-jsx-string) options to code preview. */
     codeJSXOptions: object,
-    bgTheme: string,
+    /** Default background color as color name. Must be one from passed `bgThemeColors`. To disable background color chooser, pass `false`. */
+    bgTheme: oneOfType([string, bool]),
+    /** Available background colors. Colors are inherithed from `theme.previewBackgrounds`. */
     bgThemeColors: object,
+    /** Exclude colors from available background colors. */
     bgThemeExcludedColors: arrayOf(string),
+    /** Disables code preview. */
     hasCodePreview: bool,
+    /** Pass HTML as string to preview HTML code. */
     html: string,
+    /** (unstable) Display preview in inframe. */
     isIframe: bool,
+    /** (unstable) Iframe custom <head /> */
     iframeHead: node,
+    /** (unstable) Iframe custom JavaScripts. */
     iframeScripts: string,
   };
 
