@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { string, node, object, bool, arrayOf } from 'prop-types';
 import cx from 'classnames';
 import Select from 'react-select';
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import chroma from 'chroma-js';
 
 import PreviewTitleBar from './PreviewTitleBar';
@@ -33,6 +33,7 @@ class Preview extends Component {
     code: node,
     codeJSXOptions: object,
     bgTheme: string,
+    bgThemeColors: object,
     bgThemeExcludedColors: arrayOf(string),
     hasCodePreview: bool,
     html: string,
@@ -43,6 +44,9 @@ class Preview extends Component {
 
   static defaultProps = {
     bgTheme: 'white',
+    bgThemeColors: {
+      white: '#fff',
+    },
     bgThemeExcludedColors: [],
     hasCodePreview: true,
   };
@@ -55,7 +59,7 @@ class Preview extends Component {
       this.setState({
         previewBackground: {
           label: props.bgTheme,
-          value: props.theme.previewBackgrounds[props.bgTheme],
+          value: props.bgThemeColors[props.bgTheme],
         },
       });
     }
@@ -70,10 +74,10 @@ class Preview extends Component {
 
   state = {
     isCodeShown: false,
-    previewBackground: this.props.theme.previewBackgrounds
+    previewBackground: this.props.bgThemeColors
       ? {
           label: this.props.bgTheme,
-          value: this.props.theme.previewBackgrounds[this.props.bgTheme],
+          value: this.props.bgThemeColors[this.props.bgTheme],
         }
       : {},
   };
@@ -98,13 +102,13 @@ class Preview extends Component {
       code,
       codeJSXOptions,
       bgTheme,
+      bgThemeColors,
       bgThemeExcludedColors,
       isIframe,
       iframeHead,
       iframeScripts,
       hasCodePreview,
       html,
-      theme,
       ...other
     } = this.props;
 
@@ -131,9 +135,9 @@ class Preview extends Component {
 
     const actions = [];
 
-    if (bgTheme && theme.previewBackgrounds) {
+    if (bgTheme && bgThemeColors) {
       const bgColorsOptions = getBackgroundsAsArray(
-        theme.previewBackgrounds,
+        bgThemeColors,
         bgThemeExcludedColors
       );
 
@@ -158,7 +162,7 @@ class Preview extends Component {
     if (hasCodePreview) {
       actions.push(
         <Button onClick={this.handleToggleCode}>
-          <Icon name="code" fill={theme.colors.accent} />
+          <Icon name="code" fill={bgThemeColors.accent || '#000'} />
           {this.state.isCodeShown ? 'HIDE CODE' : 'SHOW CODE'}
         </Button>
       );
@@ -218,7 +222,7 @@ class Preview extends Component {
   }
 }
 
-export default withTheme(Preview);
+export default Preview;
 
 const StyledPreviewLive = styled.div`
   transition: all 200ms ease-in-out;
