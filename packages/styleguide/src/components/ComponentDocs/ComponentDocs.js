@@ -23,11 +23,17 @@ class ComponentDocs extends Component {
   static displayName = 'ComponentDocs';
 
   static propTypes = {
+    /** Show props of passed React component with `__docgenInfo` property (eg. component was processed with [babel-plugin-react-docgen](https://github.com/storybooks/babel-plugin-react-docgen)). */
     component: oneOfType([element, func]),
+    /** (deprecated) Path to component on file-system. `resolver` needs to be set to be able to utilize this approach to display components props. */
     path: string,
+    /** Component title. If component has `displayName set, title will be computed automatically. */
     title: string,
+    /** Array of props which should be excluded from props table. */
     excludes: array,
+    /** (deprecated) Rendering scope of component. */
     renderingScope: oneOf(['universal', 'react', 'static']),
+    /** (deprecated) To resolve component from `path` prop, `resolver` function must be passed to get component code as string. Webpack's `raw-loader` could be utilized to that and it could look like this `path => import(``!!raw-loader!./../components/${path}``)`. */
     resolver: func
   };
 
