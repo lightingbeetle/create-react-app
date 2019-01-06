@@ -25,7 +25,7 @@ class ComponentDocs extends Component {
   static propTypes = {
     component: oneOfType([element, func]),
     path: string,
-    title: string.isRequired,
+    title: string,
     excludes: array,
     renderingScope: oneOf(['universal', 'react', 'static']),
     resolver: func
@@ -72,6 +72,16 @@ class ComponentDocs extends Component {
       )
     );
 
+    let title = this.props.title;
+
+    if (!title && this.props.component) {
+      title = `<${this.props.component.displayName} />`;
+    }
+
+    if (!title) {
+      title = '⚠️ Missing title.';
+    }
+
     if (data.length === 0) {
       return [
         <StyledTitle key="ComponentDocs-name">{this.props.title}</StyledTitle>,
@@ -83,9 +93,7 @@ class ComponentDocs extends Component {
         <StyledHeader>
           <Bar>
             <BarItem>
-              <StyledTitle key="ComponentDocs-name">
-                {this.props.title}
-              </StyledTitle>
+              <StyledTitle key="ComponentDocs-name">{title}</StyledTitle>
             </BarItem>
             {this.props.renderingScope && (
               <BarItem>
