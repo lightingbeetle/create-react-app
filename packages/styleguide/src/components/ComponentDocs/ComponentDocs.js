@@ -12,7 +12,7 @@ import {
   getComponentInfo,
   getTableData,
   sortTableData,
-  excludeProps,
+  excludeProps
 } from './utils';
 
 function getComponentInfoFromComponent(component = {}) {
@@ -28,16 +28,16 @@ class ComponentDocs extends Component {
     title: string.isRequired,
     excludes: array,
     renderingScope: oneOf(['universal', 'react', 'static']),
-    resolver: func,
+    resolver: func
   };
 
   static defaultProps = {
     excludes: [],
-    resolver: () => {},
+    resolver: () => {}
   };
 
   state = {
-    info: [],
+    info: []
   };
 
   async componentWillMount() {
@@ -57,7 +57,7 @@ class ComponentDocs extends Component {
       }
 
       this.setState(() => ({
-        info,
+        info
       }));
     }
   }
@@ -67,8 +67,7 @@ class ComponentDocs extends Component {
       excludeProps(
         this.props.excludes,
         getTableData(
-          getComponentInfoFromComponent(this.props.component) ||
-            this.props.componentthis.state.info
+          getComponentInfoFromComponent(this.props.component) || this.state.info
         )
       )
     );
@@ -76,9 +75,7 @@ class ComponentDocs extends Component {
     if (data.length === 0) {
       return [
         <StyledTitle key="ComponentDocs-name">{this.props.title}</StyledTitle>,
-        <p key="EmptyObjectText">
-          This component does not have any prop types
-        </p>,
+        <p key="EmptyObjectText">This component does not have any prop types</p>
       ];
     }
     return (
