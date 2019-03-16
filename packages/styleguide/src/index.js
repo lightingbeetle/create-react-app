@@ -90,8 +90,8 @@ styleguide({
       ]
     },
     {
-      title: 'Docs',
-      path: '/docs',
+      title: 'Guides',
+      path: '/guides',
       nodes: [
         {
           title: 'Contributing guidelines',
