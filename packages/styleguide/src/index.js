@@ -1,10 +1,10 @@
 import React from 'react';
 import styleguide from './styleguide';
+import pkg from '../package.json';
 
 import Page from './components/Page';
 
 import Hello from './pages/Hello.mdx';
-import KitchenSink from './pages/KitchenSink.mdx';
 import PreviewDocs from './components/Preview/Preview.docs.mdx';
 import ComponentDocsDocs from './components/ComponentDocs/ComponentDocs.docs.mdx';
 import CodeDocs from './components/Code/Code.docs.mdx';
@@ -13,23 +13,25 @@ import ComponentInfoDocs from './components/ComponentInfo/ComponentInfo.docs.mdx
 import BadgeDocs from './components/Badge/Badge.docs.mdx';
 import NoteDocs from './components/Note/Note.docs.mdx';
 import TableDocs from './components/Table/Table.docs.mdx';
+import PageDocs from './components/Page/Page.docs.mdx';
+import TypographyDocs from './components/Typography/Typography.docs.mdx';
+
+import ContributingGuidelines from './pages/ContributingGuidelines.mdx';
+import MaintainingCRAFork from './pages/Maintining-CRA-fork.mdx';
 
 styleguide({
   config: {
-    version: 'lighter-styleguide',
+    version: pkg.version,
     name: 'Lighter',
-    styleguideBasePath: '/'
+    styleguideBasePath: '/',
+    logo: <img src="/logo/logo.svg" alt="Lighter" />,
+    logoSmall: <img src="/logo/logo-small.svg" alt="Lighter" />
   },
   routes: [
     {
       title: 'Hello',
       path: '/',
       render: <Page render={Hello} />
-    },
-    {
-      title: 'Kitchen Sink',
-      path: '/Kitchen Sink',
-      render: <Page render={KitchenSink} />
     },
     {
       title: 'Components',
@@ -66,6 +68,11 @@ styleguide({
           render: <Page render={NoteDocs} />
         },
         {
+          title: 'Page',
+          path: '/page',
+          render: <Page render={PageDocs} />
+        },
+        {
           title: 'Preview',
           path: '/preview',
           render: <Page render={PreviewDocs} />
@@ -74,6 +81,27 @@ styleguide({
           title: 'Table',
           path: '/table',
           render: <Page render={TableDocs} />
+        },
+        {
+          title: 'Typography',
+          path: '/typography',
+          render: <Page render={TypographyDocs} />
+        }
+      ]
+    },
+    {
+      title: 'Guides',
+      path: '/guides',
+      nodes: [
+        {
+          title: 'Contributing guidelines',
+          path: '/contributing-guidelines',
+          render: <Page render={ContributingGuidelines} />
+        },
+        {
+          title: 'Maintaining CRA fork',
+          path: '/maintaining-CRA-fork',
+          render: <Page render={MaintainingCRAFork} />
         }
       ]
     }
