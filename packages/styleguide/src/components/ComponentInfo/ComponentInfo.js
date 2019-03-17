@@ -58,6 +58,6 @@ const StyledComponentInfo = styled.div`
 `;
 
 ComponentInfo.propTypes = propTypes;
-ComponentInfo.defaultName = 'ComponentInfo';
+ComponentInfo.displayName = 'ComponentInfo';
 
 export default ComponentInfo;

@@ -16,6 +16,6 @@ export {
   Donts
 } from './Note';
 export { default as Page } from './Page';
-export { default as Preview } from './Preview';
+export { default as Preview, Interact } from './Preview';
 export { default as Table, DocsTable } from './Table';
 export { H1, H2, H3, H4, H5, P, Link } from './Typography';

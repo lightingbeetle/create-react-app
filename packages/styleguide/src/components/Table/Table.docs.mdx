@@ -1,5 +1,5 @@
 import Table, { DocsTable } from './';
-import { Preview, ComponentDocs, Code } from './../';
+import { Preview, ComponentDocs, Code, Interact } from './../';
 
 # Table
 
@@ -99,3 +99,24 @@ Table with predefined columns to describe components props or every typical conf
     hasOutsideBorder={true}
   />
 `}</Code>
+
+## Playground
+
+<Interact render={(
+  <Table
+    columns={[
+      { key: 'first', label: 'First' },
+      { key: 'second', label: 'Second' }
+    ]}
+    data={[
+      {
+        first: 'First item in first column',
+        second: 'Second item in first column'
+      },
+      {
+        first: 'First item in second column',
+        second: 'Second item in second column'
+      }
+    ]}
+  />
+)} />

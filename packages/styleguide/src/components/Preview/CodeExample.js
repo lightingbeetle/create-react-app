@@ -12,12 +12,29 @@ import Code from '../Code/';
 import Button from '../Button';
 
 const getJSXAsStringFromMarkup = (markup, options) => {
+  const { cleanProps, ...otherOptions } = options || {};
+
   const reactElementToJSXStringOptions = {
     showDefaultProps: false,
     showFunctions: true,
     functionValue: fn => fn.name,
-    ...options
+    ...otherOptions
   };
+
+  // clean undefined props
+  if (cleanProps) {
+    const markupPropsCleaned = Object.keys(markup.props).reduce((acc, curr) => {
+      const currProp = markup.props[curr];
+      return {
+        ...acc,
+        ...(currProp === undefined || currProp === null
+          ? {}
+          : { [curr]: currProp })
+      };
+    }, {});
+
+    markup.props = markupPropsCleaned;
+  }
 
   // valid element can be passed to reactElementToJSXString directly
   if (React.isValidElement(markup)) {

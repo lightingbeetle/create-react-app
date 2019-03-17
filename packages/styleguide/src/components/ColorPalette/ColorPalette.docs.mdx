@@ -1,5 +1,5 @@
 import ColorPallete from './';
-import { Preview, ComponentDocs } from './../';
+import { Preview, ComponentDocs, Interact } from './../';
 
 # ColorPallete
 
@@ -49,3 +49,17 @@ Convey meaning through color. ColorPalette is intended to display one color hue 
 ## Props
 
 <ComponentDocs title="<ColorPallete />" component={ColorPallete} />
+
+## Playground
+
+<Interact render={(
+  <ColorPallete
+    name="primary"
+    color={{
+      type: 'SassColor',
+      value: {
+        hex: '#ff5722'
+      }
+    }}
+  />
+)}/>
