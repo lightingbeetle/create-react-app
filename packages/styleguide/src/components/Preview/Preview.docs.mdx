@@ -1,5 +1,5 @@
 import { md } from './../../utils/';
-import { Preview, ComponentDocs, CodeJSX, Interact } from './../';
+import { Preview, ComponentDocs, CodeJSX } from './../';
 import PreviewForDocs from './Preview';
 
 # Preview
@@ -109,8 +109,3 @@ is used to generate JSX in code example. To overide options of this library, use
 ## Props
 
 <ComponentDocs title="<Preview />" component={PreviewForDocs} excludes={['isIframe', 'iframeHead', 'iframeScripts']}/>
-
-
-## Playground
-
-<Interact render={<Preview code={<Preview>Default preview</Preview>}>Default preview</Preview>} />
