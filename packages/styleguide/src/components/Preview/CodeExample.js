@@ -11,6 +11,39 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import Code from '../Code/';
 import Button from '../Button';
 
+/**
+ * Remove props that are undefined or null
+ * Don't show React.Fragment in code example
+ */
+const cleanUpCode = markup => {
+  const markupProps = markup.props;
+
+  return markupProps
+    ? Object.keys(markupProps).reduce((acc, curr) => {
+        let currProp = markupProps[curr];
+
+        return {
+          ...acc,
+          ...([undefined, null].indexOf(currProp) !== -1
+            ? {}
+            : {
+                [curr]:
+                  curr === 'children' && typeof currProp !== 'string'
+                    ? React.Children.map(currProp, child =>
+                        child.type === React.Fragment
+                          ? child.props.children
+                          : {
+                              ...child,
+                              props: cleanUpCode(child)
+                            }
+                      )
+                    : currProp
+              })
+        };
+      }, {})
+    : {};
+};
+
 const getJSXAsStringFromMarkup = (markup, options) => {
   const { cleanProps, ...otherOptions } = options || {};
 
@@ -21,19 +54,11 @@ const getJSXAsStringFromMarkup = (markup, options) => {
     ...otherOptions
   };
 
-  // clean undefined props
   if (cleanProps) {
-    const markupPropsCleaned = Object.keys(markup.props).reduce((acc, curr) => {
-      const currProp = markup.props[curr];
-      return {
-        ...acc,
-        ...(currProp === undefined || currProp === null
-          ? {}
-          : { [curr]: currProp })
-      };
-    }, {});
-
-    markup.props = markupPropsCleaned;
+    markup = {
+      ...markup,
+      props: cleanUpCode(markup)
+    };
   }
 
   // valid element can be passed to reactElementToJSXString directly
