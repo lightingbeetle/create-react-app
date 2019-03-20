@@ -4,15 +4,708 @@ import { arrayOf, string, bool, element, func, oneOfType } from 'prop-types';
 import cx from 'classnames';
 import styled from 'styled-components';
 import CodeExample from './CodeExample';
-import Preview from './Preview';
 
-import { Bar, BarItem, Button } from './../';
+import { Bar, BarItem } from './../Bar';
 
 import useId from './../../utils/useId';
+
+/**
+ * Cleanup docgen prop value of string which has this form:
+ * "'string'" and converts it to "string"
+ */
+const cleanValue = s => (typeof s === 'string' ? s.replace(/(^'|'$)/g, '') : s);
+
+/**
+ * Generates help tooltip for property input
+ *
+ * @param React.Component.prop prop
+ */
+const renderTooltip = prop => {
+  return (
+    <BarItem>
+      <Tooltip dialog={prop.description || 'No valuable description found'}>
+        i
+      </Tooltip>
+    </BarItem>
+  );
+};
+
+/**
+ * Get docgen props of component
+ * if it's an html element we parse just first level of text to be editable
+ * if it's just a string we create docgen type of string
+ */
+const getDocgenProps = component => {
+  const componentType = component.type;
+
+  if (typeof componentType === 'function') {
+    if (componentType.__docgenInfo) {
+      return componentType.__docgenInfo.props;
+    }
+  } else if (typeof componentType === 'string') {
+    const props = component.props;
+    return Object.keys(props).reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr]: {
+          type: {
+            name: typeof props[curr],
+            value: props[curr]
+          }
+        }
+      }),
+      {}
+    );
+  }
+
+  return {
+    children: {
+      type: {
+        name: typeof component,
+        value: component
+      }
+    }
+  };
+};
+
+/**
+ * parse displayName of component or create custom name
+ */
+const getDisplayName = component =>
+  (component.type && component.type.displayName) ||
+  (typeof component === 'string'
+    ? 'PlainText'
+    : typeof component.type === 'string'
+    ? component.type
+    : 'NoDisplayName');
+
+/**
+ * Helper function for comparision
+ */
+const is = (value, type) => value === type;
+
+/**
+ * Class that creates interactive playground
+ * for experimenting with possibilities of components props
+ */
+class Interact extends React.Component {
+  static propTypes = {
+    id: string,
+    filterProps: arrayOf(string),
+    render: oneOfType([element, func]).isRequired,
+    skipChildren: bool
+  };
+
+  static defaultProps = {
+    filterProps: []
+  };
+
+  constructor(props) {
+    super(props);
+    this.component = props.render;
+
+    this.id = this.props.id || useId('interactive');
+
+    this.getPropValue = this.getPropValue.bind(this);
+    this.isDefaultValue = this.isDefaultValue.bind(this);
+    this.getDefaultValue = this.getDefaultValue.bind(this);
+    this.handleShowCode = this.handleShowCode.bind(this);
+    this.handleShowProps = this.handleShowProps.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.renderInteractive = this.renderInteractive.bind(this);
+    this.generateLiveProps = this.generateLiveProps.bind(this);
+    this.generateDocgenProps = this.generateDocgenProps.bind(this);
+    this.getComponentInfo = this.getComponentInfo.bind(this);
+    this.getComponentDocgenProps = this.getComponentDocgenProps.bind(this);
+    this.setDeepState = this.setDeepState.bind(this);
+    this.renderInput = this.renderInput.bind(this);
+
+    /*  
+      this.state = {
+        liveProps:{
+          'Button0': {
+          ...Button0Props
+        },
+        'Button0Icon0': {
+          ...Button0Icon0Props
+        },
+        'Button0Text0': {
+          ...Button0Text0
+        },
+        'Button0Icon1': {
+          ...Button0Icon1Props
+        },
+        etc.
+      }             
+    }; 
+    */
+
+    this.state = {
+      showCode: false,
+      liveProps: this.generateLiveProps(this.component),
+      showProps: this.generateShowProps(this.component)
+    };
+
+    this.docgen = {
+      liveProps: this.generateDocgenProps(this.component)
+    };
+  }
+
+  /**
+   * creates componentName and props
+   */
+  getComponentInfo(component, id = 0, prefix = '') {
+    const name = prefix + getDisplayName(component) + id;
+    const props = getDocgenProps(component) || {};
+    const propValues = Object.keys(props).reduce((acc, propName) => {
+      const value =
+        typeof component !== 'string'
+          ? this.getPropValue(propName, component)
+          : component;
+      return {
+        ...acc,
+        ...(value !== null ? { [propName]: value } : {})
+      };
+    }, {});
+
+    return {
+      name,
+      state: {
+        [name]: {
+          ...propValues
+        }
+      }
+    };
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getComponentDocgenProps(component, id = 0, prefix = '') {
+    const name = prefix + getDisplayName(component) + id;
+    const props = getDocgenProps(component);
+    return {
+      name,
+      state: {
+        [name]: {
+          ...props
+        }
+      }
+    };
+  }
+
+  isDefaultValue(id, name) {
+    const stateValue =
+      this.state.liveProps[id] && this.state.liveProps[id][name];
+    const docgenValue =
+      this.docgen.liveProps[id] && this.docgen.liveProps[id][name];
+    return (
+      stateValue &&
+      docgenValue &&
+      stateValue === this.getDefaultValue(docgenValue)
+    );
+  }
+
+  /**
+   * Get component default value from docgen
+   * object or from the component itself
+   */
+  getDefaultValue(docgen) {
+    const { defaultValue } = docgen || {};
+
+    if (defaultValue) {
+      const isObject = is(typeof defaultValue, 'object');
+      const value = isObject ? defaultValue.value : defaultValue;
+      return cleanValue(value);
+    }
+
+    return false;
+  }
+
+  /**
+   * Get prop value of the component by name
+   *
+   * @param string name
+   * @param React.Component component
+   */
+  getPropValue(name, component) {
+    const docgen = getDocgenProps(component)[name];
+    const componentPropValue = component.props[name];
+    const defaultValue = this.getDefaultValue(docgen);
+
+    if (componentPropValue) {
+      return componentPropValue;
+    } else if (defaultValue) {
+      // special case when component value is false but stored as string
+      if (is(defaultValue, 'false')) {
+        return false;
+      }
+      // special case when component value is 0 but stored as string
+      if (is(defaultValue, '0')) {
+        return 0;
+      }
+      return defaultValue;
+    }
+    return '';
+  }
+
+  /**
+   * Set component prop value by name
+   *
+   * @param HtmlElement target
+   * @param string name
+   * @param any value
+   */
+  setDeepState(target, name, value) {
+    const id = target.getAttribute('data-component-id');
+
+    this.setState(prevState => ({
+      liveProps: {
+        ...(prevState.liveProps || {}),
+        [id]: {
+          ...(prevState.liveProps[id] || {}),
+          ...(value === 'null' ? { [name]: undefined } : { [name]: value })
+        }
+      }
+    }));
+  }
+
+  /**
+   * Handler for code toggle
+   */
+  handleShowCode() {
+    this.setState(prevState => ({
+      showCode: !prevState.showCode
+    }));
+  }
+
+  /**
+   * Handler for toggle of deep component props
+   * in interactive right panel
+   *
+   * @param HtmlEvent e
+   * @param string id
+   */
+  handleShowProps(e, id) {
+    this.setState(prevState => ({
+      showProps: {
+        ...prevState.showProps,
+        [id]: !prevState.showProps[id]
+      }
+    }));
+  }
+
+  /**
+   * Handler for input change event
+   *
+   * @param string type
+   * @param HtmlEvent event
+   */
+  handleInputChange(type, event) {
+    const { target } = event;
+    const { name, value } = target;
+    let newValue = value;
+    if (is(type, 'number')) {
+      newValue = 0;
+      if (parseInt(value) !== 0) {
+        newValue = parseInt(value) || parseFloat(value) || '';
+      }
+    }
+    this.setDeepState(target, name, newValue);
+  }
+
+  /**
+   * Handler for checkbox change event
+   *
+   * @param HtmlEvent event
+   */
+  handleCheckboxChange(event) {
+    const { target } = event;
+    const { name, checked } = target;
+    this.setDeepState(target, name, checked);
+  }
+
+  /**
+   * Handler for select change event
+   *
+   * @param HtmlEvent event
+   */
+  handleSelectChange(event) {
+    const { target } = event;
+    const { name, value } = target;
+    this.setDeepState(target, name, value);
+  }
+
+  /**
+   * Generate live interactive props
+   *
+   * @param React.Component component
+   * @param number id
+   * @param string prefix
+   */
+  generateLiveProps(component, id = 0, prefix = '') {
+    const {
+      name: componentName,
+      state: componentState
+    } = this.getComponentInfo(component, id, prefix);
+
+    const children = (component.props && component.props.children) || [];
+    const isHtmlElement = typeof component.type === 'string';
+    let childrenStates = {};
+    if (!this.props.skipChildren && !isHtmlElement && children) {
+      const childrenArray = React.Children.toArray(children);
+
+      childrenStates = childrenArray.reduce(
+        (acc, child, index) => ({
+          ...acc,
+          ...this.generateLiveProps(child, index, componentName)
+        }),
+        {}
+      );
+    }
+
+    return {
+      ...componentState,
+      ...childrenStates
+    };
+  }
+
+  /**
+   * Generate show state for interactive components
+   *
+   * @param React.Component component
+   * @param number id
+   * @param string prefix
+   */
+  generateShowProps(component, id = 0, prefix = '') {
+    const componentName = prefix + getDisplayName(component) + id;
+    const componentState = { [componentName]: prefix ? false : true };
+
+    const children = (component.props && component.props.children) || [];
+    const isHtmlElement = typeof component.type === 'string';
+    let childrenStates = {};
+    if (!this.props.skipChildren && !isHtmlElement && children) {
+      const childrenArray = React.Children.toArray(children);
+
+      childrenStates = childrenArray.reduce(
+        (acc, child, index) => ({
+          ...acc,
+          ...this.generateShowProps(child, index, componentName)
+        }),
+        {}
+      );
+    }
+
+    return {
+      ...componentState,
+      ...childrenStates
+    };
+  }
+
+  /**
+   * Generate live interactive props using react docgen object
+   *
+   * @param React.Component component
+   * @param number id
+   * @param string prefix
+   */
+  generateDocgenProps(component, id = 0, prefix = '') {
+    const {
+      name: componentName,
+      state: componentState
+    } = this.getComponentDocgenProps(component, id, prefix);
+
+    const isHtmlElement = typeof component.type === 'string';
+    const children = (component.props && component.props.children) || [];
+    let childrenStates = {};
+    if (!this.props.skipChildren && !isHtmlElement && children) {
+      const childrenArray = React.Children.toArray(children);
+
+      childrenStates = childrenArray.reduce(
+        (acc, child, index) => ({
+          ...acc,
+          ...this.generateDocgenProps(child, index, componentName)
+        }),
+        {}
+      );
+    }
+
+    return {
+      ...componentState,
+      ...childrenStates
+    };
+  }
+
+  /**
+   * Render form input element for interaction with component
+   *
+   * @param string id
+   * @param string name
+   */
+  renderInput(id, name) {
+    let input;
+    const props = {
+      key: name,
+      id: name,
+      name,
+      'data-component-id': id
+    };
+    const label = name.replace(/^\w/, m => m.toUpperCase());
+    const isDefaultValue = this.isDefaultValue(id, name) ? (
+      <div style={{ color: 'grey' }}>Default</div>
+    ) : (
+      ''
+    );
+    const docgenProps = this.docgen.liveProps[id][name];
+    const componentPropInfo = renderTooltip(docgenProps);
+    let inputLabel = (
+      <div>
+        <label htmlFor={props.id}>{label}</label>
+      </div>
+    );
+
+    if (docgenProps.type) {
+      const type = docgenProps.type.name;
+
+      if (is(type, 'string') || is(type, 'number')) {
+        input = (
+          <Input
+            {...props}
+            value={this.state.liveProps[id][name]}
+            onChange={e => {
+              this.handleInputChange(type, e);
+            }}
+          />
+        );
+      } else if (is(type, 'bool')) {
+        inputLabel = null;
+        input = (
+          <React.Fragment>
+            <Input
+              {...props}
+              type="checkbox"
+              checked={this.state.liveProps[id][name] ? 'checked' : false}
+              onChange={this.handleCheckboxChange}
+            />{' '}
+            <label htmlFor={props.id}>{label}</label>
+          </React.Fragment>
+        );
+      } else if (is(type, 'enum')) {
+        input = (
+          <select
+            {...props}
+            value={this.state.liveProps[id][name]}
+            onChange={this.handleSelectChange}
+          >
+            <option value="null">None</option>
+            {Object.values(docgenProps.type.value).map((option, index) => {
+              const optionValue = cleanValue(option.value);
+              return (
+                <option key={index.toString()} value={optionValue}>
+                  {optionValue}
+                </option>
+              );
+            })}
+          </select>
+        );
+      } else {
+        const inputValue = this.state.liveProps[id][name];
+        inputLabel = (
+          <div>
+            <label style={{ color: 'grey' }} htmlFor={props.id}>
+              {label}
+            </label>
+          </div>
+        );
+        input = (
+          <Input
+            {...props}
+            disabled
+            value={
+              is(typeof inputValue, 'object')
+                ? JSON.stringify(inputValue)
+                : inputValue.toString()
+            }
+          />
+        );
+        /*
+        any, array, func, object, node, element, symbol, 
+        instanceOf, oneOfType, arrayOf, objectOf, shape, custom
+
+        these types of props cannot be parsed because their value in 
+        __docgenInfo defaultValue.value is very complex form but is stored
+        as a simple string not a JSON, so its impossible for now to 
+        */
+      }
+    }
+
+    return (
+      <Bar key={id + name}>
+        <BarItem isFilling>
+          {inputLabel}
+          {input}
+          {isDefaultValue}
+        </BarItem>
+        {componentPropInfo}
+      </Bar>
+    );
+  }
+
+  /**
+   * Recursive function that renders components to the deepest level
+   * and connects their props with props stored in state
+   *
+   * @param React.Component component
+   * @param number id
+   * @param string prefix
+   */
+  renderInteractive(component, id = 0, prefix = '') {
+    const componentName = prefix + getDisplayName(component) + id;
+    const { props } = component;
+    const { children } = props || { children: [] };
+    const docgenProps = this.docgen.liveProps[componentName];
+    const liveProps = this.state.liveProps[componentName];
+
+    let componentBase;
+    if (component.type) {
+      if (typeof component.type === 'function') {
+        componentBase = component;
+      } else {
+        componentBase = React.createElement(component.type);
+      }
+    } else {
+      componentBase = React.createElement(React.Fragment);
+    }
+
+    const isHtmlElement = typeof component.type === 'string';
+
+    return {
+      ...componentBase,
+      props: {
+        ...props,
+        ...(!this.props.skipChildren && !isHtmlElement
+          ? {
+              children: React.Children.map(children, (child, index) =>
+                this.renderInteractive(child, index, componentName)
+              )
+            }
+          : {}),
+        ...Object.keys(liveProps).reduce((acc, curr) => {
+          const defaultValue =
+            docgenProps[curr].defaultValue &&
+            cleanValue(docgenProps[curr].defaultValue.value);
+          // default values should not be visible in code example
+          return {
+            ...acc,
+            [curr]:
+              defaultValue === liveProps[curr] || liveProps[curr] === ''
+                ? undefined
+                : liveProps[curr]
+          };
+        }, {})
+      }
+    };
+  }
+
+  /**
+   * Render function for Interact component
+   */
+  render() {
+    const componentIds = Object.keys(this.state.liveProps);
+
+    return (
+      <StyledInteract>
+        <Grid className="mb-large">
+          <GridCol
+            size={7}
+            className="align-items-middle align-items-middle"
+            style={{
+              borderRight: '1px solid #eaeaea',
+              position: 'relative'
+            }}
+          >
+            <StyledSticky>
+              <Bar>
+                <BarItem isFilling>
+                  <h3 className="h4 text-bold">
+                    {getDisplayName(this.component)}
+                  </h3>
+                </BarItem>
+                <BarItem>
+                  <Button
+                    onClick={this.handleShowCode}
+                    className={cx({ opened: this.state.showCode })}
+                  >
+                    {this.state.showCode ? 'Hide code ' : 'Show code '}
+                  </Button>
+                </BarItem>
+              </Bar>
+              {!this.state.showCode && this.renderInteractive(this.component)}
+              {this.state.showCode && (
+                <CodeExample
+                  codeJSXOptions={{
+                    cleanProps: true,
+                    filterProps: ['key']
+                  }}
+                >
+                  {this.renderInteractive(this.component)}
+                </CodeExample>
+              )}
+            </StyledSticky>
+          </GridCol>
+          <GridCol size={5}>
+            {componentIds.map((id, compIndex) => {
+              const statePropNames = Object.keys(this.docgen.liveProps[id]);
+              const propCount = statePropNames.length;
+              const deepness = id
+                .replace(/(\w+\d+)*(\w+)\d+$/g, '$1')
+                .replace(/\w+?\d+?/g, '-').length;
+              const componentName = id.replace(/(\w+\d+)*(\w+)\d+$/g, '$2');
+              return (
+                <div key={id} style={{ marginLeft: `${deepness * 10}px` }}>
+                  <Button
+                    onClick={e => {
+                      this.handleShowProps(e, id);
+                    }}
+                    className={cx({ opened: this.state.showProps[id] })}
+                  >
+                    {deepness > 0 && '↳'} {componentName} ({propCount}){' '}
+                  </Button>
+                  {this.state.showProps[id] &&
+                    (propCount ? (
+                      statePropNames.map(name => {
+                        if (
+                          this.props.filterProps.find(
+                            filtered => filtered === name
+                          )
+                        ) {
+                          return null;
+                        }
+                        return this.renderInput(id, name);
+                      })
+                    ) : (
+                      <div>
+                        There are no props to edit, try another component!
+                      </div>
+                    ))}
+                </div>
+              );
+            })}
+          </GridCol>
+        </Grid>
+      </StyledInteract>
+    );
+  }
+}
+
+const StyledInteract = styled.div`
+  font-family: ${props => props.theme.fontFamily};
+`;
 
 const Grid = styled.div`
   display: flex;
 `;
+
 const GridCol = styled.div`
   flex: 1 0 auto;
   padding: ${props => props.theme.spaces.small};
@@ -76,11 +769,11 @@ const StyledTooltip = styled.div`
     background: black;
     color: white;
     text-align: center;
-    font-size: 0.875rem;
+    font-size: 16px;
+    line-height: 32px;
     height: 32px;
     width: 32px;
     margin: 0;
-    padding: 0.42857em;
     border-radius: 50%;
   }
 `;
@@ -92,7 +785,7 @@ const Tooltip = ({ children, dialog, ...other }) => (
   </StyledTooltip>
 );
 
-const StyledButton = styled(Button)`
+const Button = styled.div`
   font-weight: 600;
   line-height: 1.4;
   transition: all 0.2s ease-out;
@@ -141,554 +834,5 @@ const StyledSticky = styled.div`
   position: sticky;
   top: 0;
 `;
-
-const Hidden = styled.div`
-  display: ${props => (props.hide ? 'none' : 'block')};
-`;
-
-const cleanValue = s => (typeof s === 'string' ? s.replace(/(^'|'$)/g, '') : s);
-
-const getDocgenProps = component =>
-  (component.type &&
-    component.type.__docgenInfo &&
-    component.type.__docgenInfo.props) || {
-    children: {
-      type: {
-        name: typeof component,
-        value: component
-      }
-    }
-  };
-
-const getDisplayName = component =>
-  (component.type && component.type.displayName) ||
-  (typeof component === 'string' ? 'Text' : 'NoDisplayName');
-
-const is = (value, type) => value === type;
-
-const StyledInteract = styled.div`
-  font-family: ${props => props.theme.fontFamily};
-`;
-
-class Interact extends React.Component {
-  static propTypes = {
-    filterProps: arrayOf(string),
-    render: oneOfType([element, func]).isRequired,
-    skipChildren: bool
-  };
-
-  static defaultProps = {
-    filterProps: []
-  };
-
-  constructor(props) {
-    super(props);
-    this.component = props.render;
-
-    this.id = useId('interactive');
-
-    this.getPropValue = this.getPropValue.bind(this);
-    this.isDefaultValue = this.isDefaultValue.bind(this);
-    this.getDefaultValue = this.getDefaultValue.bind(this);
-    this.handleShowCode = this.handleShowCode.bind(this);
-    this.handleShowProps = this.handleShowProps.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
-    this.renderInteractive = this.renderInteractive.bind(this);
-    this.generateLiveProps = this.generateLiveProps.bind(this);
-    this.generateDocgenProps = this.generateDocgenProps.bind(this);
-    this.getComponentInfo = this.getComponentInfo.bind(this);
-    this.getComponentDocgenProps = this.getComponentDocgenProps.bind(this);
-    this.renderTooltip = this.renderTooltip.bind(this);
-    this.setDeepState = this.setDeepState.bind(this);
-    this.renderInput = this.renderInput.bind(this);
-
-    /*  
-      this.state = {
-        liveProps:{
-          'Button0': {
-          ...Button0Props
-        },
-        'Button0Icon0': {
-          ...Button0Icon0Props
-        },
-        'Button0Text0': {
-          ...Button0Text0
-        },
-        'Button0Icon1': {
-          ...Button0Icon1Props
-        },
-        etc.
-      }             
-    }; 
-    */
-    this.state = {
-      showCode: false,
-      liveProps: this.generateLiveProps(this.component),
-      showProps: this.generateShowProps(this.component)
-    };
-    this.docgen = {
-      liveProps: this.generateDocgenProps(this.component)
-    };
-
-    console.log(this);
-  }
-
-  getComponentInfo(component, id = 0, prefix = '') {
-    const name = prefix + getDisplayName(component) + id;
-    const props = getDocgenProps(component);
-    const propValues = Object.keys(props).reduce((acc, propName) => {
-      const value =
-        typeof component !== 'string'
-          ? this.getPropValue(propName, component)
-          : component;
-      return {
-        ...acc,
-        ...(value !== null ? { [propName]: value } : {})
-      };
-    }, {});
-
-    return {
-      name,
-      state: {
-        [name]: {
-          ...propValues
-        }
-      }
-    };
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  getComponentDocgenProps(component, id = 0, prefix = '') {
-    const name = prefix + getDisplayName(component) + id;
-    const props = getDocgenProps(component);
-    return {
-      name,
-      state: {
-        [name]: {
-          ...props
-        }
-      }
-    };
-  }
-
-  isDefaultValue(id, name) {
-    const stateValue =
-      this.state.liveProps[id] && this.state.liveProps[id][name];
-    const docgenValue =
-      this.docgen.liveProps[id] && this.docgen.liveProps[id][name];
-    return (
-      stateValue &&
-      docgenValue &&
-      stateValue === this.getDefaultValue(docgenValue)
-    );
-  }
-
-  getDefaultValue(docgen) {
-    const { defaultValue } = docgen || {};
-    return defaultValue
-      ? cleanValue(
-          typeof defaultValue === 'object' ? defaultValue.value : defaultValue
-        )
-      : false;
-  }
-
-  getPropValue(name, component) {
-    const docgen = getDocgenProps(component)[name];
-    const componentPropValue = component.props[name];
-    const defaultValue = this.getDefaultValue(docgen);
-
-    if (componentPropValue) {
-      return componentPropValue;
-    } else if (defaultValue) {
-      return defaultValue;
-    }
-    return '';
-  }
-
-  setDeepState(target, name, value) {
-    const id = target.getAttribute('data-component-id');
-
-    this.setState(prevState => {
-      const state = prevState;
-
-      if (value === 'null') delete state.liveProps[id][name];
-
-      return {
-        liveProps: {
-          ...(state.liveProps || {}),
-          [id]: {
-            ...(state.liveProps[id] || {}),
-            ...(value === 'null' ? {} : { [name]: value })
-          }
-        }
-      };
-    });
-  }
-
-  handleShowCode() {
-    this.setState(prevState => ({
-      showCode: !prevState.showCode
-    }));
-  }
-
-  handleShowProps(e, id) {
-    this.setState(prevState => ({
-      showProps: {
-        ...prevState.showProps,
-        [id]: !prevState.showProps[id]
-      }
-    }));
-  }
-
-  handleInputChange(type, event) {
-    const { target } = event;
-    const { name, value } = target;
-    let newValue = value;
-    if (is(type, 'number')) {
-      newValue = 0;
-      if (parseInt(value) !== 0) {
-        newValue = parseInt(value) || parseFloat(value) || '';
-      }
-    }
-    this.setDeepState(target, name, newValue);
-  }
-
-  handleCheckboxChange(event) {
-    const { target } = event;
-    const { name, checked } = target;
-    this.setDeepState(target, name, checked);
-  }
-
-  handleSelectChange(event) {
-    const { target } = event;
-    const { name, value } = target;
-    this.setDeepState(target, name, value);
-  }
-
-  generateLiveProps(component, id = 0, prefix = '') {
-    const {
-      name: componentName,
-      state: componentState
-    } = this.getComponentInfo(component, id, prefix);
-    const children = (component.props && component.props.children) || [];
-    let childrenStates = {};
-    if (!this.props.skipChildren && children) {
-      const childrenArray = React.Children.toArray(children);
-
-      childrenStates = childrenArray.reduce(
-        (acc, child, index) => ({
-          ...acc,
-          ...this.generateLiveProps(child, index, componentName)
-        }),
-        {}
-      );
-    }
-
-    return {
-      ...componentState,
-      ...childrenStates
-    };
-  }
-
-  generateShowProps(component, id = 0, prefix = '') {
-    const componentName = prefix + getDisplayName(component) + id;
-    const componentState = { [componentName]: prefix ? false : true };
-
-    const children = (component.props && component.props.children) || [];
-    let childrenStates = {};
-    if (!this.props.skipChildren && children) {
-      const childrenArray = React.Children.toArray(children);
-
-      childrenStates = childrenArray.reduce(
-        (acc, child, index) => ({
-          ...acc,
-          ...this.generateShowProps(child, index, componentName)
-        }),
-        {}
-      );
-    }
-
-    return {
-      ...componentState,
-      ...childrenStates
-    };
-  }
-
-  generateDocgenProps(component, id = 0, prefix = '') {
-    const {
-      name: componentName,
-      state: componentState
-    } = this.getComponentDocgenProps(component, id, prefix);
-    const children = (component.props && component.props.children) || [];
-    let childrenStates = {};
-    if (!this.props.skipChildren && children) {
-      const childrenArray = React.Children.toArray(children);
-
-      childrenStates = childrenArray.reduce(
-        (acc, child, index) => ({
-          ...acc,
-          ...this.generateDocgenProps(child, index, componentName)
-        }),
-        {}
-      );
-    }
-
-    return {
-      ...componentState,
-      ...childrenStates
-    };
-  }
-
-  renderInput(id, name) {
-    let input;
-    const props = {
-      key: name,
-      id: name,
-      name,
-      'data-component-id': id
-    };
-    const label = name.replace(/^\w/, m => m.toUpperCase());
-    const isDefaultValue = this.isDefaultValue(id, name) && (
-      <div style={{ color: 'grey' }}>Default</div>
-    );
-    const docgenProps = this.docgen.liveProps[id][name];
-    const componentPropInfo = this.renderTooltip(docgenProps);
-    let inputLabel = (
-      <div>
-        <label htmlFor={props.id}>{label}</label>
-      </div>
-    );
-
-    if (docgenProps.type) {
-      const type = docgenProps.type.name;
-
-      if (is(type, 'string') || is(type, 'number')) {
-        input = (
-          <Input
-            {...props}
-            value={this.state.liveProps[id][name]}
-            onChange={e => {
-              this.handleInputChange(type, e);
-            }}
-          />
-        );
-      } else if (is(type, 'bool')) {
-        inputLabel = null;
-        input = (
-          <label htmlFor={props.id}>
-            <Input
-              {...props}
-              type="checkbox"
-              checked={this.state.liveProps[id][name] ? 'checked' : false}
-              onChange={this.handleCheckboxChange}
-            />
-            {label}
-          </label>
-        );
-      } else if (is(type, 'enum')) {
-        input = (
-          <select
-            {...props}
-            value={this.state.liveProps[id][name]}
-            onChange={this.handleSelectChange}
-          >
-            <option value="null">None</option>
-            {Object.values(docgenProps.type.value).map((option, index) => {
-              const optionValue = cleanValue(option.value);
-              return (
-                <option key={index.toString()} value={optionValue}>
-                  {optionValue}
-                </option>
-              );
-            })}
-          </select>
-        );
-      } else {
-        const inputValue = this.state.liveProps[id][name];
-        inputLabel = (
-          <div>
-            <label style={{ color: 'grey' }} htmlFor={props.id}>
-              {label}
-            </label>
-          </div>
-        );
-        input = (
-          <textarea
-            {...props}
-            disabled
-            value={
-              is(typeof inputValue, 'object')
-                ? JSON.stringify(inputValue)
-                : inputValue
-            }
-          />
-        );
-        // return null;
-        /*
-        any, array, func, object, node, element, symbol, 
-        instanceOf, oneOfType, arrayOf, objectOf, shape
-
-        these types of props cannot be parsed because their value in 
-        __docgenInfo defaultValue.value is very complex form but is stored
-        as a simple string not a JSON, so its impossible for now to 
-        */
-      }
-    }
-
-    return (
-      <Bar key={id + name}>
-        <BarItem>
-          {inputLabel}
-          {input}
-          {isDefaultValue}
-        </BarItem>
-        {componentPropInfo}
-      </Bar>
-    );
-  }
-
-  renderInteractive(component, id = 0, prefix = '') {
-    const componentName = prefix + getDisplayName(component) + id;
-    const { props } = component;
-    const { children } = props || { children: [] };
-    const docgenProps = this.docgen.liveProps[componentName];
-    const liveProps = this.state.liveProps[componentName];
-
-    return {
-      ...(component.type ? component : React.createElement(React.Fragment)),
-      props: {
-        ...props,
-        ...(!this.props.skipChildren
-          ? {
-              children: React.Children.map(children, (child, index) =>
-                this.renderInteractive(child, index, componentName)
-              )
-            }
-          : {}),
-        ...Object.keys(liveProps).reduce((acc, curr) => {
-          const defaultValue =
-            docgenProps[curr].defaultValue &&
-            cleanValue(docgenProps[curr].defaultValue.value);
-          // default values should not be visible in code example
-          return {
-            ...acc,
-            [curr]:
-              defaultValue === liveProps[curr] || liveProps[curr] === ''
-                ? undefined
-                : liveProps[curr]
-          };
-        }, {})
-      }
-    };
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  renderTooltip(prop) {
-    return (
-      <BarItem>
-        <Tooltip dialog={prop.description || 'No valuable description found'}>
-          i
-        </Tooltip>
-      </BarItem>
-    );
-  }
-
-  render() {
-    const componentIds = Object.keys(this.state.liveProps);
-
-    return (
-      <StyledInteract>
-        <Preview
-          code={this.renderInteractive(this.component)}
-          codeJSXOptions={{ cleanProps: true, filterProps: ['key'] }}
-        >
-          <Grid className="mb-large">
-            <GridCol
-              size={7}
-              className="align-items-middle align-items-middle"
-              style={{
-                borderRight: '1px solid #eaeaea',
-                position: 'relative'
-              }}
-            >
-              <StyledSticky>
-                <Bar>
-                  <BarItem isFilling>
-                    <h3 className="h4 text-bold">
-                      {getDisplayName(this.component)}
-                    </h3>
-                  </BarItem>
-                  <BarItem>
-                    <StyledButton
-                      onClick={this.handleShowCode}
-                      className={cx({ opened: this.state.showCode })}
-                    >
-                      {this.state.showCode ? 'Hide code ' : 'Show code '}
-                    </StyledButton>
-                  </BarItem>
-                </Bar>
-                <Hidden hide={this.state.showCode}>
-                  {this.renderInteractive(this.component)}
-                </Hidden>
-                <Hidden hide={!this.state.showCode}>
-                  <CodeExample
-                    codeJSXOptions={{
-                      cleanProps: true,
-                      filterProps: ['key']
-                    }}
-                  >
-                    {this.renderInteractive(this.component)}
-                  </CodeExample>
-                </Hidden>
-              </StyledSticky>
-            </GridCol>
-            <GridCol size={5}>
-              {componentIds.map((id, compIndex) => {
-                const statePropNames = Object.keys(this.docgen.liveProps[id]);
-                const propCount = statePropNames.length;
-                const deepness = id
-                  .replace(/(\w+\d+)*(\w+)\d+$/g, '$1')
-                  .replace(/\w+?\d+?/g, '-').length;
-                const componentName = id.replace(/(\w+\d+)*(\w+)\d+$/g, '$2');
-                return (
-                  <div key={id} style={{ marginLeft: `${deepness * 10}px` }}>
-                    <StyledButton
-                      onClick={e => {
-                        this.handleShowProps(e, id);
-                      }}
-                      className={cx({ opened: this.state.showProps[id] })}
-                    >
-                      {deepness > 0 && '↳'} {componentName} ({propCount}){' '}
-                    </StyledButton>
-                    <Hidden hide={!this.state.showProps[id]}>
-                      {propCount ? (
-                        statePropNames.map(name => {
-                          if (
-                            this.props.filterProps.find(
-                              filtered => filtered === name
-                            )
-                          ) {
-                            return null;
-                          }
-                          return this.renderInput(id, name);
-                        })
-                      ) : (
-                        <div>
-                          There are no props to edit, try another component!
-                        </div>
-                      )}
-                    </Hidden>
-                  </div>
-                );
-              })}
-            </GridCol>
-          </Grid>
-        </Preview>
-      </StyledInteract>
-    );
-  }
-}
 
 export default Interact;
