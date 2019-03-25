@@ -210,7 +210,7 @@ class Preview extends Component {
       actions.push(
         <Button onClick={this.handleToggleInteract}>
           <Icon name="code" fill={bgThemeColors.accent || '#000'} />
-          {this.state.showInteract ? 'SHOW NORMAL' : 'SHOW INTERACTIVE'}
+          {this.state.showInteract ? 'HIDE INTERACTIVE' : 'SHOW INTERACTIVE'}
         </Button>
       );
     }
