@@ -16,32 +16,41 @@ import Button from '../Button';
  * Don't show React.Fragment in code example
  */
 const cleanUpCode = markup => {
-  const markupProps = markup.props;
+  const markupProps = markup.props || {};
 
-  return markupProps
-    ? Object.keys(markupProps).reduce((acc, curr) => {
-        let currProp = markupProps[curr];
+  return Object.keys(markupProps).reduce((acc, curr) => {
+    let currProp = markupProps[curr];
 
-        return {
-          ...acc,
-          ...([undefined, null].indexOf(currProp) !== -1
-            ? {}
-            : {
-                [curr]:
-                  curr === 'children' && typeof currProp !== 'string'
-                    ? React.Children.map(currProp, child =>
-                        child.type === React.Fragment
-                          ? child.props.children
-                          : {
-                              ...child,
-                              props: cleanUpCode(child)
-                            }
-                      )
-                    : currProp
-              })
-        };
-      }, {})
-    : {};
+    let newProp;
+    // clean up child code
+    if (curr === 'children' && typeof currProp !== 'string') {
+      newProp = React.Children.map(currProp, child => {
+        // hide fragments if containing just strings
+        const isFragmentString =
+          child.type === React.Fragment &&
+          child.props &&
+          typeof child.props.children === 'string';
+
+        return isFragmentString
+          ? child.props.children
+          : {
+              ...child,
+              props: cleanUpCode(child)
+            };
+      });
+    }
+
+    // hide undefined or null props
+    const isNotDefined = [undefined, null].indexOf(currProp) !== -1;
+    return {
+      ...acc,
+      ...(isNotDefined
+        ? {}
+        : {
+            [curr]: newProp || currProp
+          })
+    };
+  }, {});
 };
 
 const getJSXAsStringFromMarkup = (markup, options) => {
