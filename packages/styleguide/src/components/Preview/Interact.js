@@ -638,7 +638,7 @@ class Interact extends React.Component {
                     onClick={this.handleShowCode}
                     className={cx({ opened: this.state.showCode })}
                   >
-                    {this.state.showCode ? 'Hide code ' : 'Show code '}
+                    {this.state.showCode ? 'HIDE CODE ▲' : 'SHOW CODE ▼'}
                   </Button>
                 </BarItem>
               </Bar>
@@ -672,6 +672,7 @@ class Interact extends React.Component {
                     className={cx({ opened: this.state.showProps[id] })}
                   >
                     {deepness > 0 && '↳'} {componentName}{' '}
+                    {this.state.showProps[id] ? '▲' : '▼'}
                   </Button>
                   {this.state.showProps[id] &&
                     (propCount ? (
