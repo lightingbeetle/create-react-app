@@ -671,7 +671,7 @@ class Interact extends React.Component {
                     }}
                     className={cx({ opened: this.state.showProps[id] })}
                   >
-                    {deepness > 0 && '↳'} {componentName} ({propCount}){' '}
+                    {deepness > 0 && '↳'} {componentName}{' '}
                   </Button>
                   {this.state.showProps[id] &&
                     (propCount ? (
