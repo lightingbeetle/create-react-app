@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import CodeExample from './CodeExample';
 
 import { Bar, BarItem } from './../Bar';
+import Button from './../Button';
 
 import useId from './../../utils/useId';
 
@@ -760,7 +761,8 @@ const StyledTooltip = styled.div`
       transform: translate(100%, -50%);
       border-style: solid;
       border-width: 6px 0 6px 8px;
-      border-color: transparent transparent transparent black;
+      border-color: transparent transparent transparent
+        ${props => props.theme.colors.black};
     }
   }
 
@@ -769,8 +771,8 @@ const StyledTooltip = styled.div`
   }
 
   .tooltip-trigger {
-    background: black;
-    color: white;
+    background: ${props => props.theme.colors.black};
+    color: ${props => props.theme.colors.white};
     text-align: center;
     font-size: 16px;
     line-height: 32px;
@@ -787,51 +789,6 @@ const Tooltip = ({ children, dialog, ...other }) => (
     <div className="tooltip-title">{dialog}</div>
   </StyledTooltip>
 );
-
-const Button = styled.div`
-  font-weight: 600;
-  line-height: 1.4;
-  transition: all 0.2s ease-out;
-  position: relative;
-  display: inline-block;
-  margin-bottom: 1em;
-  vertical-align: middle;
-  text-align: center;
-  cursor: pointer;
-  padding: 0.427rem;
-  font-size: 0.875rem;
-  border-radius: 0;
-  color: #ff5722;
-
-  :focus,
-  :hover {
-    color: #ff9a7a;
-    background-color: #fff;
-    border-color: hsla(0, 0%, 100%, 0.4);
-    z-index: 1;
-  }
-
-  .is-active,
-  :active {
-    color: #ff794e;
-    background-color: #fff;
-    border-color: hsla(0, 0%, 100%, 0.2);
-    z-index: 1;
-  }
-
-  ::after {
-    content: '';
-    display: inline-block;
-    border-style: solid;
-    border-width: 7px 6px 0 6px;
-    border-color: #e64e1f transparent transparent transparent;
-  }
-
-  &.opened::after {
-    border-width: 0 6px 7px 6px;
-    border-color: transparent transparent #e64e1f transparent;
-  }
-`;
 
 const StyledSticky = styled.div`
   position: sticky;
