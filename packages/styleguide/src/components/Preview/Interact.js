@@ -88,9 +88,13 @@ const is = (value, type) => value === type;
  */
 class Interact extends React.Component {
   static propTypes = {
+    /** Element id */
     id: string,
+    /** Which props should be filtered */
     filterProps: arrayOf(string),
+    /** Render element */
     render: oneOfType([element, func]).isRequired,
+    /** Parser should skip children */
     skipChildren: bool
   };
 
