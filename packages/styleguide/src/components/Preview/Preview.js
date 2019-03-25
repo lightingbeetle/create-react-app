@@ -6,7 +6,7 @@ import {
   bool,
   func,
   arrayOf,
-  oneOfType
+  oneOfType,
 } from 'prop-types';
 import cx from 'classnames';
 import Select from 'react-select';
@@ -30,7 +30,7 @@ function getBackgroundsAsArray(previewBackgrounds, excludedColors = []) {
     .filter(colorName => !excludedColors.includes(colorName))
     .map(key => ({
       value: previewBackgrounds[key],
-      label: key
+      label: key,
     }));
 }
 
@@ -63,20 +63,20 @@ class Preview extends Component {
     /** Preview with interactivity */
     isInteractive: bool,
     /** Props for interactive component */
-    interactiveProps: object
+    interactiveProps: object,
   };
 
   static defaultProps = {
     bgTheme: 'white',
     bgThemeColors: {
-      white: '#fff'
+      white: '#fff',
     },
     bgThemeExcludedColors: [],
     hasCodePreview: true,
     // to discuss if it should be turned on or off
     // for debugging is better on
     isInteractive: true,
-    interactiveProps: {}
+    interactiveProps: {},
   };
 
   componentWillReceiveProps(props) {
@@ -87,8 +87,8 @@ class Preview extends Component {
       this.setState({
         previewBackground: {
           label: props.bgTheme,
-          value: props.bgThemeColors[props.bgTheme]
-        }
+          value: props.bgThemeColors[props.bgTheme],
+        },
       });
     }
   }
@@ -107,20 +107,20 @@ class Preview extends Component {
     previewBackground: this.props.bgThemeColors
       ? {
           label: this.props.bgTheme,
-          value: this.props.bgThemeColors[this.props.bgTheme]
+          value: this.props.bgThemeColors[this.props.bgTheme],
         }
-      : {}
+      : {},
   };
 
   handleToggleCode() {
     this.setState({
-      isCodeShown: !this.state.isCodeShown
+      isCodeShown: !this.state.isCodeShown,
     });
   }
 
   handleToggleInteract() {
     this.setState({
-      showInteract: !this.state.showInteract
+      showInteract: !this.state.showInteract,
     });
   }
 
@@ -161,14 +161,14 @@ class Preview extends Component {
           ...styles,
           backgroundColor: isActive ? 'black' : data.value,
           color: chroma.contrast(color, 'white') > 2 ? 'white' : 'black',
-          cursor: 'pointer'
+          cursor: 'pointer',
         };
       },
       container: () => {},
       control: () => {},
       valueContainer: () => {},
       singleValue: () => {},
-      indicatorSeparator: () => {}
+      indicatorSeparator: () => {},
     };
 
     const actions = [];
@@ -217,7 +217,7 @@ class Preview extends Component {
 
     const renderAsFunctionContext = {
       bgTheme: previewBackground.label,
-      bgThemeValue: previewBackground.value
+      bgThemeValue: previewBackground.value,
     };
 
     const childrenToRender =
@@ -270,7 +270,7 @@ class Preview extends Component {
             )}
           </React.Fragment>
         )}
-      </Card>
+      </Card>,
     ];
   }
 }

@@ -49,9 +49,9 @@ const getDocgenProps = component => {
         [curr]: {
           type: {
             name: typeof props[curr],
-            value: props[curr]
-          }
-        }
+            value: props[curr],
+          },
+        },
       }),
       {}
     );
@@ -61,9 +61,9 @@ const getDocgenProps = component => {
     children: {
       type: {
         name: typeof component,
-        value: component
-      }
-    }
+        value: component,
+      },
+    },
   };
 };
 
@@ -96,11 +96,11 @@ class Interact extends React.Component {
     /** Render element */
     render: oneOfType([element, func]).isRequired,
     /** Parser should skip children */
-    skipChildren: bool
+    skipChildren: bool,
   };
 
   static defaultProps = {
-    filterProps: []
+    filterProps: [],
   };
 
   constructor(props) {
@@ -148,11 +148,11 @@ class Interact extends React.Component {
     this.state = {
       showCode: false,
       liveProps: this.generateLiveProps(this.component),
-      showProps: this.generateShowProps(this.component)
+      showProps: this.generateShowProps(this.component),
     };
 
     this.docgen = {
-      liveProps: this.generateDocgenProps(this.component)
+      liveProps: this.generateDocgenProps(this.component),
     };
   }
 
@@ -169,7 +169,7 @@ class Interact extends React.Component {
           : component;
       return {
         ...acc,
-        ...(value !== null ? { [propName]: value } : {})
+        ...(value !== null ? { [propName]: value } : {}),
       };
     }, {});
 
@@ -177,9 +177,9 @@ class Interact extends React.Component {
       name,
       state: {
         [name]: {
-          ...propValues
-        }
-      }
+          ...propValues,
+        },
+      },
     };
   }
 
@@ -191,9 +191,9 @@ class Interact extends React.Component {
       name,
       state: {
         [name]: {
-          ...props
-        }
-      }
+          ...props,
+        },
+      },
     };
   }
 
@@ -267,9 +267,9 @@ class Interact extends React.Component {
         ...(prevState.liveProps || {}),
         [id]: {
           ...(prevState.liveProps[id] || {}),
-          ...(value === 'null' ? { [name]: undefined } : { [name]: value })
-        }
-      }
+          ...(value === 'null' ? { [name]: undefined } : { [name]: value }),
+        },
+      },
     }));
   }
 
@@ -278,7 +278,7 @@ class Interact extends React.Component {
    */
   handleShowCode() {
     this.setState(prevState => ({
-      showCode: !prevState.showCode
+      showCode: !prevState.showCode,
     }));
   }
 
@@ -293,8 +293,8 @@ class Interact extends React.Component {
     this.setState(prevState => ({
       showProps: {
         ...prevState.showProps,
-        [id]: !prevState.showProps[id]
-      }
+        [id]: !prevState.showProps[id],
+      },
     }));
   }
 
@@ -349,7 +349,7 @@ class Interact extends React.Component {
   generateLiveProps(component, id = 0, prefix = '') {
     const {
       name: componentName,
-      state: componentState
+      state: componentState,
     } = this.getComponentInfo(component, id, prefix);
 
     const children = (component.props && component.props.children) || [];
@@ -361,7 +361,7 @@ class Interact extends React.Component {
       childrenStates = childrenArray.reduce(
         (acc, child, index) => ({
           ...acc,
-          ...this.generateLiveProps(child, index, componentName)
+          ...this.generateLiveProps(child, index, componentName),
         }),
         {}
       );
@@ -369,7 +369,7 @@ class Interact extends React.Component {
 
     return {
       ...componentState,
-      ...childrenStates
+      ...childrenStates,
     };
   }
 
@@ -393,7 +393,7 @@ class Interact extends React.Component {
       childrenStates = childrenArray.reduce(
         (acc, child, index) => ({
           ...acc,
-          ...this.generateShowProps(child, index, componentName)
+          ...this.generateShowProps(child, index, componentName),
         }),
         {}
       );
@@ -401,7 +401,7 @@ class Interact extends React.Component {
 
     return {
       ...componentState,
-      ...childrenStates
+      ...childrenStates,
     };
   }
 
@@ -415,7 +415,7 @@ class Interact extends React.Component {
   generateDocgenProps(component, id = 0, prefix = '') {
     const {
       name: componentName,
-      state: componentState
+      state: componentState,
     } = this.getComponentDocgenProps(component, id, prefix);
 
     const isHtmlElement = typeof component.type === 'string';
@@ -427,7 +427,7 @@ class Interact extends React.Component {
       childrenStates = childrenArray.reduce(
         (acc, child, index) => ({
           ...acc,
-          ...this.generateDocgenProps(child, index, componentName)
+          ...this.generateDocgenProps(child, index, componentName),
         }),
         {}
       );
@@ -435,7 +435,7 @@ class Interact extends React.Component {
 
     return {
       ...componentState,
-      ...childrenStates
+      ...childrenStates,
     };
   }
 
@@ -451,7 +451,7 @@ class Interact extends React.Component {
       key: name,
       id: name,
       name,
-      'data-component-id': id
+      'data-component-id': id,
     };
     const label = name.replace(/^\w/, m => m.toUpperCase());
     const isDefaultValue = this.isDefaultValue(id, name) ? (
@@ -590,7 +590,7 @@ class Interact extends React.Component {
           ? {
               children: React.Children.map(children, (child, index) =>
                 this.renderInteractive(child, index, componentName)
-              )
+              ),
             }
           : {}),
         ...Object.keys(liveProps).reduce((acc, curr) => {
@@ -603,10 +603,10 @@ class Interact extends React.Component {
             [curr]:
               defaultValue === liveProps[curr] || liveProps[curr] === ''
                 ? undefined
-                : liveProps[curr]
+                : liveProps[curr],
           };
-        }, {})
-      }
+        }, {}),
+      },
     };
   }
 
@@ -624,7 +624,7 @@ class Interact extends React.Component {
             className="align-items-middle align-items-middle"
             style={{
               borderRight: '1px solid #eaeaea',
-              position: 'relative'
+              position: 'relative',
             }}
           >
             <StyledSticky>
@@ -648,7 +648,7 @@ class Interact extends React.Component {
                 <CodeExample
                   codeJSXOptions={{
                     cleanProps: true,
-                    filterProps: ['key']
+                    filterProps: ['key'],
                   }}
                 >
                   {this.renderInteractive(this.component)}
