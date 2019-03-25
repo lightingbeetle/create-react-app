@@ -20,13 +20,11 @@ const cleanValue = s => (typeof s === 'string' ? s.replace(/(^'|'$)/g, '') : s);
  *
  * @param React.Component.prop prop
  */
-const renderTooltip = prop => {
+const PropDescription = prop => {
   return (
-    <BarItem>
-      <Tooltip dialog={prop.description || 'No valuable description found'}>
-        i
-      </Tooltip>
-    </BarItem>
+    <Tooltip dialog={prop.description || 'No valuable description found'}>
+      i
+    </Tooltip>
   );
 };
 
@@ -457,13 +455,11 @@ class Interact extends React.Component {
       ''
     );
     const docgenProps = this.docgen.liveProps[id][name];
-    const componentPropInfo = renderTooltip(docgenProps);
     let inputLabel = (
       <div>
         <label htmlFor={props.id}>{label}</label>
       </div>
     );
-
     if (docgenProps.type) {
       const type = docgenProps.type.name;
 
@@ -546,7 +542,9 @@ class Interact extends React.Component {
           {input}
           {isDefaultValue}
         </BarItem>
-        {componentPropInfo}
+        <BarItem>
+          <PropDescription {...docgenProps} />
+        </BarItem>
       </Bar>
     );
   }
