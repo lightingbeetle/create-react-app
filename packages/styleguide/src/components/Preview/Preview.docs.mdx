@@ -1,6 +1,8 @@
 import { md } from './../../utils/';
 import { Preview, ComponentDocs, CodeJSX } from './../';
 import PreviewForDocs from './Preview';
+import InteractForDOcs from './Interact';
+import Button from './../Button';
 
 # Preview
 
@@ -106,6 +108,25 @@ is used to generate JSX in code example. To overide options of this library, use
   This is HTML string
 </Preview>
 
+### Preview interactiveProps
+
+`interactiveProps` are used as a pipe for sending special props to Interactive elements renderer. 
+
+Every component in the `Preview` gets their own Interactive component to `render`.  
+`render` prop is prefilled with parsed component from `Preview`.  
+`filterProps` is set of values that ensures, that user cannot edit these props interactively.  
+`skipChildren` is used to make just the parent element interactive not the children elements.  
+
+<Preview interactiveProps={{ filterProps: ['tag', 'elemRef'], skipChildren: true }}>
+  <Button>I am a button</Button>
+  This is HTML string
+  <br/>
+  this is another string
+</Preview>
+
+
 ## Props
 
 <ComponentDocs title="<Preview />" component={PreviewForDocs} excludes={['isIframe', 'iframeHead', 'iframeScripts']}/>
+
+<ComponentDocs title="<Interact />" component={InteractForDOcs} />
