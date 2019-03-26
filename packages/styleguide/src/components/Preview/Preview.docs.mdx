@@ -2,7 +2,7 @@ import { md } from './../../utils/';
 import { Preview, ComponentDocs, CodeJSX } from './../';
 import PreviewForDocs from './Preview';
 import InteractForDOcs from './Interact';
-import Button from './../Button';
+import { Bar, BarItem } from './../Bar';
 
 # Preview
 
@@ -116,14 +116,6 @@ Every component in the `Preview` gets their own Interactive component to `render
 `render` prop is prefilled with parsed component from `Preview`.  
 `filterProps` is set of values that ensures, that user cannot edit these props interactively.  
 `skipChildren` is used to make just the parent element interactive not the children elements.  
-
-<Preview interactiveProps={{ filterProps: ['tag', 'elemRef'], skipChildren: true }}>
-  <Button>I am a button</Button>
-  This is HTML string
-  <br/>
-  this is another string
-</Preview>
-
 
 ## Props
 
