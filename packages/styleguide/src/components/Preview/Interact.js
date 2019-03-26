@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { arrayOf, string, bool, element, func, oneOfType } from 'prop-types';
-import cx from 'classnames';
 import styled from 'styled-components';
 import CodeExample from './CodeExample';
 
@@ -453,17 +452,24 @@ class Interact extends React.Component {
       name,
       'data-component-id': id,
     };
-    const label = name.replace(/^\w/, m => m.toUpperCase());
+    const label = <strong>{name.replace(/^\w/, m => m.toUpperCase())}</strong>;
     const isDefaultValue = this.isDefaultValue(id, name) ? (
-      <div style={{ color: 'grey' }}>Default</div>
+      <div style={{ color: 'grey' }}>
+        <small>Default</small>
+      </div>
     ) : (
       ''
     );
     const docgenProps = this.docgen.liveProps[id][name];
     let inputLabel = (
-      <div>
-        <label htmlFor={props.id}>{label}</label>
-      </div>
+      <Bar space="tiny">
+        <BarItem>
+          <label htmlFor={props.id}>{label}</label>
+        </BarItem>
+        <BarItem>
+          <PropDescription {...docgenProps} />
+        </BarItem>
+      </Bar>
     );
     if (docgenProps.type) {
       const type = docgenProps.type.name;
@@ -481,15 +487,20 @@ class Interact extends React.Component {
       } else if (is(type, 'bool')) {
         inputLabel = null;
         input = (
-          <React.Fragment>
-            <Input
-              {...props}
-              type="checkbox"
-              checked={this.state.liveProps[id][name] ? 'checked' : false}
-              onChange={this.handleCheckboxChange}
-            />{' '}
-            <label htmlFor={props.id}>{label}</label>
-          </React.Fragment>
+          <Bar>
+            <BarItem>
+              <Input
+                {...props}
+                type="checkbox"
+                checked={this.state.liveProps[id][name] ? 'checked' : false}
+                onChange={this.handleCheckboxChange}
+              />{' '}
+              <label htmlFor={props.id}>{label}</label>
+            </BarItem>
+            <BarItem>
+              <PropDescription {...docgenProps} />
+            </BarItem>
+          </Bar>
         );
       } else if (is(type, 'enum')) {
         input = (
@@ -542,13 +553,10 @@ class Interact extends React.Component {
 
     return (
       <Bar key={id + name}>
-        <BarItem isFilling>
+        <BarItem>
           {inputLabel}
           {input}
           {isDefaultValue}
-        </BarItem>
-        <BarItem>
-          <PropDescription {...docgenProps} />
         </BarItem>
       </Bar>
     );
@@ -623,7 +631,7 @@ class Interact extends React.Component {
             size={7}
             className="align-items-middle align-items-middle"
             style={{
-              borderRight: '1px solid #eaeaea',
+              borderRight: '1px solid #949494',
               position: 'relative',
             }}
           >
@@ -635,10 +643,7 @@ class Interact extends React.Component {
                   </h3>
                 </BarItem>
                 <BarItem>
-                  <Button
-                    onClick={this.handleShowCode}
-                    className={cx({ opened: this.state.showCode })}
-                  >
+                  <Button onClick={this.handleShowCode}>
                     {this.state.showCode ? 'HIDE CODE ▲' : 'SHOW CODE ▼'}
                   </Button>
                 </BarItem>
@@ -665,12 +670,13 @@ class Interact extends React.Component {
                 .replace(/\w+?\d+?/g, '-').length;
               const componentName = id.replace(/(\w+\d+)*(\w+)\d+$/g, '$2');
               return (
-                <div key={id} style={{ marginLeft: `${deepness * 10}px` }}>
+                <div key={id} style={{ marginLeft: `${deepness * 15}px` }}>
                   <Button
+                    fontSize="base"
                     onClick={e => {
                       this.handleShowProps(e, id);
                     }}
-                    className={cx({ opened: this.state.showProps[id] })}
+                    style={{ paddingLeft: 0 }}
                   >
                     {deepness > 0 && '↳'} {componentName}{' '}
                     {this.state.showProps[id] ? '▲' : '▼'}
@@ -685,12 +691,18 @@ class Interact extends React.Component {
                         ) {
                           return null;
                         }
-                        return this.renderInput(id, name);
+                        return (
+                          <StyledWrapper>
+                            {this.renderInput(id, name)}
+                          </StyledWrapper>
+                        );
                       })
                     ) : (
-                      <div>
-                        There are no props to edit, try another component!
-                      </div>
+                      <StyledWrapper>
+                        <p>
+                          There are no props to edit, try another component!
+                        </p>
+                      </StyledWrapper>
                     ))}
                 </div>
               );
@@ -701,6 +713,22 @@ class Interact extends React.Component {
     );
   }
 }
+
+const StyledWrapper = styled.div`
+  border-left: 1px solid ${props => props.theme.colors.greyDark};
+  padding-left: ${props => props.theme.spaces.small};
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: -1px;
+    height: 20px;
+    width: 0;
+    border-left: 1px solid ${props => props.theme.colors.greyDark};
+  }
+`;
 
 const StyledInteract = styled.div`
   font-family: ${props => props.theme.fontFamily};
@@ -722,8 +750,8 @@ const GridCol = styled.div`
 `;
 
 const Input = styled.input`
-  background-color: #fff;
-  border: 1px solid #ced3d7;
+  background-color: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.greyDark};
   border-radius: 3px;
   font-size: 0.875rem;
   min-height: 1em;
@@ -737,7 +765,7 @@ const Input = styled.input`
 
 const StyledTooltip = styled.div`
   position: relative;
-  color: white;
+  color: ${props => props.theme.colors.white};
 
   .tooltip-title {
     pointer-events: none;
@@ -775,9 +803,9 @@ const StyledTooltip = styled.div`
     color: ${props => props.theme.colors.white};
     text-align: center;
     font-size: 16px;
-    line-height: 32px;
-    height: 32px;
-    width: 32px;
+    line-height: 24px;
+    height: 24px;
+    width: 24px;
     margin: 0;
     border-radius: 50%;
   }
