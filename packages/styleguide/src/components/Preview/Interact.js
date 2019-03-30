@@ -13,7 +13,8 @@ import useId from './../../utils/useId';
  * Cleanup docgen prop value of string which has this form:
  * "'string'" and converts it to "string"
  */
-const cleanValue = s => (typeof s === 'string' ? s.replace(/(^'|'$)/g, '') : s);
+const cleanValue = s =>
+  typeof s === 'string' ? s.replace(/(^['"]|['"]$)/g, '') : s;
 
 /**
  * Generates help tooltip for property input
