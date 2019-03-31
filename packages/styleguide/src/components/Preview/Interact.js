@@ -653,7 +653,7 @@ class Interact extends React.Component {
                   </Button>
                 </BarItem>
               </Bar>
-              {!this.state.showCode && this.renderInteractive(this.component)}
+              {this.renderInteractive(this.component)}
               {this.state.showCode && (
                 <CodeExample
                   codeJSXOptions={{
