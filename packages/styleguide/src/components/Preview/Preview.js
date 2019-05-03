@@ -64,6 +64,8 @@ class Preview extends Component {
     isInteractive: bool,
     /** Props for interactive component */
     interactiveProps: object,
+    /** Visual grid preview */
+    previewGrid: bool,
   };
 
   static defaultProps = {
@@ -147,12 +149,19 @@ class Preview extends Component {
       isInteractive,
       interactiveProps,
       html,
+      previewGrid,
       ...other
     } = this.props;
 
     const { previewBackground } = this.state;
 
-    const classes = cx(CLASS_ROOT, className);
+    const classes = cx(
+      CLASS_ROOT,
+      {
+        'preview-grid': previewGrid,
+      },
+      className
+    );
 
     const colourStyles = {
       option: (styles, { data, isActive }) => {
@@ -247,7 +256,7 @@ class Preview extends Component {
 
     return [
       <PreviewTitleBar title={title} actions={actions} key="previewTitle" />,
-      <Card
+      <StyledCard
         className={classes}
         bgColor={previewBackground.value}
         {...other}
@@ -270,12 +279,33 @@ class Preview extends Component {
             )}
           </React.Fragment>
         )}
-      </Card>,
+      </StyledCard>,
     ];
   }
 }
 
 export default Preview;
+
+const StyledCard = styled(Card)`
+  &.preview-grid {
+    .grid {
+      position: relative;
+      z-index: 0;
+      padding: 0.5em 0;
+      background-color: rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+    .bar__item,
+    .grid__col,
+    *[class*='grid__col\-\-'] {
+      position: relative;
+      min-height: 1em;
+      line-height: 1.5;
+      background-color: rgba(0, 0, 0, 0.1);
+      background-clip: content-box;
+    }
+  }
+`;
 
 const StyledPreviewLive = styled.div`
   transition: all 200ms ease-in-out;
