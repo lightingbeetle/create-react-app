@@ -65,7 +65,7 @@ class Preview extends Component {
     /** Props for interactive component */
     interactiveProps: object,
     /** Visual grid preview */
-    previewGrid: bool,
+    hasLayoutPreview: bool,
   };
 
   static defaultProps = {
@@ -149,7 +149,7 @@ class Preview extends Component {
       isInteractive,
       interactiveProps,
       html,
-      previewGrid,
+      hasLayoutPreview,
       ...other
     } = this.props;
 
@@ -158,7 +158,7 @@ class Preview extends Component {
     const classes = cx(
       CLASS_ROOT,
       {
-        'preview-grid': previewGrid,
+        'layout-preview': hasLayoutPreview,
       },
       className
     );
@@ -287,8 +287,9 @@ class Preview extends Component {
 export default Preview;
 
 const StyledCard = styled(Card)`
-  &.preview-grid {
-    .grid {
+  &.layout-preview {
+    .grid,
+    .bar {
       position: relative;
       z-index: 0;
       padding: 0.5em 0;

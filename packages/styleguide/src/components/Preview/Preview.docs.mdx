@@ -1,5 +1,5 @@
 import { md } from './../../utils/';
-import { Preview, ComponentDocs, CodeJSX } from './../';
+import { Preview, ComponentDocs, CodeJSX, Code } from './../';
 import PreviewForDocs from './Preview';
 import InteractForDOcs from './Interact';
 import { Bar, BarItem } from './../Bar';
@@ -108,10 +108,14 @@ is used to generate JSX in code example. To overide options of this library, use
   This is HTML string
 </Preview>
 
-### Preview Grid
+### Preview Layout
 
-<Preview code={<Preview previewGrid />}>
-  To preview a Grid component inside preview use `previewGrid` property
+<Preview hasLayoutPreview code={<Preview hasLayoutPreview />}>
+  <p>Preview a layout component behaviour by apllying special styles.</p>
+  <p>Lighter Styleguide supports <Code>.grid</Code> and <Code>.bar</Code>, other layout components should by styled manually in your app.</p>
+  <div class="grid">
+    <div class="grid__col" />
+  </div>
 </Preview>
 
 ### Preview interactiveProps
