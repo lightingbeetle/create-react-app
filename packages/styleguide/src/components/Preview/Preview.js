@@ -66,6 +66,8 @@ class Preview extends Component {
     interactiveProps: object,
     /** Visual grid preview */
     hasLayoutPreview: bool,
+    /** Enable fullscreen toggle */
+    enableFullscreen: bool,
   };
 
   static defaultProps = {
@@ -79,6 +81,7 @@ class Preview extends Component {
     // for debugging is better on
     isInteractive: true,
     interactiveProps: {},
+    enableFullscreen: true,
   };
 
   componentWillReceiveProps(props) {
@@ -101,6 +104,7 @@ class Preview extends Component {
     this.handleToggleCode = this.handleToggleCode.bind(this);
     this.handleToggleInteract = this.handleToggleInteract.bind(this);
     this.handlePreviewBackground = this.handlePreviewBackground.bind(this);
+    this.handleToggleFullscreen = this.handleToggleFullscreen.bind(this);
   }
 
   state = {
@@ -112,6 +116,7 @@ class Preview extends Component {
           value: this.props.bgThemeColors[this.props.bgTheme],
         }
       : {},
+    isFullscreen: false,
   };
 
   handleToggleCode() {
@@ -129,6 +134,12 @@ class Preview extends Component {
   handlePreviewBackground = previewBackground => {
     this.setState({ previewBackground });
   };
+
+  handleToggleFullscreen() {
+    this.setState({
+      isFullscreen: !this.state.isFullscreen,
+    });
+  }
 
   return;
 
@@ -150,6 +161,7 @@ class Preview extends Component {
       interactiveProps,
       html,
       hasLayoutPreview,
+      enableFullscreen,
       ...other
     } = this.props;
 
@@ -162,6 +174,9 @@ class Preview extends Component {
       },
       className
     );
+    const wrapperClasses = cx('preview-wrapper', {
+      'is-fullscreen': this.state.isFullscreen,
+    });
 
     const colourStyles = {
       option: (styles, { data, isActive }) => {
@@ -224,6 +239,17 @@ class Preview extends Component {
       );
     }
 
+    if (enableFullscreen) {
+      actions.push(
+        <Button onClick={this.handleToggleFullscreen}>
+          <Icon
+            name={this.state.isFullscreen ? 'fullscreen-exit' : 'fullscreen'}
+          />
+          {this.state.isFullscreen ? 'MINIMIZE' : 'FULLSCREEN'}
+        </Button>
+      );
+    }
+
     const renderAsFunctionContext = {
       bgTheme: previewBackground.label,
       bgThemeValue: previewBackground.value,
@@ -254,59 +280,44 @@ class Preview extends Component {
       toReneder
     );
 
-    return [
-      <PreviewTitleBar title={title} actions={actions} key="previewTitle" />,
-      <StyledCard
-        className={classes}
-        bgColor={previewBackground.value}
-        {...other}
-        key="previewCard"
+    return (
+      <StyledPreview
+        className={wrapperClasses}
+        ref={ref => {
+          this.wrapperRef = ref;
+        }}
       >
-        {this.state.showInteract ? (
-          React.Children.map(this.props.children, child => (
-            <Interact render={child} {...interactiveProps} />
-          ))
-        ) : (
-          <React.Fragment>
-            <StyledPreviewLive>{content}</StyledPreviewLive>
-            {this.state.isCodeShown && hasCodePreview && toCode && (
-              <CodeExample
-                {...(html ? { codeTypes: ['html'] } : {})}
-                codeJSXOptions={codeJSXOptions}
-              >
-                {toCode}
-              </CodeExample>
-            )}
-          </React.Fragment>
-        )}
-      </StyledCard>,
-    ];
+        <PreviewTitleBar title={title} actions={actions} key="previewTitle" />
+        <StyledCard
+          className={classes}
+          bgColor={previewBackground.value}
+          {...other}
+          key="previewCard"
+        >
+          {this.state.showInteract ? (
+            React.Children.map(this.props.children, child => (
+              <Interact render={child} {...interactiveProps} />
+            ))
+          ) : (
+            <React.Fragment>
+              <StyledPreviewLive>{content}</StyledPreviewLive>
+              {this.state.isCodeShown && hasCodePreview && toCode && (
+                <CodeExample
+                  {...(html ? { codeTypes: ['html'] } : {})}
+                  codeJSXOptions={codeJSXOptions}
+                >
+                  {toCode}
+                </CodeExample>
+              )}
+            </React.Fragment>
+          )}
+        </StyledCard>
+      </StyledPreview>
+    );
   }
 }
 
 export default Preview;
-
-const StyledCard = styled(Card)`
-  &.layout-preview {
-    .grid,
-    .bar {
-      position: relative;
-      z-index: 0;
-      padding: 0.5em 0;
-      background-color: rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(0, 0, 0, 0.15);
-    }
-    .bar__item,
-    .grid__col,
-    *[class*='grid__col\-\-'] {
-      position: relative;
-      min-height: 1em;
-      line-height: 1.5;
-      background-color: rgba(0, 0, 0, 0.1);
-      background-clip: content-box;
-    }
-  }
-`;
 
 const StyledPreviewLive = styled.div`
   transition: all 200ms ease-in-out;
@@ -345,5 +356,48 @@ const StyledSelect = styled(Select)`
   .select__menu {
     border-radius: 0 !important;
     text-align: center;
+  }
+`;
+
+const StyledPreview = styled.div`
+  display: flex;
+  flex-flow: column;
+
+  &.is-fullscreen {
+    background-color: white;
+    position: fixed;
+    top: 6rem;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 6rem);
+    z-index: 1000;
+  }
+`;
+
+const StyledCard = styled(Card)`
+  &.layout-preview {
+    .grid,
+    .bar {
+      position: relative;
+      z-index: 0;
+      padding: 0.5em 0;
+      background-color: rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+    .bar__item,
+    .grid__col,
+    *[class*='grid__col\-\-'] {
+      position: relative;
+      min-height: 1em;
+      line-height: 1.5;
+      background-color: rgba(0, 0, 0, 0.1);
+      background-clip: content-box;
+    }
+  }
+
+  .is-fullscreen & {
+    flex: 1 1 auto;
+    margin-bottom: 0;
+    padding: 0;
   }
 `;
