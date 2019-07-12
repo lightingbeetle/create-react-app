@@ -1,6 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { arrayOf, string, bool, element, func, oneOfType } from 'prop-types';
+import {
+  node,
+  arrayOf,
+  string,
+  bool,
+  element,
+  func,
+  oneOfType,
+} from 'prop-types';
 import styled from 'styled-components';
 import CodeExample from './CodeExample';
 
@@ -579,6 +587,16 @@ class Interact extends React.Component {
    */
   render() {
     const componentIds = Object.keys(this.state.liveProps);
+    const componentName = getDisplayName(this.component);
+
+    /**
+     * Do not render elements that
+     * doesn't make sense to interact with
+     * (feel free to add some more)
+     */
+    if (['br', 'hr'].includes(componentName)) {
+      return null;
+    }
 
     return (
       <StyledInteract>
@@ -592,19 +610,17 @@ class Interact extends React.Component {
             }}
           >
             <StyledSticky>
-              <Bar>
-                <BarItem isFilling>
-                  <h3 className="h4 text-bold">
-                    {getDisplayName(this.component)}
-                  </h3>
-                </BarItem>
-                <BarItem>
+              <InteractTitle
+                title={componentName}
+                buttons={
                   <Button onClick={this.handleShowCode}>
                     {this.state.showCode ? 'HIDE CODE ▲' : 'SHOW CODE ▼'}
                   </Button>
-                </BarItem>
-              </Bar>
+                }
+              />
+
               {this.renderInteractive(this.component)}
+
               {this.state.showCode && (
                 <CodeExample
                   codeJSXOptions={{
@@ -618,13 +634,17 @@ class Interact extends React.Component {
             </StyledSticky>
           </GridCol>
           <GridCol size={5}>
-            {componentIds.map((id, compIndex) => {
+            {componentIds.map(id => {
               const statePropNames = Object.keys(this.docgen.liveProps[id]);
+
               const propCount = statePropNames.length;
+
               const deepness = id
                 .replace(/(\w+\d+)*(\w+)\d+$/g, '$1')
                 .replace(/\w+?\d+?/g, '-').length;
+
               const componentName = id.replace(/(\w+\d+)*(\w+)\d+$/g, '$2');
+
               return (
                 <div key={id} style={{ marginLeft: `${deepness * 15}px` }}>
                   <Button
@@ -637,29 +657,24 @@ class Interact extends React.Component {
                     {deepness > 0 && '↳'} {componentName}{' '}
                     {this.state.showProps[id] ? '▲' : '▼'}
                   </Button>
-                  {this.state.showProps[id] &&
-                    (propCount ? (
-                      statePropNames.map(name => {
-                        if (
-                          this.props.filterProps.find(
+
+                  {this.state.showProps[id] && (
+                    <StyledWrapper>
+                      {propCount ? (
+                        statePropNames.map(name => {
+                          return this.props.filterProps.find(
                             filtered => filtered === name
                           )
-                        ) {
-                          return null;
-                        }
-                        return (
-                          <StyledWrapper key={name}>
-                            {this.renderInput(id, name)}
-                          </StyledWrapper>
-                        );
-                      })
-                    ) : (
-                      <StyledWrapper>
+                            ? null
+                            : this.renderInput(id, name);
+                        })
+                      ) : (
                         <p>
                           There are no props to edit, try another component!
                         </p>
-                      </StyledWrapper>
-                    ))}
+                      )}
+                    </StyledWrapper>
+                  )}
                 </div>
               );
             })}
@@ -669,6 +684,20 @@ class Interact extends React.Component {
     );
   }
 }
+
+const InteractTitle = ({ title, buttons }) => (
+  <Bar>
+    <BarItem isFilling>
+      <h3 className="h4 text-bold">{title}</h3>
+    </BarItem>
+    <BarItem>{buttons}</BarItem>
+  </Bar>
+);
+
+InteractTitle.propTypes = {
+  title: string,
+  buttons: node,
+};
 
 const StyledWrapper = styled.div`
   border-left: 1px solid ${props => props.theme.colors.greyDark};
