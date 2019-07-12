@@ -118,8 +118,7 @@ class Interact extends React.Component {
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.renderInteractive = this.renderInteractive.bind(this);
-    this.generateLiveProps = this.generateLiveProps.bind(this);
-    this.generateDocgenProps = this.generateDocgenProps.bind(this);
+    this.generateProps = this.generateProps.bind(this);
     this.getComponentInfo = this.getComponentInfo.bind(this);
     this.getComponentDocgenProps = this.getComponentDocgenProps.bind(this);
     this.setDeepState = this.setDeepState.bind(this);
@@ -147,12 +146,12 @@ class Interact extends React.Component {
 
     this.state = {
       showCode: false,
-      liveProps: this.generateLiveProps(this.component),
-      showProps: this.generateShowProps(this.component),
+      liveProps: this.generateProps('live', this.component),
+      showProps: this.generateProps('show', this.component),
     };
 
     this.docgen = {
-      liveProps: this.generateDocgenProps(this.component),
+      liveProps: this.generateProps('docgen', this.component),
     };
   }
 
@@ -346,78 +345,30 @@ class Interact extends React.Component {
    * @param number id
    * @param string prefix
    */
-  generateLiveProps(component, id = 0, prefix = '') {
-    const {
-      name: componentName,
-      state: componentState,
-    } = this.getComponentInfo(component, id, prefix);
+  generateProps(type, component, id = 0, prefix = '') {
+    let info = {};
 
-    const children = (component.props && component.props.children) || [];
-
-    let childrenStates = {};
-    if (!this.props.skipChildren && children) {
-      const childrenArray = React.Children.toArray(children);
-
-      childrenStates = childrenArray.reduce(
-        (acc, child, index) => ({
-          ...acc,
-          ...this.generateLiveProps(child, index, componentName),
-        }),
-        {}
-      );
+    // Get info by type
+    if (type === 'show') {
+      const name = prefix + getDisplayName(component) + id;
+      info = {
+        name: name,
+        state: { [name]: prefix ? false : true },
+      };
     }
 
-    return {
-      ...componentState,
-      ...childrenStates,
-    };
-  }
-
-  /**
-   * Generate show state for interactive components
-   *
-   * @param React.Component component
-   * @param number id
-   * @param string prefix
-   */
-  generateShowProps(component, id = 0, prefix = '') {
-    const componentName = prefix + getDisplayName(component) + id;
-    const componentState = { [componentName]: prefix ? false : true };
-
-    const children = (component.props && component.props.children) || [];
-
-    let childrenStates = {};
-    if (!this.props.skipChildren && children) {
-      const childrenArray = React.Children.toArray(children);
-
-      childrenStates = childrenArray.reduce(
-        (acc, child, index) => ({
-          ...acc,
-          ...this.generateShowProps(child, index, componentName),
-        }),
-        {}
-      );
+    if (type === 'live') {
+      info = this.getComponentInfo(component, id, prefix);
     }
 
-    return {
-      ...componentState,
-      ...childrenStates,
-    };
-  }
+    if (type === 'docgen') {
+      info = this.getComponentDocgenProps(component, id, prefix);
+    }
 
-  /**
-   * Generate live interactive props using react docgen object
-   *
-   * @param React.Component component
-   * @param number id
-   * @param string prefix
-   */
-  generateDocgenProps(component, id = 0, prefix = '') {
-    const {
-      name: componentName,
-      state: componentState,
-    } = this.getComponentDocgenProps(component, id, prefix);
+    const componentName = info.name;
+    const componentState = info.state;
 
+    // Parse children for more info
     const children = (component.props && component.props.children) || [];
 
     let childrenStates = {};
@@ -427,7 +378,7 @@ class Interact extends React.Component {
       childrenStates = childrenArray.reduce(
         (acc, child, index) => ({
           ...acc,
-          ...this.generateDocgenProps(child, index, componentName),
+          ...this.generateProps(type, child, index, componentName),
         }),
         {}
       );
