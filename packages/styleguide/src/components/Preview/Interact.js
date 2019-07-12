@@ -1,14 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import React from 'react';
-import {
-  node,
-  arrayOf,
-  string,
-  bool,
-  element,
-  func,
-  oneOfType,
-} from 'prop-types';
+import React, { createContext } from 'react';
+import { arrayOf, string, bool, element, func, oneOfType } from 'prop-types';
 import styled from 'styled-components';
 import CodeExample from './CodeExample';
 
@@ -16,6 +8,8 @@ import { Bar, BarItem } from './../Bar';
 import Button from './../Button';
 
 import useId from './../../utils/useId';
+
+const InteractContext = createContext();
 
 /**
  * Cleanup docgen prop value of string which has this form:
@@ -105,6 +99,8 @@ class Interact extends React.Component {
     render: oneOfType([element, func]).isRequired,
     /** Parser should skip children */
     skipChildren: bool,
+    /** Show code */
+    showCode: bool,
   };
 
   static defaultProps = {
@@ -153,7 +149,7 @@ class Interact extends React.Component {
     */
 
     this.state = {
-      showCode: false,
+      showCode: this.props.showCode,
       liveProps: this.generateProps('live', this.component),
       showProps: this.generateProps('show', this.component),
     };
@@ -412,15 +408,11 @@ class Interact extends React.Component {
       name,
       'data-component-id': id,
     };
+
     const label = <strong>{name.replace(/^\w/, m => m.toUpperCase())}</strong>;
-    const isDefaultValue = this.isDefaultValue(id, name) ? (
-      <div style={{ color: 'grey' }}>
-        <small>Default</small>
-      </div>
-    ) : (
-      ''
-    );
+
     const docgenProps = this.docgen.liveProps[id][name];
+
     let inputLabel = (
       <Bar space="tiny">
         <BarItem>
@@ -431,6 +423,7 @@ class Interact extends React.Component {
         </BarItem>
       </Bar>
     );
+
     if (docgenProps.type) {
       const type = docgenProps.type.name;
 
@@ -512,13 +505,16 @@ class Interact extends React.Component {
     }
 
     return (
-      <Bar key={id + name}>
-        <BarItem>
-          {inputLabel}
-          {input}
-          {isDefaultValue}
-        </BarItem>
-      </Bar>
+      <div>
+        {inputLabel}
+        {input}
+
+        {this.isDefaultValue(id, name) && (
+          <div style={{ color: 'grey' }}>
+            <small>Default</small>
+          </div>
+        )}
+      </div>
     );
   }
 
@@ -599,105 +595,106 @@ class Interact extends React.Component {
     }
 
     return (
-      <StyledInteract>
-        <Grid className="mb-large">
-          <GridCol
-            size={7}
-            className="align-items-middle align-items-middle"
-            style={{
-              borderRight: '1px solid #949494',
-              position: 'relative',
-            }}
-          >
-            <StyledSticky>
-              <InteractTitle
-                title={componentName}
-                buttons={
-                  <Button onClick={this.handleShowCode}>
-                    {this.state.showCode ? 'HIDE CODE ▲' : 'SHOW CODE ▼'}
-                  </Button>
-                }
-              />
+      <InteractContext.Provider
+        value={{
+          docgen: this.docgen,
+          state: this.state,
+          props: this.props,
+          handleShowCode: this.handleShowCode,
+          handleShowProps: this.handleShowProps,
+          renderInput: this.renderInput,
+        }}
+      >
+        <StyledInteract>
+          <Grid className="mb-large">
+            <GridCol
+              size={7}
+              className="align-items-middle align-items-middle"
+              style={{
+                borderRight: '1px solid #949494',
+                position: 'relative',
+              }}
+            >
+              <StyledSticky>
+                <h3 className="h4 text-bold">{componentName}</h3>
 
-              {this.renderInteractive(this.component)}
+                {this.renderInteractive(this.component)}
 
-              {this.state.showCode && (
-                <CodeExample
-                  codeJSXOptions={{
-                    cleanProps: true,
-                    filterProps: ['key'],
-                  }}
-                >
-                  {this.renderInteractive(this.component)}
-                </CodeExample>
-              )}
-            </StyledSticky>
-          </GridCol>
-          <GridCol size={5}>
-            {componentIds.map(id => {
-              const statePropNames = Object.keys(this.docgen.liveProps[id]);
-
-              const propCount = statePropNames.length;
-
-              const deepness = id
-                .replace(/(\w+\d+)*(\w+)\d+$/g, '$1')
-                .replace(/\w+?\d+?/g, '-').length;
-
-              const componentName = id.replace(/(\w+\d+)*(\w+)\d+$/g, '$2');
-
-              return (
-                <div key={id} style={{ marginLeft: `${deepness * 15}px` }}>
-                  <Button
-                    fontSize="base"
-                    onClick={e => {
-                      this.handleShowProps(e, id);
+                {this.props.showCode && (
+                  <CodeExample
+                    codeJSXOptions={{
+                      cleanProps: true,
+                      filterProps: ['key'],
                     }}
-                    style={{ paddingLeft: 0 }}
                   >
-                    {deepness > 0 && '↳'} {componentName}{' '}
-                    {this.state.showProps[id] ? '▲' : '▼'}
-                  </Button>
+                    {this.renderInteractive(this.component)}
+                  </CodeExample>
+                )}
+              </StyledSticky>
+            </GridCol>
+            <GridCol size={5}>
+              {componentIds.map(id => {
+                const deepness = id
+                  .replace(/(\w+\d+)*(\w+)\d+$/g, '$1')
+                  .replace(/\w+?\d+?/g, '-').length;
 
-                  {this.state.showProps[id] && (
-                    <StyledWrapper>
-                      {propCount ? (
-                        statePropNames.map(name => {
-                          return this.props.filterProps.find(
-                            filtered => filtered === name
-                          )
-                            ? null
-                            : this.renderInput(id, name);
-                        })
-                      ) : (
-                        <p>
-                          There are no props to edit, try another component!
-                        </p>
-                      )}
-                    </StyledWrapper>
-                  )}
-                </div>
-              );
-            })}
-          </GridCol>
-        </Grid>
-      </StyledInteract>
+                const componentName = id.replace(/(\w+\d+)*(\w+)\d+$/g, '$2');
+
+                return (
+                  <div key={id} style={{ marginLeft: `${deepness * 15}px` }}>
+                    <ButtonShowProps {...{ id, componentName, deepness }} />
+                    <InteractProps id={id} />
+                  </div>
+                );
+              })}
+            </GridCol>
+          </Grid>
+        </StyledInteract>
+      </InteractContext.Provider>
     );
   }
 }
 
-const InteractTitle = ({ title, buttons }) => (
-  <Bar>
-    <BarItem isFilling>
-      <h3 className="h4 text-bold">{title}</h3>
-    </BarItem>
-    <BarItem>{buttons}</BarItem>
-  </Bar>
+const InteractProps = ({ id }) => (
+  <InteractContext.Consumer>
+    {({ renderInput, state, props, docgen }) => {
+      const statePropNames = Object.keys(docgen.liveProps[id]);
+      const propCount = statePropNames.length;
+
+      return (
+        state.showProps[id] && (
+          <StyledWrapper>
+            {propCount ? (
+              statePropNames.map(name => {
+                return props.filterProps.find(filtered => filtered === name)
+                  ? null
+                  : renderInput(id, name);
+              })
+            ) : (
+              <p>There are no props to edit, try another component!</p>
+            )}
+          </StyledWrapper>
+        )
+      );
+    }}
+  </InteractContext.Consumer>
 );
 
-InteractTitle.propTypes = {
-  title: string,
-  buttons: node,
-};
+const ButtonShowProps = ({ id, componentName, deepness }) => (
+  <InteractContext.Consumer>
+    {({ handleShowProps, state }) => (
+      <Button
+        fontSize="base"
+        onClick={e => {
+          handleShowProps(e, id);
+        }}
+        style={{ paddingLeft: 0 }}
+      >
+        {deepness > 0 && '↳'} {componentName} {state.showProps[id] ? '▲' : '▼'}
+      </Button>
+    )}
+  </InteractContext.Consumer>
+);
 
 const StyledWrapper = styled.div`
   border-left: 1px solid ${props => props.theme.colors.greyDark};
