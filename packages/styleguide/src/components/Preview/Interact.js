@@ -19,19 +19,6 @@ const cleanValue = s =>
   typeof s === 'string' ? s.replace(/(^['"]|['"]$)/g, '') : s;
 
 /**
- * Generates help tooltip for property input
- *
- * @param React.Component.prop prop
- */
-const PropDescription = prop => {
-  return (
-    <Tooltip dialog={prop.description || 'No valuable description found'}>
-      i
-    </Tooltip>
-  );
-};
-
-/**
  * Get docgen props of component
  * if it's an html element we parse just first level of text to be editable
  * if it's just a string we create docgen type of string
@@ -402,95 +389,36 @@ class Interact extends React.Component {
    */
   renderInput(id, name) {
     let input;
-    const props = {
+
+    const inputProps = {
       key: name,
       id: name,
       name,
       'data-component-id': id,
     };
 
-    const label = <strong>{name.replace(/^\w/, m => m.toUpperCase())}</strong>;
+    const componentInfo = {
+      id,
+      name,
+    };
 
-    const docgenProps = this.docgen.liveProps[id][name];
+    const propInfo = this.docgen.liveProps[id][name];
 
-    let inputLabel = (
-      <Bar space="tiny">
-        <BarItem>
-          <label htmlFor={props.id}>{label}</label>
-        </BarItem>
-        <BarItem>
-          <PropDescription {...docgenProps} />
-        </BarItem>
-      </Bar>
-    );
-
-    if (docgenProps.type) {
-      const type = docgenProps.type.name;
+    if (propInfo.type) {
+      const type = propInfo.type.name;
 
       if (is(type, 'string') || is(type, 'number')) {
-        input = (
-          <Input
-            {...props}
-            value={this.state.liveProps[id][name]}
-            onChange={e => {
-              this.handleInputChange(type, e);
-            }}
-          />
-        );
+        input = <PropInput {...{ inputProps, componentInfo }} />;
       } else if (is(type, 'bool')) {
-        inputLabel = null;
-        input = (
-          <Bar>
-            <BarItem>
-              <Input
-                {...props}
-                type="checkbox"
-                checked={this.state.liveProps[id][name] ? 'checked' : false}
-                onChange={this.handleCheckboxChange}
-              />{' '}
-              <label htmlFor={props.id}>{label}</label>
-            </BarItem>
-            <BarItem>
-              <PropDescription {...docgenProps} />
-            </BarItem>
-          </Bar>
-        );
+        input = <PropCheckbox {...{ inputProps, componentInfo }} />;
       } else if (is(type, 'enum')) {
-        input = (
-          <select
-            {...props}
-            value={this.state.liveProps[id][name]}
-            onChange={this.handleSelectChange}
-          >
-            <option value="null">None</option>
-            {Object.values(docgenProps.type.value).map((option, index) => {
-              const optionValue = cleanValue(option.value);
-              return (
-                <option key={index.toString()} value={optionValue}>
-                  {optionValue}
-                </option>
-              );
-            })}
-          </select>
-        );
+        input = <PropSelect {...{ inputProps, componentInfo }} />;
       } else {
-        const inputValue = this.state.liveProps[id][name];
-        inputLabel = (
-          <div>
-            <label style={{ color: 'grey' }} htmlFor={props.id}>
-              {label}
-            </label>
-          </div>
-        );
         input = (
-          <Input
-            {...props}
-            disabled
-            value={
-              is(typeof inputValue, 'object')
-                ? JSON.stringify(inputValue)
-                : inputValue.toString()
-            }
+          <PropInput
+            {...{ inputProps, componentInfo }}
+            type={type}
+            isDisabled
           />
         );
         /*
@@ -506,9 +434,7 @@ class Interact extends React.Component {
 
     return (
       <div>
-        {inputLabel}
         {input}
-
         {this.isDefaultValue(id, name) && (
           <div style={{ color: 'grey' }}>
             <small>Default</small>
@@ -602,6 +528,9 @@ class Interact extends React.Component {
           props: this.props,
           handleShowCode: this.handleShowCode,
           handleShowProps: this.handleShowProps,
+          handleInputChange: this.handleInputChange,
+          handleCheckboxChange: this.handleCheckboxChange,
+          handleSelectChange: this.handleSelectChange,
           renderInput: this.renderInput,
         }}
       >
@@ -642,8 +571,10 @@ class Interact extends React.Component {
 
                 return (
                   <div key={id} style={{ marginLeft: `${deepness * 15}px` }}>
-                    <ButtonShowProps {...{ id, componentName, deepness }} />
-                    <InteractProps id={id} />
+                    <ButtonShowPropsGroup
+                      {...{ id, componentName, deepness }}
+                    />
+                    <PropsGroup id={id} />
                   </div>
                 );
               })}
@@ -655,7 +586,143 @@ class Interact extends React.Component {
   }
 }
 
-const InteractProps = ({ id }) => (
+const PropLabelWithTooltip = ({ isDisabled, inputProps, componentInfo }) => (
+  <Bar space="tiny">
+    <BarItem>
+      <PropLabel
+        {...inputProps}
+        {...(isDisabled ? { style: { color: 'grey' } } : {})}
+      />
+    </BarItem>
+    <BarItem>
+      <PropTooltip {...componentInfo} />
+    </BarItem>
+  </Bar>
+);
+
+const PropLabel = ({ id, name, ...other }) => (
+  <label htmlFor={id} {...other}>
+    <strong>{name.replace(/^\w/, m => m.toUpperCase())}</strong>
+  </label>
+);
+
+const PropTooltip = ({ id, name }) => (
+  <InteractContext.Consumer>
+    {({ docgen }) => {
+      const propInfo = docgen.liveProps[id][name];
+      return (
+        <Tooltip
+          dialog={propInfo.description || 'No valuable description found'}
+        >
+          i
+        </Tooltip>
+      );
+    }}
+  </InteractContext.Consumer>
+);
+
+const PropInput = ({ type, isDisabled, inputProps, componentInfo }) => (
+  <InteractContext.Consumer>
+    {({ state, handleInputChange }) => {
+      const { id, name } = componentInfo;
+      let value = state.liveProps[id][name];
+
+      return (
+        <React.Fragment>
+          <PropLabelWithTooltip
+            isDisabled={isDisabled}
+            inputProps={inputProps}
+            componentInfo={componentInfo}
+          />
+          {isDisabled ? (
+            <Input
+              {...inputProps}
+              disabled
+              value={
+                is(typeof value, 'object')
+                  ? JSON.stringify(value)
+                  : value.toString()
+              }
+            />
+          ) : (
+            <Input
+              {...inputProps}
+              value={value}
+              onChange={e => {
+                handleInputChange(type, e);
+              }}
+            />
+          )}
+        </React.Fragment>
+      );
+    }}
+  </InteractContext.Consumer>
+);
+
+const PropCheckbox = ({ inputProps, componentInfo }) => {
+  const { id, name } = componentInfo;
+
+  return (
+    <InteractContext.Consumer>
+      {({ state, handleCheckboxChange }) => (
+        <Bar>
+          <BarItem>
+            <Input
+              {...inputProps}
+              type="checkbox"
+              checked={state.liveProps[id][name] ? 'checked' : false}
+              onChange={handleCheckboxChange}
+            />{' '}
+          </BarItem>
+          <BarItem>
+            <PropLabelWithTooltip
+              inputProps={inputProps}
+              componentInfo={componentInfo}
+            />
+          </BarItem>
+        </Bar>
+      )}
+    </InteractContext.Consumer>
+  );
+};
+
+const PropSelect = ({ inputProps, componentInfo }) => {
+  const { id, name } = componentInfo;
+
+  return (
+    <InteractContext.Consumer>
+      {({ state, docgen, handleSelectChange }) => {
+        const propInfo = docgen.liveProps[id][name];
+
+        return (
+          <React.Fragment>
+            <PropLabelWithTooltip
+              inputProps={inputProps}
+              componentInfo={componentInfo}
+            />
+            <select
+              {...inputProps}
+              value={state.liveProps[id][name]}
+              onChange={handleSelectChange}
+            >
+              <option value="null">None</option>
+              {Object.values(propInfo.type.value).map((option, index) => {
+                const optionValue = cleanValue(option.value);
+                return (
+                  <option key={index.toString()} value={optionValue}>
+                    {optionValue}
+                  </option>
+                );
+              })}
+            </select>
+          </React.Fragment>
+        );
+      }}
+    </InteractContext.Consumer>
+  );
+};
+
+const PropsGroup = ({ id }) => (
   <InteractContext.Consumer>
     {({ renderInput, state, props, docgen }) => {
       const statePropNames = Object.keys(docgen.liveProps[id]);
@@ -680,7 +747,7 @@ const InteractProps = ({ id }) => (
   </InteractContext.Consumer>
 );
 
-const ButtonShowProps = ({ id, componentName, deepness }) => (
+const ButtonShowPropsGroup = ({ id, componentName, deepness }) => (
   <InteractContext.Consumer>
     {({ handleShowProps, state }) => (
       <Button
@@ -694,6 +761,13 @@ const ButtonShowProps = ({ id, componentName, deepness }) => (
       </Button>
     )}
   </InteractContext.Consumer>
+);
+
+const Tooltip = ({ children, dialog, ...other }) => (
+  <StyledTooltip {...other}>
+    <div className="tooltip-trigger">{children}</div>
+    <div className="tooltip-title">{dialog}</div>
+  </StyledTooltip>
 );
 
 const StyledWrapper = styled.div`
@@ -792,13 +866,6 @@ const StyledTooltip = styled.div`
     border-radius: 50%;
   }
 `;
-
-const Tooltip = ({ children, dialog, ...other }) => (
-  <StyledTooltip {...other}>
-    <div className="tooltip-trigger">{children}</div>
-    <div className="tooltip-title">{dialog}</div>
-  </StyledTooltip>
-);
 
 const StyledSticky = styled.div`
   position: sticky;
