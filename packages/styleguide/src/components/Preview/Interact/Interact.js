@@ -2,12 +2,12 @@
 import React, { createContext } from 'react';
 import { arrayOf, string, bool, element, func, oneOfType } from 'prop-types';
 import styled from 'styled-components';
-import CodeExample from './CodeExample';
+import CodeExample from '../CodeExample';
 
-import { Bar, BarItem } from './../Bar';
-import Button from './../Button';
+import { Bar, BarItem } from '../../Bar';
+import Button from '../../Button';
 
-import useId from './../../utils/useId';
+import useId from '../../../utils/useId';
 
 const InteractContext = createContext();
 

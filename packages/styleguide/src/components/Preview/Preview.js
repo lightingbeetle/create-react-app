@@ -16,7 +16,7 @@ import chroma from 'chroma-js';
 import PreviewTitleBar from './PreviewTitleBar';
 import CodeExample from './CodeExample';
 import Frame from './Frame';
-import Interact from './Interact';
+import Interact from './Interact/Interact';
 
 import Card from './../Card';
 import Icon from './../Icon';
