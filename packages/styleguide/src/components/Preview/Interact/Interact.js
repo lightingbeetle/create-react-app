@@ -46,7 +46,6 @@ class Interact extends React.Component {
     this.getPropValue = this.getPropValue.bind(this);
     this.isDefaultValue = this.isDefaultValue.bind(this);
     this.getDefaultValue = this.getDefaultValue.bind(this);
-    this.handleShowCode = this.handleShowCode.bind(this);
     this.handleShowProps = this.handleShowProps.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
@@ -203,15 +202,6 @@ class Interact extends React.Component {
           ...(value === 'null' ? { [name]: undefined } : { [name]: value }),
         },
       },
-    }));
-  }
-
-  /**
-   * Handler for code toggle
-   */
-  handleShowCode() {
-    this.setState(prevState => ({
-      showCode: !prevState.showCode,
     }));
   }
 
@@ -469,7 +459,6 @@ class Interact extends React.Component {
           docgen: this.docgen,
           state: this.state,
           props: this.props,
-          handleShowCode: this.handleShowCode,
           handleShowProps: this.handleShowProps,
           handleInputChange: this.handleInputChange,
           handleCheckboxChange: this.handleCheckboxChange,
