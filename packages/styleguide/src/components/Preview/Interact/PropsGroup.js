@@ -11,7 +11,7 @@ const PropsGroup = ({ id }) => (
 
       return (
         state.showProps[id] && (
-          <StyledWrapper>
+          <StyledGroup>
             {propCount ? (
               statePropNames.map(name => {
                 return props.filterProps.find(filtered => filtered === name)
@@ -21,14 +21,14 @@ const PropsGroup = ({ id }) => (
             ) : (
               <p>There are no props to edit, try another component!</p>
             )}
-          </StyledWrapper>
+          </StyledGroup>
         )
       );
     }}
   </InteractContext.Consumer>
 );
 
-const StyledWrapper = styled.div`
+const StyledGroup = styled.div`
   border-left: 1px solid ${props => props.theme.colors.greyDark};
   padding-left: ${props => props.theme.spaces.small};
   position: relative;
