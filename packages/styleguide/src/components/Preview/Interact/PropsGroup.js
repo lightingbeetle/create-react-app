@@ -5,14 +5,14 @@ import InteractContext from './state';
 
 import PropFormField from './PropFormField';
 
-const PropsGroup = ({ id }) => (
+const PropsGroup = ({ id, showId }) => (
   <InteractContext.Consumer>
     {({ state, props, docgen }) => {
       const statePropNames = Object.keys(docgen.liveProps[id]);
       const propCount = statePropNames.length;
 
       return (
-        state.showProps[id] && (
+        state.showProps[showId || id] && (
           <StyledGroup>
             {propCount ? (
               statePropNames.map(name => {
@@ -35,9 +35,8 @@ const PropsGroup = ({ id }) => (
 const StyledGroup = styled.div`
   width: 90%;
   box-sizing: border-box;
-  padding: ${props => props.theme.spaces.small};
   position: relative;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
 
   & > * + * {
     margin-top: 1em;

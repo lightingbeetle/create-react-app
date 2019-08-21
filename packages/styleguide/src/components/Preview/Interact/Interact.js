@@ -427,19 +427,37 @@ class Interact extends React.Component {
               </StyledSticky>
             </GridCol>
             <GridCol size={5}>
-              {componentIds.map(id => {
-                const deepness = id
+              {componentIds.map((id, index) => {
+                const componentName = id.replace(/(\w+\d+)*(\w+)\d+$/g, '$2');
+
+                // Keeps text children component visible all the time
+                // and keep it in group with parent component
+                // other components are collapsed
+                const isPlainText = componentName === 'PlainText';
+                const parentId = componentIds[index - 1];
+
+                // set deepnes
+                const deepness = (isPlainText ? parentId : id)
                   .replace(/(\w+\d+)*(\w+)\d+$/g, '$1')
                   .replace(/\w+?\d+?/g, '-').length;
 
-                const componentName = id.replace(/(\w+\d+)*(\w+)\d+$/g, '$2');
-
                 return (
-                  <div key={id} style={{ marginLeft: `${deepness * 15}px` }}>
-                    <ButtonShowPropsGroup
-                      {...{ id, componentName, deepness }}
-                    />
-                    <PropsGroup id={id} />
+                  <div
+                    key={id}
+                    style={{
+                      marginLeft: `${deepness * 15}px`,
+                    }}
+                  >
+                    {isPlainText ? (
+                      <PropsGroup id={id} showId={parentId} />
+                    ) : (
+                      <React.Fragment>
+                        <ButtonShowPropsGroup
+                          {...{ id, componentName, deepness }}
+                        />
+                        <PropsGroup id={id} />
+                      </React.Fragment>
+                    )}
                   </div>
                 );
               })}
