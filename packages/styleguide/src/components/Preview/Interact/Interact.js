@@ -6,9 +6,6 @@ import CodeExample from '../CodeExample';
 
 import useId from '../../../utils/useId';
 
-import PropInput from './PropInput';
-import PropSelect from './PropSelect';
-import PropCheckbox from './PropCheckbox';
 import PropsGroup from './PropsGroup';
 import ButtonShowPropsGroup from './ButtonShowPropsGroup';
 import InteractContext from './state';
@@ -55,7 +52,6 @@ class Interact extends React.Component {
     this.getComponentInfo = this.getComponentInfo.bind(this);
     this.getComponentDocgenProps = this.getComponentDocgenProps.bind(this);
     this.setDeepState = this.setDeepState.bind(this);
-    this.renderInput = this.renderInput.bind(this);
 
     /*  
       this.state = {
@@ -315,69 +311,6 @@ class Interact extends React.Component {
   }
 
   /**
-   * Render form input element for interaction with component
-   *
-   * @param string id
-   * @param string name
-   */
-  renderInput(id, name) {
-    let input;
-
-    const inputProps = {
-      key: name,
-      id: name,
-      name,
-      'data-component-id': id,
-    };
-
-    const componentInfo = {
-      id,
-      name,
-    };
-
-    const propInfo = this.docgen.liveProps[id][name];
-
-    if (propInfo.type) {
-      const type = propInfo.type.name;
-
-      if (is(type, 'string') || is(type, 'number')) {
-        input = <PropInput {...{ inputProps, componentInfo }} />;
-      } else if (is(type, 'bool')) {
-        input = <PropCheckbox {...{ inputProps, componentInfo }} />;
-      } else if (is(type, 'enum')) {
-        input = <PropSelect {...{ inputProps, componentInfo }} />;
-      } else {
-        input = (
-          <PropInput
-            {...{ inputProps, componentInfo }}
-            type={type}
-            isDisabled
-          />
-        );
-        /*
-        any, array, func, object, node, element, symbol, 
-        instanceOf, oneOfType, arrayOf, objectOf, shape, custom
-
-        these types of props cannot be parsed because their value in 
-        __docgenInfo defaultValue.value is very complex form but is stored
-        as a simple string not a JSON, so its impossible for now to 
-        */
-      }
-    }
-
-    return (
-      <div>
-        {input}
-        {this.isDefaultValue(id, name) && (
-          <div style={{ color: 'grey' }}>
-            <small>Default</small>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  /**
    * Recursive function that renders components to the deepest level
    * and connects their props with props stored in state
    *
@@ -463,7 +396,7 @@ class Interact extends React.Component {
           handleInputChange: this.handleInputChange,
           handleCheckboxChange: this.handleCheckboxChange,
           handleSelectChange: this.handleSelectChange,
-          renderInput: this.renderInput,
+          isDefaultValue: this.isDefaultValue,
         }}
       >
         <StyledInteract>
