@@ -15,11 +15,11 @@ const PropsGroup = ({ id, showId }) => (
         state.showProps[showId || id] && (
           <StyledGroup>
             {propCount ? (
-              statePropNames.map(name => {
+              statePropNames.map((name, index) => {
                 return props.filterProps.find(
                   filtered => filtered === name
                 ) ? null : (
-                  <PropFormField {...{ id, name }} />
+                  <PropFormField key={index.toString()} {...{ id, name }} />
                 );
               })
             ) : (
