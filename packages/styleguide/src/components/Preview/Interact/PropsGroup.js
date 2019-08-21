@@ -3,9 +3,11 @@ import styled from 'styled-components';
 
 import InteractContext from './state';
 
+import PropFormField from './PropFormField';
+
 const PropsGroup = ({ id }) => (
   <InteractContext.Consumer>
-    {({ renderInput, state, props, docgen }) => {
+    {({ state, props, docgen }) => {
       const statePropNames = Object.keys(docgen.liveProps[id]);
       const propCount = statePropNames.length;
 
@@ -14,9 +16,11 @@ const PropsGroup = ({ id }) => (
           <StyledGroup>
             {propCount ? (
               statePropNames.map(name => {
-                return props.filterProps.find(filtered => filtered === name)
-                  ? null
-                  : renderInput(id, name);
+                return props.filterProps.find(
+                  filtered => filtered === name
+                ) ? null : (
+                  <PropFormField {...{ id, name }} />
+                );
               })
             ) : (
               <p>There are no props to edit, try another component!</p>
@@ -29,8 +33,9 @@ const PropsGroup = ({ id }) => (
 );
 
 const StyledGroup = styled.div`
-  border-left: 1px solid ${props => props.theme.colors.greyDark};
-  padding-left: ${props => props.theme.spaces.small};
+  width: 90%;
+  box-sizing: border-box;
+  padding: ${props => props.theme.spaces.small};
   position: relative;
   margin-bottom: 0.5em;
 
@@ -45,7 +50,6 @@ const StyledGroup = styled.div`
     left: -1px;
     height: 20px;
     width: 0;
-    border-left: 1px solid ${props => props.theme.colors.greyDark};
   }
 `;
 
