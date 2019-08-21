@@ -44,13 +44,14 @@ const StyledTooltip = styled.div`
   }
 
   .tooltip-trigger {
-    background: ${props => props.theme.colors.black};
+    background: ${props => props.theme.colors.portage};
     color: ${props => props.theme.colors.white};
+    font-weight: bold;
     text-align: center;
-    font-size: 16px;
-    line-height: 24px;
-    height: 24px;
-    width: 24px;
+    font-size: 14px;
+    line-height: 16px;
+    height: 16px;
+    width: 16px;
     margin: 0;
     border-radius: 50%;
   }
