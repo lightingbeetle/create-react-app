@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import Button from '../../Button';
 
@@ -14,10 +15,31 @@ const ButtonShowPropsGroup = ({ id, componentName, deepness }) => (
         }}
         style={{ paddingLeft: 0 }}
       >
-        {deepness > 0 && '↳'} {componentName} {state.showProps[id] ? '▲' : '▼'}
+        <StyledText>
+          {componentName}{' '}
+          {state.showProps[id] ? (
+            <Triangle variant="up" />
+          ) : (
+            <Triangle variant="down" />
+          )}
+        </StyledText>
       </Button>
     )}
   </InteractContext.Consumer>
 );
+
+const Triangle = styled.span`
+  :before {
+    content: '▾';
+    font-size: 18px;
+    display: inline-block;
+    transform: ${props => (props.variant === 'up' ? 'rotate(180deg)' : 'none')};
+    transition: transform 0.3s;
+  }
+`;
+
+const StyledText = styled.span`
+  font-size: 20px;
+`;
 
 export default ButtonShowPropsGroup;
