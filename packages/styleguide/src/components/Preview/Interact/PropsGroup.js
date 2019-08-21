@@ -32,6 +32,11 @@ const StyledGroup = styled.div`
   border-left: 1px solid ${props => props.theme.colors.greyDark};
   padding-left: ${props => props.theme.spaces.small};
   position: relative;
+  margin-bottom: 0.5em;
+
+  & > * + * {
+    margin-top: 1em;
+  }
 
   &::before {
     content: '';
