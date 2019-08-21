@@ -4,30 +4,26 @@ import InteractContext from './state';
 
 import PropLabelWithTooltip from './PropLabelWithTooltip';
 
-import { Bar, BarItem } from '../../Bar';
-
 const PropCheckbox = ({ inputProps, componentInfo }) => {
   const { id, name } = componentInfo;
 
   return (
     <InteractContext.Consumer>
       {({ state, handleCheckboxChange }) => (
-        <Bar>
-          <BarItem>
-            <input
-              {...inputProps}
-              type="checkbox"
-              checked={state.liveProps[id][name] ? 'checked' : false}
-              onChange={handleCheckboxChange}
-            />{' '}
-          </BarItem>
-          <BarItem>
-            <PropLabelWithTooltip
-              inputProps={inputProps}
-              componentInfo={componentInfo}
-            />
-          </BarItem>
-        </Bar>
+        <PropLabelWithTooltip
+          inputProps={{
+            ...inputProps,
+            input: (
+              <input
+                {...inputProps}
+                type="checkbox"
+                checked={state.liveProps[id][name] ? 'checked' : false}
+                onChange={handleCheckboxChange}
+              />
+            ),
+          }}
+          componentInfo={componentInfo}
+        />
       )}
     </InteractContext.Consumer>
   );

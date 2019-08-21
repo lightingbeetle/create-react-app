@@ -20,9 +20,9 @@ const PropLabelWithTooltip = ({ isDisabled, inputProps, componentInfo }) => (
   </Bar>
 );
 
-const PropLabel = ({ id, name, ...other }) => (
+const PropLabel = ({ id, name, input, ...other }) => (
   <label htmlFor={id} {...other}>
-    <strong>{name.replace(/^\w/, m => m.toUpperCase())}</strong>
+    {input} <strong>{name.replace(/^\w/, m => m.toUpperCase())}</strong>
   </label>
 );
 
