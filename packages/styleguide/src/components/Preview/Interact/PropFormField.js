@@ -46,7 +46,7 @@ const PropFormField = ({ id, name }) => {
 
             these types of props cannot be parsed because their value in 
             __docgenInfo defaultValue.value is very complex form but is stored
-            as a simple string not a JSON, so its impossible for now to 
+            as a simple string not a JSON, so its impossible for now to parse them
             */
           }
         }
