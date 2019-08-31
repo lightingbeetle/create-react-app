@@ -1,5 +1,4 @@
 import React from 'react';
-import './style';
 
 import { ThemeConsumer } from 'styled-components';
 

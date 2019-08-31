@@ -65,6 +65,8 @@ class Preview extends Component {
     isInteractive: bool,
     /** Props for interactive component */
     interactiveProps: object,
+    /** Visual grid preview */
+    hasLayoutPreview: bool,
     /** Enable fullscreen toggle */
     enableFullscreen: bool,
   };
@@ -180,13 +182,20 @@ class Preview extends Component {
       isInteractive,
       interactiveProps,
       html,
+      hasLayoutPreview,
       enableFullscreen,
       ...other
     } = this.props;
 
     const { previewBackground } = this.state;
 
-    const classes = cx(CLASS_ROOT, className);
+    const classes = cx(
+      CLASS_ROOT,
+      {
+        'layout-preview': hasLayoutPreview,
+      },
+      className
+    );
     const wrapperClasses = cx('preview-wrapper', {
       'is-fullscreen': this.state.isFullscreen,
     });
@@ -392,6 +401,26 @@ const StyledPreview = styled.div`
 `;
 
 const StyledCard = styled(Card)`
+  &.layout-preview {
+    .grid,
+    .bar {
+      position: relative;
+      z-index: 0;
+      padding: 0.5em 0;
+      background-color: rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+    .bar__item,
+    .grid__col,
+    *[class*='grid__col\-\-'] {
+      position: relative;
+      min-height: 1em;
+      line-height: 1.5;
+      background-color: rgba(0, 0, 0, 0.1);
+      background-clip: content-box;
+    }
+  }
+
   .is-fullscreen & {
     flex: 1 1 auto;
     margin-bottom: 0;
