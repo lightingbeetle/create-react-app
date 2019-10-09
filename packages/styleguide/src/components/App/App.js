@@ -14,8 +14,6 @@ import Navigation from './../Navigation';
 import NavigationButton from './../NavigationButton';
 import Sitemap from './../Sitemap';
 
-import MdxWrapper from './../../utils/mdx';
-
 class App extends Component {
   static displayName = 'App';
 
@@ -100,9 +98,7 @@ class App extends Component {
               <PageBody className={activeClass}>
                 <PageContent>
                   <Suspense fallback={<div />}>
-                    <MdxWrapper>
-                      <Sitemap routes={routes} />
-                    </MdxWrapper>
+                    <Sitemap routes={routes} />
                   </Suspense>
                 </PageContent>
                 <Suspense fallback={<div />}>
