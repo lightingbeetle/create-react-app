@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App, { MdxWrapper } from '../components/App/App';
+import App from './../App';
 
 export * from '../components';
 export * from '../utils';
@@ -11,5 +11,3 @@ export default function({ config = {}, routes = [] }) {
     document.getElementById('root')
   );
 }
-
-export { App, MdxWrapper };
