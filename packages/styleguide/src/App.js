@@ -16,6 +16,8 @@ import Sitemap from './components/Sitemap';
 
 import MdxWrapper from './utils/mdx';
 
+export { MdxWrapper };
+
 class App extends Component {
   static displayName = 'App';
 
@@ -100,9 +102,7 @@ class App extends Component {
               <PageBody className={activeClass}>
                 <PageContent>
                   <Suspense fallback={<div />}>
-                    <MdxWrapper>
-                      <Sitemap routes={routes} />
-                    </MdxWrapper>
+                    <Sitemap routes={routes} />
                   </Suspense>
                 </PageContent>
                 <Suspense fallback={<div />}>
