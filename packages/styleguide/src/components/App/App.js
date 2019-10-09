@@ -1,20 +1,20 @@
-import React, { Component, Fragment, Suspense, lazy } from 'react';
+import React, { Component, Fragment, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 
-import * as theme from './style/theme';
-import { rem } from './style/utils';
+import * as theme from './../../style/theme';
+import { rem } from './../../style/utils';
 
-import { init, RouteTracker } from './components/GoogleAnalytics';
+import { init, RouteTracker } from './../GoogleAnalytics';
 
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import Navigation from './components/Navigation';
-import NavigationButton from './components/NavigationButton';
-import Sitemap from './components/Sitemap';
+import Header from './../Header';
+import Sidebar from './../Sidebar';
+import Navigation from './../Navigation';
+import NavigationButton from './../NavigationButton';
+import Sitemap from './../Sitemap';
 
-import MdxWrapper from './utils/mdx';
+import MdxWrapper from './../../utils/mdx';
 
 class App extends Component {
   static displayName = 'App';
