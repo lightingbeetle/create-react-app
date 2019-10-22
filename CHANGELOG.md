@@ -140,7 +140,6 @@ Support for `Preview` `title` prop was removed. Use markdown heading instead.
 
 #### :bug: Bug Fix
 
-- [lighter-react-scripts] remove comma ([#140](https://github.com/lightingbeetle/lighter/pull/140))
 - [lighter-react-scripts] turn back on clearConsole ([#141](https://github.com/lightingbeetle/lighter/pull/141))
 
 #### :memo: Docs
