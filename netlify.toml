@@ -1,5 +1,10 @@
 [build]
-  base    = "docusaurus/website"
-  publish = "docusaurus/website/build/create-react-app"
-  command = "yarn build"
-  
+  base = "packages/styleguide/"
+  publish = "packages/styleguide/build/"
+  command = "npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
