@@ -2,9 +2,4 @@
   base = "packages/styleguide"
   publish = "packages/styleguide/build"
   command = "npm run build"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = true
+  
