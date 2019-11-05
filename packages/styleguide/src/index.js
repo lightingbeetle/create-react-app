@@ -70,19 +70,25 @@ styleguide({
           render: <Page render={<CodeDocs />} />,
         },
         {
-          title: 'ColorPalette',
-          path: '/color-palette',
-          render: <Page render={<ColorPaletteDocs />} />,
-        },
-        {
-          title: 'ComponentDocs',
-          path: '/component-docs',
-          render: <Page render={<ComponentDocsDocs />} />,
-        },
-        {
-          title: 'ComponentInfo',
-          path: '/component-info',
-          render: <Page render={<ComponentInfoDocs />} />,
+          title: 'Coded',
+          path: '/coded',
+          nodes: [
+            {
+              title: 'ColorPalette',
+              path: '/color-palette',
+              render: <Page render={<ColorPaletteDocs />} />,
+            },
+            {
+              title: 'ComponentDocs',
+              path: '/component-docs',
+              render: <Page render={<ComponentDocsDocs />} />,
+            },
+            {
+              title: 'ComponentInfo',
+              path: '/component-info',
+              render: <Page render={<ComponentInfoDocs />} />,
+            },
+          ],
         },
         {
           title: 'Note',
@@ -103,6 +109,20 @@ styleguide({
           title: 'Table',
           path: '/table',
           render: <Page render={<TableDocs />} />,
+          nodes: [
+            {
+              title: 'Table',
+              path: '/table',
+              render: <Page render={<TableDocs />} />,
+              nodes: [
+                {
+                  title: 'Table',
+                  path: '/table',
+                  render: <Page render={<TableDocs />} />,
+                },
+              ],
+            },
+          ],
         },
         {
           title: 'Typography',

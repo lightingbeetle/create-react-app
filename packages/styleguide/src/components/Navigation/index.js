@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 
 import { rem } from './../../style/utils';
 
+import Search from './../Search';
 import Category from './Category';
 import NavLink from './NavLink';
 
@@ -26,6 +27,7 @@ class Navigation extends React.Component {
     super(props);
     this.state = {
       activeLinks: [],
+      search: '',
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -139,9 +141,30 @@ class Navigation extends React.Component {
       </StyledNavList>
     );
 
+    const parseRoutes = (items, parentPath = '') => {
+      return items.reduce((acc, curr) => {
+        const path = parentPath + curr.path;
+
+        return [
+          ...acc,
+          { title: curr.title, path: path },
+          ...(curr.nodes ? parseRoutes(curr.nodes, path) : []),
+        ];
+      }, []);
+    };
+
+    const routePaths = parseRoutes(routes);
+    console.log(routePaths);
+
     // div has to wrapp Nav because of nice layout
     return (
       <StyledNav className={classes} {...other}>
+        <Search list={routes} />
+        <Search
+          list={routePaths}
+          placeholder="Search paths"
+          fuzzyOptions={{ extract: el => el.path }}
+        />
         {getNavList(routes)}
       </StyledNav>
     );
