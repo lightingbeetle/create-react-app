@@ -141,30 +141,10 @@ class Navigation extends React.Component {
       </StyledNavList>
     );
 
-    const parseRoutes = (items, parentPath = '') => {
-      return items.reduce((acc, curr) => {
-        const path = parentPath + curr.path;
-
-        return [
-          ...acc,
-          { title: curr.title, path: path },
-          ...(curr.nodes ? parseRoutes(curr.nodes, path) : []),
-        ];
-      }, []);
-    };
-
-    const routePaths = parseRoutes(routes);
-    console.log(routePaths);
-
     // div has to wrapp Nav because of nice layout
     return (
       <StyledNav className={classes} {...other}>
-        <Search list={routes} />
-        <Search
-          list={routePaths}
-          placeholder="Search paths"
-          fuzzyOptions={{ extract: el => el.path }}
-        />
+        <Search list={routes} fuzzyOptions={{ extract: el => el.path }} />
         {getNavList(routes)}
       </StyledNav>
     );
