@@ -3,12 +3,7 @@ import { string, bool, oneOf } from 'prop-types';
 import styled from 'styled-components';
 import { stripUnit, em } from 'polished';
 
-import Prism from 'prismjs';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-diff';
-import 'prismjs/components/prism-scss';
+import Highlight, { defaultProps } from 'prism-react-renderer';
 import 'prism-theme-one-dark/prism-onedark.css';
 import 'firacode/distr/fira_code.css';
 
@@ -23,7 +18,7 @@ export default class PreviewCode extends Component {
     /** Suppored languages. */
     language: oneOf([
       'markup',
-      'js',
+      'javascript',
       'jsx',
       'css',
       'scss',
@@ -41,64 +36,50 @@ export default class PreviewCode extends Component {
     language: 'markup',
   };
 
-  state = {
-    __html: Prism.highlight(
-      this.props.children,
-      typeof Prism.languages[this.props.language] !== 'undefined'
-        ? Prism.languages[this.props.language]
-        : Prism.languages.html
-    ),
-  };
-
-  componentWillReceiveProps({ children, language }) {
-    if (children !== this.props.children || language !== this.props.language) {
-      this.setState({
-        __html: Prism.highlight(children, Prism.languages[language]),
-      });
-    }
-  }
-
   render() {
-    const { children, language, inline, ...other } = this.props;
-    const { __html } = this.state;
+    const { children, language, inline } = this.props;
 
     if (!children) {
       return null;
     }
 
-    let highlight;
+    const Tag = inline ? 'span' : 'div';
 
-    if (!__html) {
-      highlight = (
-        <Highlight {...other} code={undefined} language={language}>
-          {children}
-        </Highlight>
-      );
-    } else {
-      highlight = (
-        <Highlight
-          dangerouslySetInnerHTML={{ __html }}
-          {...other}
-          code={undefined}
-          language={language}
-        />
-      );
-    }
+    return (
+      <StyledHighlight
+        {...defaultProps}
+        code={children}
+        language={language}
+        theme={undefined}
+      >
+        {({ tokens, getLineProps, getTokenProps }) => {
+          const highlight = tokens.map((line, i) => (
+            <Tag {...getLineProps({ line, key: i })}>
+              {line.map((token, key) => (
+                <span {...getTokenProps({ token, key })} />
+              ))}
+            </Tag>
+          ));
 
-    return inline ? (
-      highlight
-    ) : (
-      <StyledPre className={`prism-code language-${language}`}>
-        {highlight}
-      </StyledPre>
+          return inline ? (
+            <code
+              className={`code code--inline prism-code language-${language}`}
+            >
+              {highlight}
+            </code>
+          ) : (
+            <StyledPre className={`prism-code language-${language}`}>
+              {highlight}
+            </StyledPre>
+          );
+        }}
+      </StyledHighlight>
     );
   }
 }
 
-const Highlight = styled.code.attrs(props => ({
-  className: `code ${props.inline && 'code--inline'} language-${
-    props.language
-  }`,
+const StyledHighlight = styled(Highlight).attrs(props => ({
+  className: `code language-${props.language}`,
 }))`
   &[class*='language-'] {
     font-feature-settings: 'calt' 1;
@@ -116,7 +97,6 @@ const Highlight = styled.code.attrs(props => ({
 
   *:not(pre) > code&[class*='language-'] {
     padding: ${em(3.5)} ${em(5)};
-    border-radius: ${props => props.theme.borderRadius.default};
     font-size: ${props =>
       em(props.theme.fontSizes.small, props.theme.fontSizes.base)}
   }
