@@ -112,21 +112,6 @@ class App extends Component {
           {gaId && init({ gaId }) && <RouteTracker />}
           <ThemeProvider theme={localTheme}>
             <PageLayout>
-              <Suspense fallback={<div />}>
-                <PageHeader
-                  key="header"
-                  project={logo || name}
-                  projectSmall={logoSmall || name}
-                  pageTitle="Bar"
-                  infoText={`v${version}`}
-                  {...other}
-                >
-                  <NavigationButton
-                    onClick={() => this.handleClick()}
-                    isActive={this.state.isNavActive}
-                  />
-                </PageHeader>
-              </Suspense>
               <PageBody className={activeClass}>
                 <PageContent>
                   <Suspense fallback={<div />}>
@@ -135,6 +120,14 @@ class App extends Component {
                 </PageContent>
                 <Suspense fallback={<div />}>
                   <PageSidebar>
+                    <PageHeader
+                      key="header"
+                      project={logo || name}
+                      projectSmall={logoSmall || name}
+                      pageTitle="Bar"
+                      infoText={`v${version}`}
+                      {...other}
+                    />
                     <Navigation
                       routes={routes}
                       onNavLinkClick={() => this.handleNavLinkClick()}
@@ -169,32 +162,17 @@ const GlobalStyle = createGlobalStyle`
 const PageLayout = styled.div``;
 
 const PageHeader = styled(Header)`
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
   max-width: 100%;
-  height: ${props => rem(props.theme.sizes.headerHeight)};
-  display: flex;
-  flex: 0 0 auto;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 ${props => rem(props.theme.spaces.large)};
-  background-color: ${props => props.theme.colors.main};
-  color: ${props => props.theme.colors.black};
-  z-index: ${props => props.theme.zIndex.header};
+  padding: ${props => rem(props.theme.spaces.small)};
 `;
 
 const PageBody = styled.div`
   position: relative;
-  height: calc(100vh - 6rem);
   display: flex;
   flex: 1 1 auto;
   min-height: 0;
   align-items: flex-start;
   z-index: ${props => props.theme.zIndex.content};
-  top: 6rem;
-  overflow: hidden;
   
   @media (max-width: calc(${props => props.theme.breakpoints.l} - 1px)) {
     &.is-active {
@@ -206,14 +184,15 @@ const PageBody = styled.div`
 
 const PageSidebar = styled(Sidebar)`
   position: fixed;
-  top: 6rem;
-  height: calc(100vh - 6rem);
+  top: 0;
+  height: 100vh;
   flex: 0 0 ${props => rem(props.theme.sizes.sidebarWidth)};
   order: -1;
   overflow: auto;
   transform: translateX(-${props => rem(props.theme.sizes.sidebarWidth)});
   transition: transform 0.3s ease-in-out 0s;
   z-index: ${props => props.theme.zIndex.sidebar};
+  background-color: ${props => props.theme.colors.main};
 
   /* IE */
   @media all and (-ms-high-contrast: none) {

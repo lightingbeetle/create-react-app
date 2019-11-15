@@ -4,8 +4,8 @@ import { rem } from './utils';
 
 export const sizes = {
   headerHeight: '96px',
-  sidebarWidth: '248px',
-  menuWidth: '200px',
+  sidebarWidth: '200px',
+  menuWidth: '180px',
 };
 
 export const breakpoints = {

@@ -154,10 +154,7 @@ const StyledNav = styled.nav`
   font-family: ${props => props.theme.fontFamily};
   font-size: ${props => rem(props.theme.fontSizes.base)};
   line-height: ${props => props.theme.lineHeights.base};
-
-  padding: ${props => rem(props.theme.spaces.default)}
-    ${props => rem(props.theme.spaces.medium)}
-    ${props => rem(props.theme.spaces.medium)};
+  padding: ${props => rem(props.theme.spaces.small)};
 `;
 
 const StyledNavList = styled.ul`
@@ -173,7 +170,7 @@ const StyledNavList = styled.ul`
 `;
 
 const ListItem = styled.li`
-  margin: 0 0 0 ${props => rem(props.theme.spaces.medium)};
+  margin: 0 0 0 ${props => rem(props.theme.spaces.small)};
 `;
 
 export default withRouter(

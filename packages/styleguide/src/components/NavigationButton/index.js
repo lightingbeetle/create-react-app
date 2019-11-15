@@ -40,6 +40,7 @@ const StyledMenuButtonWrapper = styled.a`
   top: ${props => (props.isMobileButton ? '24px' : '0')};
   margin-right: ${props =>
     props.isMobileButton ? '0' : rem(props.theme.spaces.medium)};
+  font-size: ${props => props.fontSizes.small};
 
   &.is-active {
     > span {
