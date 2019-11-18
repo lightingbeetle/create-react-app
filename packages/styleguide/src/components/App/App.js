@@ -199,7 +199,7 @@ const PageLayout = styled.div``;
 
 const PageSidebarMain = styled.div`
   flex: 1;
-  overflow: hidden;
+  overflow-x: hidden;
 `;
 
 const PageHeader = styled(Header)`
