@@ -15,7 +15,6 @@ const propTypes = {
   pageTitle: string,
   project: node,
   projectSmall: node,
-  infoText: node,
   theme: object,
 };
 
@@ -24,7 +23,6 @@ const Header = ({
   pageTitle,
   project,
   projectSmall,
-  infoText,
   children,
   theme,
   ...other
@@ -49,7 +47,6 @@ const Header = ({
           }
         </MediaQuery>
       </BarItem>
-      <StyledProjectInfo>{infoText}</StyledProjectInfo>
     </StyledBar>
   );
 };
@@ -86,11 +83,6 @@ const StyledProjectLogo = styled('div')`
       margin-bottom: 0;
     }
   }
-`;
-
-const StyledProjectInfo = styled(BarItem)`
-  color: ${props => props.theme.colors.greyText};
-  font-size: ${rem(12)};
 `;
 
 Header.displayName = 'Header';

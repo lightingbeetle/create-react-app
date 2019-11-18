@@ -3,27 +3,15 @@ import styled from 'styled-components';
 import { bool } from 'prop-types';
 import cx from 'classnames';
 
-import { rem } from './../../style/utils';
-
 const propTypes = {
   isActive: bool,
-  isMobileButton: bool,
 };
 
-const NavigationButton = ({
-  className,
-  isActive,
-  isMobileButton = false,
-  ...other
-}) => {
+const NavigationButton = ({ className, isActive, ...other }) => {
   const classes = cx({ 'is-active': isActive }, className);
 
   return (
-    <StyledMenuButtonWrapper
-      className={classes}
-      isMobileButton={isMobileButton}
-      {...other}
-    >
+    <StyledMenuButtonWrapper className={classes} {...other}>
       <StyledMenuButton>
         <StyledButtonLine />
         <StyledButtonLine />
@@ -35,12 +23,6 @@ const NavigationButton = ({
 
 const StyledMenuButtonWrapper = styled.a`
   display: inline-block;
-  position: ${props => (props.isMobileButton ? 'absolute' : 'static')};
-  right: ${props => (props.isMobileButton ? '40px' : '0')};
-  top: ${props => (props.isMobileButton ? '24px' : '0')};
-  margin-right: ${props =>
-    props.isMobileButton ? '0' : rem(props.theme.spaces.medium)};
-  font-size: ${props => props.fontSizes.small};
 
   &.is-active {
     > span {
@@ -66,9 +48,6 @@ const StyledMenuButtonWrapper = styled.a`
         }
       }
     }
-  }
-  @media (min-width: ${props => props.theme.breakpoints.s}) {
-    display: ${props => (props.isMobileButton ? 'none' : 'inline-block')};
   }
   @media (min-width: ${props => props.theme.breakpoints.l}) {
     display: none;

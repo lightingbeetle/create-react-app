@@ -114,24 +114,35 @@ class App extends Component {
             <PageLayout>
               <PageBody className={activeClass}>
                 <PageContent>
+                  <Overlay
+                    className={activeClass}
+                    onClick={() => this.handleClick()}
+                  />
+                  <NavigationButton
+                    onClick={() => this.handleClick()}
+                    isActive={this.state.isNavActive}
+                    className="navigation-button"
+                  />
                   <Suspense fallback={<div />}>
                     <Sitemap routes={routes} />
                   </Suspense>
                 </PageContent>
                 <Suspense fallback={<div />}>
                   <PageSidebar>
-                    <PageHeader
-                      key="header"
-                      project={logo || name}
-                      projectSmall={logoSmall || name}
-                      pageTitle="Bar"
-                      infoText={`v${version}`}
-                      {...other}
-                    />
-                    <Navigation
-                      routes={routes}
-                      onNavLinkClick={() => this.handleNavLinkClick()}
-                    />
+                    <PageSidebarMain>
+                      <PageHeader
+                        key="header"
+                        project={logo || name}
+                        projectSmall={logoSmall || name}
+                        pageTitle="Bar"
+                        {...other}
+                      />
+                      <Navigation
+                        routes={routes}
+                        onNavLinkClick={() => this.handleNavLinkClick()}
+                      />
+                    </PageSidebarMain>
+                    <PageFooter>{`v${version}`}</PageFooter>
                   </PageSidebar>
                 </Suspense>
               </PageBody>
@@ -159,7 +170,31 @@ const GlobalStyle = createGlobalStyle`
 `;
 /* eslint-enable */
 
+const Overlay = styled('div')`
+  .is-active & {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.5); /*dim the background*/
+  }
+`;
+
+const PageFooter = styled('p')`
+  color: ${props => props.theme.colors.greyText};
+  font-size: ${rem(16)};
+  padding: 0 1.5rem;
+  font-family: ${props => props.theme.fontFamily};
+`;
+
 const PageLayout = styled.div``;
+
+const PageSidebarMain = styled.div`
+  flex: 1;
+  overflow: hidden;
+`;
 
 const PageHeader = styled(Header)`
   max-width: 100%;
@@ -193,6 +228,8 @@ const PageSidebar = styled(Sidebar)`
   transition: transform 0.3s ease-in-out 0s;
   z-index: ${props => props.theme.zIndex.sidebar};
   background-color: ${props => props.theme.colors.main};
+  display: flex;
+  flex-direction: column;
 
   /* IE */
   @media all and (-ms-high-contrast: none) {
@@ -220,7 +257,6 @@ const PageContent = styled.main`
 
   .is-active & {
     transform: translateX(${props => rem(props.theme.sizes.sidebarWidth)});
-    opacity: 0.5;
   }
 
   /* IE */
