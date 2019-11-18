@@ -7,6 +7,19 @@ const propTypes = {
   isActive: bool,
 };
 
+let previousScrollPosition = window.pageYOffset;
+
+window.onscroll = function() {
+  const currentScrollPosition = window.pageYOffset;
+  const navigationButton = document.querySelector('.navigation-button');
+  if (previousScrollPosition > currentScrollPosition || currentScrollPosition === 0) {
+    navigationButton.style.top = '0';
+  } else {
+    navigationButton.style.top = '-50px';
+  }
+  previousScrollPosition = currentScrollPosition;
+};
+
 const NavigationButton = ({ className, isActive, ...other }) => {
   const classes = cx({ 'is-active': isActive }, className);
 
@@ -23,6 +36,13 @@ const NavigationButton = ({ className, isActive, ...other }) => {
 
 const StyledMenuButtonWrapper = styled.a`
   display: inline-block;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  padding: 16px;
+  z-index: 100;
+  background: #fff;
+  transition: top 0.3s;
 
   &.is-active {
     > span {
