@@ -124,7 +124,9 @@ class App extends Component {
                     className="navigation-button"
                   />
                   <Suspense fallback={<div />}>
-                    <Sitemap routes={routes} />
+                    <SitemapWrapper>
+                      <Sitemap routes={routes} />
+                    </SitemapWrapper>
                   </Suspense>
                 </PageContent>
                 <Suspense fallback={<div />}>
@@ -170,13 +172,17 @@ const GlobalStyle = createGlobalStyle`
 `;
 /* eslint-enable */
 
+const SitemapWrapper = styled('div')`
+  margin-top: 41px;
+`;
+
 const Overlay = styled('div')`
   .is-active & {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     z-index: 10;
     background-color: rgba(255, 255, 255, 0.5); /*dim the background*/
   }
