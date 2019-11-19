@@ -63,18 +63,16 @@ class App extends Component {
   showMobileMenu() {
     const isActive = !this.state.isNavActive;
     const NavigationButton = document.querySelector('.navigation-button');
-    const NavigationButtonIsActive = !NavigationButton.classList.contains(
-      'is-active'
-    );
-    const currentScrollPosition = window.pageYOffset;
 
+    const currentScrollPosition = window.pageYOffset;
     if (currentScrollPosition !== 0) {
+      NavigationButton.style.transition = 'none';
       NavigationButton.style.top = `${currentScrollPosition}px`;
-      console.log(isActive, NavigationButtonIsActive, currentScrollPosition);
     }
 
     if (!isActive) {
-      NavigationButton.style.top = `0px`;
+      NavigationButton.style.transition = 'top 0.3s';
+      NavigationButton.style.top = `-50px`;
     }
   }
 
@@ -82,7 +80,7 @@ class App extends Component {
   handleClick() {
     this.setState({ isNavActive: !this.state.isNavActive });
 
-    this.showMobileMenu()
+    this.showMobileMenu();
   }
 
   handleNavLinkClick() {
