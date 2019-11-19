@@ -60,9 +60,29 @@ class App extends Component {
     this.handleNavLinkClick = this.handleNavLinkClick.bind(this);
   }
 
+  showMobileMenu() {
+    const isActive = !this.state.isNavActive;
+    const NavigationButton = document.querySelector('.navigation-button');
+    const NavigationButtonIsActive = !NavigationButton.classList.contains(
+      'is-active'
+    );
+    const currentScrollPosition = window.pageYOffset;
+
+    if (currentScrollPosition !== 0) {
+      NavigationButton.style.top = `${currentScrollPosition}px`;
+      console.log(isActive, NavigationButtonIsActive, currentScrollPosition);
+    }
+
+    if (!isActive) {
+      NavigationButton.style.top = `0px`;
+    }
+  }
+
   // eslint-disable-next-line class-methods-use-this
   handleClick() {
     this.setState({ isNavActive: !this.state.isNavActive });
+
+    this.showMobileMenu()
   }
 
   handleNavLinkClick() {
