@@ -72,7 +72,7 @@ class App extends Component {
 
     if (!isActive) {
       NavigationButton.style.transition = 'top 0.3s';
-      NavigationButton.style.top = `-50px`;
+      NavigationButton.style.top = `-57px`;
     }
   }
 
