@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import styled from 'styled-components';
+import { rem } from './../../style/utils';
 
 const propTypes = {};
 
@@ -17,6 +18,7 @@ const Sidebar = ({ className, children, ...other }) => {
 };
 
 const StyledSidebar = styled.div`
+  min-width: ${props => rem(props.theme.sizes.sidebarWidth)};
   background-color: ${props => props.theme.colors.white};
 `;
 
