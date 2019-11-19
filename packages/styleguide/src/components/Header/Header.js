@@ -35,7 +35,7 @@ const Header = ({
 
   return (
     <StyledBar className={classes} {...other}>
-      <BarItem shrink>{children}</BarItem>
+      {children && <BarItem shrink>{children}</BarItem>}
       <BarItem isFilling shrink>
         <MediaQuery minDeviceWidth={theme.breakpoints.m}>
           {matches =>

@@ -4,7 +4,7 @@ import { rem } from './utils';
 
 export const sizes = {
   headerHeight: '96px',
-  sidebarWidth: '200px',
+  sidebarWidth: '228px',
   menuWidth: '180px',
 };
 

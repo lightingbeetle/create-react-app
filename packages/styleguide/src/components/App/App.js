@@ -191,7 +191,7 @@ const Overlay = styled('div')`
 const PageFooter = styled('p')`
   color: ${props => props.theme.colors.greyText};
   font-size: ${rem(16)};
-  padding: 0 1.5rem;
+  margin: 0;
   font-family: ${props => props.theme.fontFamily};
 `;
 
@@ -204,7 +204,6 @@ const PageSidebarMain = styled.div`
 
 const PageHeader = styled(Header)`
   max-width: 100%;
-  padding: ${props => rem(props.theme.spaces.small)};
 `;
 
 const PageBody = styled.div`
@@ -227,7 +226,7 @@ const PageSidebar = styled(Sidebar)`
   position: fixed;
   top: 0;
   height: 100vh;
-  flex: 0 0 ${props => rem(props.theme.sizes.sidebarWidth)};
+  padding: 24px;
   order: -1;
   overflow: auto;
   transform: translateX(-${props => rem(props.theme.sizes.sidebarWidth)});

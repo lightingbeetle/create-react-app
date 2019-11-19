@@ -154,7 +154,6 @@ const StyledNav = styled.nav`
   font-family: ${props => props.theme.fontFamily};
   font-size: ${props => rem(props.theme.fontSizes.base)};
   line-height: ${props => props.theme.lineHeights.base};
-  padding: ${props => rem(props.theme.spaces.small)};
 `;
 
 const StyledNavList = styled.ul`
