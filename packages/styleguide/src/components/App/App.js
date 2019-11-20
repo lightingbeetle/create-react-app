@@ -155,7 +155,7 @@ class App extends Component {
                 <Suspense fallback={<div />}>
                   <PageSidebar>
                     <PageSidebarMain>
-                      <PageHeader
+                      <PageSidebarHeader
                         key="header"
                         project={logo || name}
                         projectSmall={logoSmall || name}
@@ -167,7 +167,7 @@ class App extends Component {
                         onNavLinkClick={() => this.handleNavLinkClick()}
                       />
                     </PageSidebarMain>
-                    <PageFooter>{`v${version}`}</PageFooter>
+                    <PageSidebarFooter>{`v${version}`}</PageSidebarFooter>
                   </PageSidebar>
                 </Suspense>
               </PageBody>
@@ -179,7 +179,6 @@ class App extends Component {
   }
 }
 
-/* eslint-disable */
 const GlobalStyle = createGlobalStyle`
   html,
   body {
@@ -193,7 +192,6 @@ const GlobalStyle = createGlobalStyle`
   *::after { box-sizing: border-box; }
   *::before { box-sizing: border-box; }
 `;
-/* eslint-enable */
 
 const Overlay = styled('div')`
   .is-active & {
@@ -211,23 +209,7 @@ const SitemapWrapper = styled('div')`
   margin-top: ${props => props.theme.sizes.headerHeight};
 `;
 
-const PageFooter = styled('p')`
-  color: ${props => props.theme.colors.greyText};
-  font-size: ${props => props.theme.fontSizes.base};
-  margin: 0;
-  font-family: ${props => props.theme.fontFamily};
-`;
-
 const PageLayout = styled.div``;
-
-const PageSidebarMain = styled.div`
-  flex: 1;
-  overflow-x: hidden;
-`;
-
-const PageHeader = styled(Header)`
-  max-width: 100%;
-`;
 
 const PageBody = styled.div`
   position: relative;
@@ -242,35 +224,6 @@ const PageBody = styled.div`
       overflow-x: hidden;
       overflow-y: auto;
     }
-  }
-`;
-
-const PageSidebar = styled(Sidebar)`
-  position: fixed;
-  top: 0;
-  height: 100vh;
-  padding: ${props => rem(props.theme.spaces.medium)};
-  order: -1;
-  overflow: auto;
-  transform: translateX(-${props => rem(props.theme.sizes.sidebarWidth)});
-  transition: transform 0.3s ease-in-out 0s;
-  z-index: ${props => props.theme.zIndex.sidebar};
-  background-color: ${props => props.theme.colors.main};
-  display: flex;
-  flex-direction: column;
-
-  /* IE */
-  @media all and (-ms-high-contrast: none) {
-    left: 0;
-  }
-
-  @media (min-width: ${props => props.theme.breakpoints.l}) {
-    position: sticky;
-    transform: translateX(0);
-  }
-
-  .is-active & {
-    transform: translateX(0);
   }
 `;
 
@@ -304,6 +257,51 @@ const PageContent = styled.main`
       opacity: 1;
     }
   }
+`;
+
+const PageSidebar = styled(Sidebar)`
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  padding: ${props => rem(props.theme.spaces.medium)};
+  order: -1;
+  overflow: auto;
+  transform: translateX(-${props => rem(props.theme.sizes.sidebarWidth)});
+  transition: transform 0.3s ease-in-out 0s;
+  z-index: ${props => props.theme.zIndex.sidebar};
+  background-color: ${props => props.theme.colors.main};
+  display: flex;
+  flex-direction: column;
+
+  /* IE */
+  @media all and (-ms-high-contrast: none) {
+    left: 0;
+  }
+
+  @media (min-width: ${props => props.theme.breakpoints.l}) {
+    position: sticky;
+    transform: translateX(0);
+  }
+
+  .is-active & {
+    transform: translateX(0);
+  }
+`;
+
+const PageSidebarMain = styled.div`
+  flex: 1;
+  overflow-x: hidden;
+`;
+
+const PageSidebarHeader = styled(Header)`
+  max-width: 100%;
+`;
+
+const PageSidebarFooter = styled('p')`
+  color: ${props => props.theme.colors.greyText};
+  font-size: ${props => props.theme.fontSizes.base};
+  margin: 0;
+  font-family: ${props => props.theme.fontFamily};
 `;
 
 export default App;
