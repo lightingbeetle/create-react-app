@@ -11,11 +11,14 @@ let previousScrollPosition = window.pageYOffset;
 
 window.onscroll = function() {
   const currentScrollPosition = window.pageYOffset;
-  const navigationButton = document.querySelector('.navigation-button');
-  if (previousScrollPosition > currentScrollPosition || currentScrollPosition === 0) {
-    navigationButton.style.top = '0';
+  const navigationBar = document.querySelector('.navigation-bar');
+  if (
+    previousScrollPosition > currentScrollPosition ||
+    currentScrollPosition === 0
+  ) {
+    navigationBar.style.top = '0';
   } else {
-    navigationButton.style.top = '-50px';
+    navigationBar.style.top = '-57px';
   }
   previousScrollPosition = currentScrollPosition;
 };

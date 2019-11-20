@@ -62,25 +62,28 @@ class App extends Component {
 
   showMobileMenu() {
     const isActive = !this.state.isNavActive;
-    const NavigationButton = document.querySelector('.navigation-button');
+    const navigationBar = document.querySelector('.navigation-bar');
 
     const currentScrollPosition = window.pageYOffset;
     if (currentScrollPosition !== 0) {
-      NavigationButton.style.transition = 'none';
-      NavigationButton.style.top = `${currentScrollPosition}px`;
+      navigationBar.style.transition = 'none';
+      navigationBar.style.top = `${currentScrollPosition}px`;
     }
 
     if (!isActive) {
-      NavigationButton.style.transition = 'top 0.3s';
-      NavigationButton.style.top = `-57px`;
+      navigationBar.style.transition = 'top 0.3s';
+      navigationBar.style.top = `-57px`;
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  handleClick() {
-    this.setState({ isNavActive: !this.state.isNavActive });
+  handleClick(e) {
+    const targetIsNavigationBar = e.target.classList.contains('navigation-bar');
 
-    this.showMobileMenu();
+    if (!targetIsNavigationBar) {
+      this.setState({ isNavActive: !this.state.isNavActive });
+
+      this.showMobileMenu();
+    }
   }
 
   handleNavLinkClick() {
@@ -134,12 +137,12 @@ class App extends Component {
                 <PageContent>
                   <Overlay
                     className={activeClass}
-                    onClick={() => this.handleClick()}
+                    onClick={e => this.handleClick(e)}
                   />
                   <NavigationButton
-                    onClick={() => this.handleClick()}
+                    onClick={e => this.handleClick(e)}
                     isActive={this.state.isNavActive}
-                    className="navigation-button"
+                    className="navigation-bar"
                   />
                   <Suspense fallback={<div />}>
                     <SitemapWrapper>
