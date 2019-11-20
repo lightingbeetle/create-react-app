@@ -12,8 +12,10 @@ import { init, RouteTracker } from './../GoogleAnalytics';
 import Header from './../Header';
 import Sidebar from './../Sidebar';
 import Navigation from './../Navigation';
-import NavigationButton from './../NavigationButton';
+import NavigationBar from './../NavigationBar';
 import Sitemap from './../Sitemap';
+
+import { sizes } from '../../style/theme';
 
 class App extends Component {
   static displayName = 'App';
@@ -60,11 +62,12 @@ class App extends Component {
     this.handleNavLinkClick = this.handleNavLinkClick.bind(this);
   }
 
-  showMobileMenu() {
+  showSidebar() {
+    // TODO: fix this weirdness (negated state inside `isActive` is because state is changed after handleClick function is called)
     const isActive = !this.state.isNavActive;
     const navigationBar = document.querySelector('.navigation-bar');
-
     const currentScrollPosition = window.pageYOffset;
+
     if (currentScrollPosition !== 0) {
       navigationBar.style.transition = 'none';
       navigationBar.style.top = `${currentScrollPosition}px`;
@@ -72,7 +75,7 @@ class App extends Component {
 
     if (!isActive) {
       navigationBar.style.transition = 'top 0.3s';
-      navigationBar.style.top = `-57px`;
+      navigationBar.style.top = sizes.headerHeight;
     }
   }
 
@@ -82,7 +85,7 @@ class App extends Component {
     if (!targetIsNavigationBar) {
       this.setState({ isNavActive: !this.state.isNavActive });
 
-      this.showMobileMenu();
+      this.showSidebar();
     }
   }
 
@@ -139,10 +142,9 @@ class App extends Component {
                     className={activeClass}
                     onClick={e => this.handleClick(e)}
                   />
-                  <NavigationButton
+                  <NavigationBar
                     onClick={e => this.handleClick(e)}
                     isActive={this.state.isNavActive}
-                    className="navigation-bar"
                   />
                   <Suspense fallback={<div />}>
                     <SitemapWrapper>
@@ -193,10 +195,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 /* eslint-enable */
 
-const SitemapWrapper = styled('div')`
-  margin-top: 41px;
-`;
-
 const Overlay = styled('div')`
   .is-active & {
     position: absolute;
@@ -205,13 +203,17 @@ const Overlay = styled('div')`
     width: 100%;
     height: 100%;
     z-index: 10;
-    background-color: rgba(255, 255, 255, 0.5); /*dim the background*/
+    background-color: ${props => props.theme.colors.overlay};
   }
+`;
+
+const SitemapWrapper = styled('div')`
+  margin-top: ${props => props.theme.sizes.headerHeight};
 `;
 
 const PageFooter = styled('p')`
   color: ${props => props.theme.colors.greyText};
-  font-size: ${rem(16)};
+  font-size: ${props => props.theme.fontSizes.base};
   margin: 0;
   font-family: ${props => props.theme.fontFamily};
 `;
@@ -247,7 +249,7 @@ const PageSidebar = styled(Sidebar)`
   position: fixed;
   top: 0;
   height: 100vh;
-  padding: 24px;
+  padding: ${props => rem(props.theme.spaces.medium)};
   order: -1;
   overflow: auto;
   transform: translateX(-${props => rem(props.theme.sizes.sidebarWidth)});

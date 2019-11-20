@@ -3,8 +3,8 @@
 import { rem } from './utils';
 
 export const sizes = {
-  headerHeight: '96px',
-  sidebarWidth: '228px',
+  headerHeight: '60px',
+  sidebarWidth: '220px',
   menuWidth: '180px',
 };
 
@@ -81,6 +81,7 @@ export const colors = {
   warning: '#e8d571',
   error: '#e06c75',
   info: '#61afef',
+  overlay: 'rgba(255, 255, 255, 0.5)',
   ...functionalColors,
 };
 

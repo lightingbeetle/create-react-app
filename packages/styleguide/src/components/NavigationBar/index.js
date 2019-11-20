@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { bool } from 'prop-types';
 import cx from 'classnames';
 
+import { sizes } from '../../style/theme';
+
 const propTypes = {
   isActive: bool,
 };
@@ -12,19 +14,25 @@ let previousScrollPosition = window.pageYOffset;
 window.onscroll = function() {
   const currentScrollPosition = window.pageYOffset;
   const navigationBar = document.querySelector('.navigation-bar');
+
+  if (!navigationBar) {
+    return;
+  }
+
   if (
     previousScrollPosition > currentScrollPosition ||
     currentScrollPosition === 0
   ) {
-    navigationBar.style.top = '0';
+    navigationBar.style.top = 0;
   } else {
-    navigationBar.style.top = '-57px';
+    navigationBar.style.top = `-${sizes.headerHeight}`;
   }
+
   previousScrollPosition = currentScrollPosition;
 };
 
-const NavigationButton = ({ className, isActive, ...other }) => {
-  const classes = cx({ 'is-active': isActive }, className);
+const NavigationBar = ({ className, isActive, ...other }) => {
+  const classes = cx({ 'is-active': isActive }, 'navigation-bar', className);
 
   return (
     <StyledMenuButtonWrapper className={classes} {...other}>
@@ -42,9 +50,9 @@ const StyledMenuButtonWrapper = styled.a`
   position: fixed;
   width: 100%;
   top: 0;
-  padding: 16px;
+  padding: ${props => props.theme.spaces.default};
   z-index: 100;
-  background: #fff;
+  background: ${props => props.theme.colors.white};
   transition: top 0.3s;
 
   &.is-active {
@@ -72,6 +80,7 @@ const StyledMenuButtonWrapper = styled.a`
       }
     }
   }
+
   @media (min-width: ${props => props.theme.breakpoints.l}) {
     display: none;
   }
@@ -121,7 +130,7 @@ const StyledButtonLine = styled.span`
   }
 `;
 
-NavigationButton.displayName = 'NavigationButton';
-NavigationButton.propTypes = propTypes;
+NavigationBar.displayName = 'NavigationBar';
+NavigationBar.propTypes = propTypes;
 
-export default NavigationButton;
+export default NavigationBar;
