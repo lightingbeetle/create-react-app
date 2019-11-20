@@ -75,7 +75,7 @@ class App extends Component {
 
     if (!isActive) {
       navigationBar.style.transition = 'top 0.3s';
-      navigationBar.style.top = sizes.headerHeight;
+      navigationBar.style.top = `-${sizes.headerHeight}`;
     }
   }
 
