@@ -19,7 +19,32 @@ const Sidebar = ({ className, children, ...other }) => {
 
 const StyledSidebar = styled.div`
   min-width: ${props => rem(props.theme.sizes.sidebarWidth)};
-  background-color: ${props => props.theme.colors.white};
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  padding: ${props => rem(props.theme.spaces.medium)};
+  order: -1;
+  overflow: auto;
+  transform: translateX(-${props => rem(props.theme.sizes.sidebarWidth)});
+  transition: transform 0.3s ease-in-out 0s;
+  z-index: ${props => props.theme.zIndex.sidebar};
+  background-color: ${props => props.theme.colors.main};
+  display: flex;
+  flex-direction: column;
+
+  /* IE */
+  @media all and (-ms-high-contrast: none) {
+    left: 0;
+  }
+
+  @media (min-width: ${props => props.theme.breakpoints.l}) {
+    position: sticky;
+    transform: translateX(0);
+  }
+
+  .is-active & {
+    transform: translateX(0);
+  }
 `;
 
 Sidebar.displayName = 'Sidebar';
