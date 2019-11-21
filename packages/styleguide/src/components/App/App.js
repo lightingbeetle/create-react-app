@@ -43,7 +43,7 @@ class App extends Component {
       shape({
         /** Route title */
         title: string.isRequired,
-        /** Part of URL which discribes this tree node */
+        /** Part of URL which describes this tree node */
         path: string.isRequired,
         /** If this route is leaf, Node to render, if this is leaf */
         render: node,
