@@ -135,41 +135,39 @@ class App extends Component {
         <BrowserRouter basename={styleguideBasePath}>
           {gaId && init({ gaId }) && <RouteTracker />}
           <ThemeProvider theme={localTheme}>
-            <PageLayout>
-              <PageBody className={activeClass}>
-                <PageContent>
-                  <Overlay
-                    className={activeClass}
-                    onClick={e => this.handleClick(e)}
-                  />
-                  <NavigationBar
-                    onClick={e => this.handleClick(e)}
-                    isActive={this.state.isNavActive}
-                  />
-                  <Suspense fallback={<div />}>
-                    <Sitemap routes={routes} />
-                  </Suspense>
-                </PageContent>
+            <PageBody className={activeClass}>
+              <PageContent>
+                <Overlay
+                  className={activeClass}
+                  onClick={e => this.handleClick(e)}
+                />
+                <NavigationBar
+                  onClick={e => this.handleClick(e)}
+                  isActive={this.state.isNavActive}
+                />
                 <Suspense fallback={<div />}>
-                  <PageSidebar>
-                    <PageSidebarMain>
-                      <PageSidebarHeader
-                        key="header"
-                        project={logo || name}
-                        projectSmall={logoSmall || name}
-                        pageTitle="Bar"
-                        {...other}
-                      />
-                      <Navigation
-                        routes={routes}
-                        onNavLinkClick={() => this.handleNavLinkClick()}
-                      />
-                    </PageSidebarMain>
-                    <PageSidebarFooter>{`v${version}`}</PageSidebarFooter>
-                  </PageSidebar>
+                  <Sitemap routes={routes} />
                 </Suspense>
-              </PageBody>
-            </PageLayout>
+              </PageContent>
+              <Suspense fallback={<div />}>
+                <PageSidebar>
+                  <PageSidebarMain>
+                    <PageSidebarHeader
+                      key="header"
+                      project={logo || name}
+                      projectSmall={logoSmall || name}
+                      pageTitle="Bar"
+                      {...other}
+                    />
+                    <Navigation
+                      routes={routes}
+                      onNavLinkClick={() => this.handleNavLinkClick()}
+                    />
+                  </PageSidebarMain>
+                  <PageSidebarFooter>{`v${version}`}</PageSidebarFooter>
+                </PageSidebar>
+              </Suspense>
+            </PageBody>
           </ThemeProvider>
         </BrowserRouter>
       </Fragment>
@@ -202,8 +200,6 @@ const Overlay = styled('div')`
     background-color: ${props => props.theme.colors.overlay};
   }
 `;
-
-const PageLayout = styled.div``;
 
 const PageBody = styled.div`
   position: relative;
