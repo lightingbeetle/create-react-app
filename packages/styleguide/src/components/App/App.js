@@ -147,9 +147,7 @@ class App extends Component {
                     isActive={this.state.isNavActive}
                   />
                   <Suspense fallback={<div />}>
-                    <SitemapWrapper>
-                      <Sitemap routes={routes} />
-                    </SitemapWrapper>
+                    <Sitemap routes={routes} />
                   </Suspense>
                 </PageContent>
                 <Suspense fallback={<div />}>
@@ -203,10 +201,6 @@ const Overlay = styled('div')`
     z-index: 10;
     background-color: ${props => props.theme.colors.overlay};
   }
-`;
-
-const SitemapWrapper = styled('div')`
-  margin-top: ${props => props.theme.sizes.headerHeight};
 `;
 
 const PageLayout = styled.div``;

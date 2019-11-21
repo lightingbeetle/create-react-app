@@ -2,6 +2,8 @@ import React from 'react';
 import { array } from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 
+import styled from 'styled-components';
+
 const propTypes = {
   routes: array,
 };
@@ -40,11 +42,17 @@ const Sitemap = ({ routes = [] }) => {
     ));
 
   return (
-    <Switch>
-      {[...styleguideRoutes, <Route key="404" render={() => '404'} />]}
-    </Switch>
+    <SitemapWrapper>
+      <Switch>
+        {[...styleguideRoutes, <Route key="404" render={() => '404'} />]}
+      </Switch>
+    </SitemapWrapper>
   );
 };
+
+const SitemapWrapper = styled('div')`
+  margin-top: ${props => props.theme.sizes.headerHeight};
+`;
 
 Sitemap.displayName = 'Sitemap';
 Sitemap.propTypes = propTypes;
