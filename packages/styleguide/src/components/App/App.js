@@ -198,7 +198,7 @@ const Overlay = styled('div')`
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: ${props => props.theme.zIndex.overlay};
     background-color: ${props => props.theme.colors.overlay};
   }
 `;

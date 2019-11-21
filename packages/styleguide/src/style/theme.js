@@ -52,6 +52,9 @@ export const nav = {
 export const zIndex = {
   header: 3,
   sidebar: 4, // header + 1
+  overlay: 100,
+  menuButton: 101,
+  preview: 1000,
 };
 
 const functionalColors = {

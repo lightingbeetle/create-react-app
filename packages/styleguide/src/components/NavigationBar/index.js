@@ -51,7 +51,7 @@ const StyledMenuButtonWrapper = styled.a`
   width: 100%;
   top: 0;
   padding: ${props => props.theme.spaces.default};
-  z-index: 100;
+  z-index: ${props => props.theme.zIndex.menuButton};
   background: ${props => props.theme.colors.white};
   transition: top 0.3s;
 
