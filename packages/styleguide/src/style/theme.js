@@ -4,7 +4,7 @@ import { rem } from './utils';
 
 export const sizes = {
   headerHeight: '60px',
-  sidebarWidth: '220px',
+  sidebarWidth: '230px',
   menuWidth: '180px',
 };
 
@@ -51,7 +51,7 @@ export const nav = {
 
 export const zIndex = {
   header: 3,
-  sidebar: 4, // header + 1
+  sidebar: 101,
   overlay: 100,
   menuButton: 101,
   preview: 1000,

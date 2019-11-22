@@ -3,32 +3,8 @@ import styled from 'styled-components';
 import { bool } from 'prop-types';
 import cx from 'classnames';
 
-import { sizes } from '../../style/theme';
-
 const propTypes = {
   isActive: bool,
-};
-
-let previousScrollPosition = window.pageYOffset;
-
-window.onscroll = function() {
-  const currentScrollPosition = window.pageYOffset;
-  const navigationBar = document.querySelector('.navigation-bar');
-
-  if (!navigationBar) {
-    return;
-  }
-
-  if (
-    previousScrollPosition > currentScrollPosition ||
-    currentScrollPosition === 0
-  ) {
-    navigationBar.style.top = 0;
-  } else {
-    navigationBar.style.top = `-${sizes.headerHeight}`;
-  }
-
-  previousScrollPosition = currentScrollPosition;
 };
 
 const NavigationBar = ({ className, isActive, ...other }) => {
@@ -53,9 +29,11 @@ const StyledMenuButtonWrapper = styled.a`
   padding: ${props => props.theme.spaces.default};
   z-index: ${props => props.theme.zIndex.menuButton};
   background: ${props => props.theme.colors.white};
-  transition: top 0.3s;
+  transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
 
   &.is-active {
+    transform: translateX(${props => props.theme.sizes.sidebarWidth});
+
     > span {
       transform: rotate(180deg);
     }

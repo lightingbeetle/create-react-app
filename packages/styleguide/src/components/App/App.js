@@ -15,8 +15,6 @@ import Navigation from './../Navigation';
 import NavigationBar from './../NavigationBar';
 import Sitemap from './../Sitemap';
 
-import { sizes } from '../../style/theme';
-
 class App extends Component {
   static displayName = 'App';
 
@@ -62,31 +60,8 @@ class App extends Component {
     this.handleNavLinkClick = this.handleNavLinkClick.bind(this);
   }
 
-  showSidebar() {
-    // TODO: fix this weirdness (negated state inside `isActive` is because state is changed after handleClick function is called)
-    const isActive = !this.state.isNavActive;
-    const navigationBar = document.querySelector('.navigation-bar');
-    const currentScrollPosition = window.pageYOffset;
-
-    if (currentScrollPosition !== 0) {
-      navigationBar.style.transition = 'none';
-      navigationBar.style.top = `${currentScrollPosition}px`;
-    }
-
-    if (!isActive) {
-      navigationBar.style.transition = 'top 0.3s';
-      navigationBar.style.top = `-${sizes.headerHeight}`;
-    }
-  }
-
-  handleClick(e) {
-    const targetIsNavigationBar = e.target.classList.contains('navigation-bar');
-
-    if (!targetIsNavigationBar) {
-      this.setState({ isNavActive: !this.state.isNavActive });
-
-      this.showSidebar();
-    }
+  handleClick() {
+    this.setState({ isNavActive: !this.state.isNavActive });
   }
 
   handleNavLinkClick() {
@@ -137,14 +112,6 @@ class App extends Component {
           <ThemeProvider theme={localTheme}>
             <PageBody className={activeClass}>
               <PageContent>
-                <Overlay
-                  className={activeClass}
-                  onClick={e => this.handleClick(e)}
-                />
-                <NavigationBar
-                  onClick={e => this.handleClick(e)}
-                  isActive={this.state.isNavActive}
-                />
                 <Suspense fallback={<div />}>
                   <Sitemap routes={routes} />
                 </Suspense>
@@ -166,6 +133,11 @@ class App extends Component {
                   </PageSidebarMain>
                   <PageSidebarFooter>{`v${version}`}</PageSidebarFooter>
                 </Sidebar>
+                <NavigationBar
+                  onClick={this.handleClick}
+                  isActive={this.state.isNavActive}
+                />
+                <Overlay className={activeClass} onClick={this.handleClick} />
               </Suspense>
             </PageBody>
           </ThemeProvider>
@@ -223,11 +195,11 @@ const PageContent = styled.main`
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: ${props => rem(props.theme.spaces.default)} 0;
-  transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
+  padding: ${props => rem(props.theme.sizes.headerHeight)} 0;
+  transition: margin-left 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
 
   .is-active & {
-    transform: translateX(${props => rem(props.theme.sizes.sidebarWidth)});
+    margin-left: ${props => rem(props.theme.sizes.sidebarWidth)};
   }
 
   /* IE */
@@ -242,6 +214,7 @@ const PageContent = styled.main`
 
   @media (min-width: ${props => props.theme.breakpoints.l}) {
     padding-left: 0;
+    padding: ${props => rem(props.theme.spaces.default)} 0;
     .is-active & {
       transform: translateX(0);
       opacity: 1;
