@@ -2,8 +2,8 @@ import React from 'react';
 import { array, func, string, shape } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-/** https://www.npmjs.com/package/fuzzy */
-import fuzzy from 'fuzzy';
+/** https://www.npmjs.com/package/fuzzyjs */
+import { match, surround } from 'fuzzyjs';
 import Autocomplete from 'accessible-autocomplete/react';
 
 const propTypes = {
@@ -31,10 +31,10 @@ const Search = ({ list, placeholder, fuzzyOptions, history }) => {
   const formatMatches = (matches, parentPath, parentTitle) =>
     matches.map(match => ({
       title: match.original.title,
-      string: match.string,
       path: parentPath + match.original.path,
+      string: match.string,
       breadcrumbs: parentTitle,
-      isHidden: match.original.nodes !== undefined,
+      isHidden: match.original.hasNodes,
     }));
 
   const parseFullPathList = (items, parentPath = '') => {
@@ -43,11 +43,21 @@ const Search = ({ list, placeholder, fuzzyOptions, history }) => {
 
       return [
         ...acc,
-        { title: curr.title, path: path },
+        { title: curr.title, path: path, hasNodes: curr.nodes !== undefined },
         ...(curr.nodes ? parseFullPathList(curr.nodes, path) : []),
       ];
     }, []);
   };
+
+  const surroundMatch = (string, result) =>
+    surround(string, {
+      result,
+      prefix: '<strong>',
+      suffix: '</strong>',
+    });
+
+  const getMatch = (value, string) =>
+    match(value, string, { withScore: true, withRanges: true });
 
   const search = (value, list, parentPath = '', parentTitle = '') => {
     if (value === '') {
@@ -55,7 +65,32 @@ const Search = ({ list, placeholder, fuzzyOptions, history }) => {
     } else {
       const fullPathsList = parseFullPathList(list);
       // search the first level children for match
-      const parentMatches = fuzzy.filter(value, fullPathsList, options);
+      // const parentMatches = fuzzy.filter(value, fullPathsList, options);
+      const parentMatches = fullPathsList
+        .reduce((acc, curr) => {
+          const result = {
+            // search in title
+            title: getMatch(value, curr.title),
+            // search in path
+            path: getMatch(value, curr.path),
+          };
+
+          return result.path.match
+            ? [
+                ...acc,
+                {
+                  original: curr,
+                  result: result,
+                  score: result.title.score + result.path.score,
+                  string: {
+                    title: surroundMatch(curr.title, result.title),
+                    path: surroundMatch(curr.path, result.path),
+                  },
+                },
+              ]
+            : acc;
+        }, [])
+        .sort(item => item.score);
       // format the matched items for later use
       return formatMatches(parentMatches, parentPath, parentTitle);
     }
@@ -78,7 +113,9 @@ const Search = ({ list, placeholder, fuzzyOptions, history }) => {
           inputValue: () => '',
           suggestion: result =>
             result &&
-            `<span>${result.title}</span>\xa0<small>${result.string}</small>`,
+            `<div>P:${result.pathScore} T:${result.titleScore}</div><span>${
+              result.string.title
+            }</span>\xa0<small>${result.string.path}</small>`,
         }}
         onConfirm={confirmed => {
           if (!confirmed) return false;
@@ -111,6 +148,7 @@ const StyledAutocompleteWrapper = styled.div`
       white-space: nowrap;
       background: white;
       padding: 10px;
+      width: 100%:
     }
   }
 
