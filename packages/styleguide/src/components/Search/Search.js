@@ -69,7 +69,15 @@ const Search = ({ list, placeholder, history }) => {
                 {
                   original: curr,
                   result: result,
-                  score: result.title.score + result.path.score,
+                  score: {
+                    title: result.title.score,
+                    path: result.path.score,
+                    // get the highest score from the two
+                    full: Math.max(
+                      result.title.score !== 0 ? result.title.score : -1000,
+                      result.path.score !== 0 ? result.path.score : -1000
+                    ),
+                  },
                   string: {
                     title: surroundMatch(curr.title, result.title),
                     path: surroundMatch(curr.path, result.path),
@@ -78,7 +86,8 @@ const Search = ({ list, placeholder, history }) => {
               ]
             : acc;
         }, [])
-        .sort(item => item.score);
+        // sort from high to low
+        .sort((a, b) => b.score.full - a.score.full);
       // format the matched items for later use
       return formatMatches(parentMatches, parentPath, parentTitle);
     }
@@ -101,9 +110,9 @@ const Search = ({ list, placeholder, history }) => {
           inputValue: () => '',
           suggestion: result =>
             result &&
-            `<div>P:${result.pathScore} T:${result.titleScore}</div><span>${
-              result.string.title
-            }</span>\xa0<small>${result.string.path}</small>`,
+            `<span>${result.string.title}</span>\xa0<small>${
+              result.string.path
+            }</small>`,
         }}
         onConfirm={confirmed => {
           if (!confirmed) return false;
