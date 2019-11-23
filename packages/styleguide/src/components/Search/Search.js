@@ -1,5 +1,5 @@
 import React from 'react';
-import { array, func, string, shape } from 'prop-types';
+import { array, string } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 /** https://www.npmjs.com/package/fuzzyjs */
@@ -9,25 +9,13 @@ import Autocomplete from 'accessible-autocomplete/react';
 const propTypes = {
   list: array.isRequired,
   placeholder: string,
-  fuzzyOptions: shape({
-    pre: string,
-    post: string,
-    extract: func,
-  }),
 };
 
 const defaultProps = {
   placeholder: 'Search',
-  fuzzyOptions: {
-    pre: `<strong>`,
-    post: '</strong>',
-    extract: el => el.title,
-  },
 };
 
-const Search = ({ list, placeholder, fuzzyOptions, history }) => {
-  const options = { ...defaultProps.fuzzyOptions, ...fuzzyOptions };
-
+const Search = ({ list, placeholder, history }) => {
   const formatMatches = (matches, parentPath, parentTitle) =>
     matches.map(match => ({
       title: match.original.title,
