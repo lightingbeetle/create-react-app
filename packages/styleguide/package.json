@@ -1,6 +1,6 @@
 {
   "name": "@lighting-beetle/lighter-styleguide",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Lighter styleguide",
   "main": "build/lib/styleguide.js",
   "repository": {
@@ -31,12 +31,12 @@
     "promise": "^8.0.3",
     "react": "~16.10.1",
     "react-dom": "~16.10.1",
-    "react-element-to-jsx-string": "~14.0.1",
+    "react-element-to-jsx-string": "~14.1.0",
     "react-frame-component": "~4.0.0",
     "react-ga": "~2.6.0",
     "react-responsive": "~6.0.1",
     "react-router-dom": "~5.0.0",
-    "react-select": "~2.2.0",
+    "react-select": "~3.0.8",
     "styled-components": "~4.1.2",
     "svg4everybody": "~2.1.9",
     "unescape-html": "~1.1.0",
