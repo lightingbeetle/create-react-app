@@ -27,7 +27,6 @@ class Navigation extends React.Component {
     super(props);
     this.state = {
       activeLinks: [],
-      search: '',
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -144,7 +143,7 @@ class Navigation extends React.Component {
     // div has to wrapp Nav because of nice layout
     return (
       <StyledNav className={classes} {...other}>
-        <Search list={routes} fuzzyOptions={{ extract: el => el.path }} />
+        <Search list={routes} />
         {getNavList(routes)}
       </StyledNav>
     );
