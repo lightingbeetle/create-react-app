@@ -59,7 +59,6 @@ const Navigation = ({
     [location.pathname]
   );
 
-  // eslint-disable-next-line class-methods-use-this
   const removeActive = (arr, element) => {
     return arr.filter(e => e !== element);
   };
