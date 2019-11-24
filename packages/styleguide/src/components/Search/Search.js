@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { match, surround } from 'fuzzyjs';
 import Autocomplete from 'accessible-autocomplete/react';
 
+import { rem } from './../../style/utils';
+
 const propTypes = {
   list: array.isRequired,
   placeholder: string,
@@ -114,9 +116,8 @@ const Search = ({ list, placeholder }) => {
           inputValue: () => '',
           suggestion: result =>
             result &&
-            `<span>${result.string.title}</span>\xa0<small>${
-              result.string.path
-            }</small>`,
+            `<div>${result.string.title}</div>
+            <small>${result.string.path}</small>`,
         }}
         onConfirm={confirmed => {
           if (!confirmed) return false;
@@ -129,11 +130,26 @@ const Search = ({ list, placeholder }) => {
 };
 
 const StyledAutocompleteWrapper = styled.div`
+  width: ${props => rem(props.theme.sizes.menuWidth)};
+  box-sizing: content-box;
+  font-family: ${props => props.theme.fontFamily};
+  font-size: ${props => rem(props.theme.fontSizes.base)};
+  line-height: ${props => props.theme.lineHeights.base};
+
+  padding: ${props => rem(props.theme.spaces.default)}
+    ${props => rem(props.theme.spaces.medium)} 0;
+
   .autocomplete__input {
     width: 100%;
     line-height: 20px;
     border: 1px solid black;
     padding: 5px 10px;
+  }
+
+  .autocomplete__option {
+    padding: ${props => rem(props.theme.spaces.tiny)}
+      ${props => rem(props.theme.spaces.small)};
+    line-height: 1.2em;
   }
 
   .autocomplete__option--focused {
@@ -149,8 +165,12 @@ const StyledAutocompleteWrapper = styled.div`
       z-index: 10000;
       white-space: nowrap;
       background: white;
-      padding: 10px;
-      width: 100%:
+      border: 1px solid black;
+      padding: 0;
+      width: 90%;
+      max-height: calc(8.25 * 52px);
+      overflow: auto;
+      top: 32px;
     }
   }
 
