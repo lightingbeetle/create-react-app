@@ -59,8 +59,8 @@ const Navigation = ({
     [location.pathname]
   );
 
-  const getNavList = (nodes = [], path = '', depthLevel = 0) => (
-    <StyledNavList isMain={depthLevel === 0}>
+  const getNavList = (nodes = [], path = '') => (
+    <StyledNavList isMain={path === ''}>
       {nodes.map(node => {
         let item = null;
         let nestedList = null;
@@ -78,12 +78,7 @@ const Navigation = ({
             </Category>
           );
 
-          const depthLevelUpdated = depthLevel + 1;
-          nestedList = getNavList(
-            node.nodes,
-            path + node.path,
-            depthLevelUpdated
-          );
+          nestedList = getNavList(node.nodes, path + node.path);
         } else {
           item = (
             <NavLink href={path + node.path} onClick={onNavLinkClick}>
