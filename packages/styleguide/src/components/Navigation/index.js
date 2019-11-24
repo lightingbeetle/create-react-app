@@ -6,8 +6,6 @@ import styled from 'styled-components';
 import { withRouter, useLocation } from 'react-router-dom';
 
 import { rem } from './../../style/utils';
-
-import Search from './../Search';
 import Category from './Category';
 import NavLink from './NavLink';
 
@@ -104,7 +102,6 @@ const Navigation = ({
   // div has to wrapp Nav because of nice layout
   return (
     <StyledNav className={classes} {...other}>
-      <Search list={routes} />
       {getNavList(routes)}
     </StyledNav>
   );

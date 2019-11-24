@@ -14,6 +14,7 @@ import Sidebar from './../Sidebar';
 import Navigation from './../Navigation';
 import NavigationButton from './../NavigationButton';
 import Sitemap from './../Sitemap';
+import Search from './../Search';
 
 class App extends Component {
   static displayName = 'App';
@@ -135,6 +136,7 @@ class App extends Component {
                 </PageContent>
                 <Suspense fallback={<div />}>
                   <PageSidebar>
+                    <Search list={routes} />
                     <Navigation
                       routes={routes}
                       onNavLinkClick={() => this.handleNavLinkClick()}
