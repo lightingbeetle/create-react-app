@@ -40,15 +40,18 @@ const Navigation = ({
    * from first parent to current category to active
    */
   const setActiveCategoriesFromPathname = () => {
-    let id = '';
-    const l = location.pathname;
-    const categories = l
-      .substring(1, l.lastIndexOf('/'))
+    let url = '';
+    const locPath = location.pathname;
+    const categories = locPath
+      // remove first '/' and last item of the path
+      .substring(1, locPath.lastIndexOf('/'))
       .split('/')
       .reduce((acc, curr) => {
-        id += '/' + curr;
-        return { ...acc, [id]: true };
+        url += '/' + curr;
+        return { ...acc, [url]: true };
       }, {});
+
+    // set all new active categories
     setActiveCategories({ ...activeCategories, ...categories });
   };
 
@@ -65,23 +68,23 @@ const Navigation = ({
         let item = null;
         let nestedList = null;
 
+        const url = path + node.path;
         if (node.nodes) {
-          const id = path + node.path;
           item = (
             <Category
               onClick={() => {
-                setCategoryActiveState(id, !activeCategories[id]);
+                setCategoryActiveState(url, !activeCategories[url]);
               }}
-              isActive={activeCategories[id]}
+              isActive={activeCategories[url]}
             >
               {node.title}
             </Category>
           );
 
-          nestedList = getNavList(node.nodes, path + node.path);
+          nestedList = getNavList(node.nodes, url);
         } else {
           item = (
-            <NavLink href={path + node.path} onClick={onNavLinkClick}>
+            <NavLink href={url} onClick={onNavLinkClick}>
               {node.title}
             </NavLink>
           );
