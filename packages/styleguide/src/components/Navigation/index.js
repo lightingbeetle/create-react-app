@@ -36,8 +36,8 @@ const Navigation = ({
   };
 
   /**
-   * This method sets every category active state
-   * from first parent to current category to true
+   * This method sets every category state (from pathname)
+   * from first parent to current category to active
    */
   const setActiveCategoriesFromPathname = () => {
     let id = '';
