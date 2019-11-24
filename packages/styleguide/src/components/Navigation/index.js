@@ -23,67 +23,41 @@ const Navigation = ({
   const classes = cx(CLASS_ROOT, className);
   let location = useLocation();
 
-  const [activeLinks, setActiveLinks] = useState([]);
+  const [activeCategories, setActiveCategories] = useState({});
 
-  const copyActiveLinks = depthLevel => {
-    const activeLinksCopy = activeLinks.slice(0);
-
-    for (let i = 0; i <= depthLevel; i += 1) {
-      activeLinksCopy[i] = activeLinksCopy[i] || [];
-    }
-
-    return activeLinksCopy;
+  /**
+   * Set category active state
+   */
+  const setCategoryActiveState = (id, value = true) => {
+    setActiveCategories({
+      ...activeCategories,
+      [id]: value,
+    });
   };
 
-  const updateActiveLinks = () => {
-    const path = location.pathname;
-
-    const pathArray = path.split('/').filter(e => String(e).trim());
-
-    const activeLinksCopy = copyActiveLinks(pathArray.length - 1);
-
-    pathArray.forEach((element, i) => {
-      const elementPath = `/${element}`;
-      if (activeLinksCopy[i].indexOf(elementPath) === -1) {
-        activeLinksCopy[i] = [...activeLinksCopy[i], elementPath];
-      }
-    });
-
-    return activeLinksCopy;
+  /**
+   * This method sets every category active state
+   * from first parent to current category to true
+   */
+  const setActiveCategoriesFromPathname = () => {
+    let id = '';
+    const l = location.pathname;
+    const categories = l
+      .substring(1, l.lastIndexOf('/'))
+      .split('/')
+      .reduce((acc, curr) => {
+        id += '/' + curr;
+        return { ...acc, [id]: true };
+      }, {});
+    setActiveCategories({ ...activeCategories, ...categories });
   };
 
   useEffect(
     () => {
-      setActiveLinks(updateActiveLinks());
+      setActiveCategoriesFromPathname();
     },
     [location.pathname]
   );
-
-  const removeActive = (arr, element) => {
-    return arr.filter(e => e !== element);
-  };
-
-  const handleClick = (activeLink, depthLevel) => {
-    const activeLinksCopy = copyActiveLinks(depthLevel);
-
-    if (activeLinksCopy[depthLevel].indexOf(activeLink) === -1) {
-      activeLinksCopy[depthLevel].push(activeLink);
-    } else {
-      activeLinksCopy[depthLevel] = removeActive(
-        activeLinksCopy[depthLevel],
-        activeLink
-      );
-    }
-    setActiveLinks(activeLinksCopy);
-  };
-
-  const isActive = (element, depthLevel) => {
-    const activeLinks = copyActiveLinks(depthLevel);
-
-    return Array.isArray(activeLinks) || activeLinks.length
-      ? activeLinks[depthLevel].includes(element)
-      : false;
-  };
 
   const getNavList = (nodes = [], path = '', depthLevel = 0) => (
     <StyledNavList isMain={depthLevel === 0}>
@@ -92,10 +66,13 @@ const Navigation = ({
         let nestedList = null;
 
         if (node.nodes) {
+          const id = path + node.path;
           item = (
             <Category
-              onClick={() => handleClick(node.path, depthLevel)}
-              isActive={isActive(node.path, depthLevel)}
+              onClick={() => {
+                setCategoryActiveState(id, !activeCategories[id]);
+              }}
+              isActive={activeCategories[id]}
             >
               {node.title}
             </Category>
