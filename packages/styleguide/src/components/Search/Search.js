@@ -1,6 +1,6 @@
 import React from 'react';
 import { array, string } from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 /** https://www.npmjs.com/package/fuzzyjs */
 import { match, surround } from 'fuzzyjs';
@@ -15,13 +15,14 @@ const defaultProps = {
   placeholder: 'Search',
 };
 
-const Search = ({ list, placeholder, history }) => {
+const Search = ({ list, placeholder }) => {
+  let history = useHistory();
+
   const formatMatches = (matches, parentPath, parentTitle) =>
     matches.map(match => ({
       title: match.original.title,
       path: parentPath + match.original.path,
       string: match.string,
-      breadcrumbs: parentTitle,
       isHidden: match.original.hasNodes,
     }));
 
@@ -45,7 +46,10 @@ const Search = ({ list, placeholder, history }) => {
     });
 
   const getMatch = (value, string) =>
-    match(value, string, { withScore: true, withRanges: true });
+    match(value, string, {
+      withScore: true,
+      withRanges: true,
+    });
 
   const search = (value, list, parentPath = '', parentTitle = '') => {
     if (value === '') {
@@ -116,7 +120,8 @@ const Search = ({ list, placeholder, history }) => {
         }}
         onConfirm={confirmed => {
           if (!confirmed) return false;
-          history.push(confirmed.path);
+          const path = confirmed.path;
+          history.push(path);
         }}
       />
     </StyledAutocompleteWrapper>
