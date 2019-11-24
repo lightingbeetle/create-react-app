@@ -22,6 +22,7 @@ const Navigation = ({
 }) => {
   const classes = cx(CLASS_ROOT, className);
   let location = useLocation();
+
   const [activeLinks, setActiveLinks] = useState([]);
 
   const copyActiveLinks = depthLevel => {
@@ -34,29 +35,29 @@ const Navigation = ({
     return activeLinksCopy;
   };
 
-  const getActiveLinks = () => {
+  const updateActiveLinks = () => {
     const path = location.pathname;
 
-    let pathArray = [];
-    pathArray = path.split('/');
-    pathArray = pathArray.filter(e => String(e).trim());
-
-    if (pathArray.length <= 0) {
-      return [];
-    }
+    const pathArray = path.split('/').filter(e => String(e).trim());
 
     const activeLinksCopy = copyActiveLinks(pathArray.length - 1);
 
     pathArray.forEach((element, i) => {
-      activeLinksCopy[i].push(`/${element}`);
+      const elementPath = `/${element}`;
+      if (activeLinksCopy[i].indexOf(elementPath) === -1) {
+        activeLinksCopy[i] = [...activeLinksCopy[i], elementPath];
+      }
     });
 
     return activeLinksCopy;
   };
 
-  useEffect(() => {
-    setActiveLinks(getActiveLinks());
-  }, []);
+  useEffect(
+    () => {
+      setActiveLinks(updateActiveLinks());
+    },
+    [location.pathname]
+  );
 
   // eslint-disable-next-line class-methods-use-this
   const removeActive = (arr, element) => {
