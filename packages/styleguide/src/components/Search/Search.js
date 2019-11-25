@@ -56,47 +56,47 @@ const Search = ({ list, placeholder }) => {
   const search = (value, list, parentPath = '', parentTitle = '') => {
     if (value === '') {
       return [];
-    } else {
-      const fullPathsList = parseFullPathList(list);
-      // search the first level children for match
-      // const parentMatches = fuzzy.filter(value, fullPathsList, options);
-      const parentMatches = fullPathsList
-        .reduce((acc, curr) => {
-          const result = {
-            // search in title
-            title: getMatch(value, curr.title),
-            // search in path
-            path: getMatch(value, curr.path),
-          };
-
-          return result.path.match
-            ? [
-                ...acc,
-                {
-                  original: curr,
-                  result: result,
-                  score: {
-                    title: result.title.score,
-                    path: result.path.score,
-                    // get the highest score from the two
-                    full: Math.max(
-                      result.title.score !== 0 ? result.title.score : -1000,
-                      result.path.score !== 0 ? result.path.score : -1000
-                    ),
-                  },
-                  string: {
-                    title: surroundMatch(curr.title, result.title),
-                    path: surroundMatch(curr.path, result.path),
-                  },
-                },
-              ]
-            : acc;
-        }, [])
-        // sort from high to low
-        .sort((a, b) => b.score.full - a.score.full);
-      // format the matched items for later use
-      return formatMatches(parentMatches, parentPath, parentTitle);
     }
+
+    const fullPathsList = parseFullPathList(list);
+    // search the first level children for match
+    // const parentMatches = fuzzy.filter(value, fullPathsList, options);
+    const parentMatches = fullPathsList
+      .reduce((acc, curr) => {
+        const result = {
+          // search in title
+          title: getMatch(value, curr.title),
+          // search in path
+          path: getMatch(value, curr.path),
+        };
+
+        return result.path.match
+          ? [
+              ...acc,
+              {
+                original: curr,
+                result: result,
+                score: {
+                  title: result.title.score,
+                  path: result.path.score,
+                  // get the highest score from the two
+                  full: Math.max(
+                    result.title.score !== 0 ? result.title.score : -1000,
+                    result.path.score !== 0 ? result.path.score : -1000
+                  ),
+                },
+                string: {
+                  title: surroundMatch(curr.title, result.title),
+                  path: surroundMatch(curr.path, result.path),
+                },
+              },
+            ]
+          : acc;
+      }, [])
+      // sort from high to low
+      .sort((a, b) => b.score.full - a.score.full);
+    // format the matched items for later use
+    return formatMatches(parentMatches, parentPath, parentTitle);
   };
 
   return (
