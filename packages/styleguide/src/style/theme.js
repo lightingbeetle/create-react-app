@@ -54,7 +54,7 @@ export const zIndex = {
   sidebar: 101,
   overlay: 100,
   menuButton: 101,
-  preview: 1000,
+  fullScreenPreview: 1000,
 };
 
 const functionalColors = {
