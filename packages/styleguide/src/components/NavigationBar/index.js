@@ -31,6 +31,8 @@ const StyledMenuButtonWrapper = styled.a`
   z-index: ${props => props.theme.zIndex.menuButton};
   background: ${props => props.theme.colors.white};
   transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
+  border: 1px solid ${props => props.theme.colors.grey};
+  box-shadow: ${props => props.theme.shadows.default};
 
   &.is-active {
     transform: translateX(${props => props.theme.sizes.sidebarWidth});
