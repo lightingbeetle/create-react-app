@@ -164,10 +164,11 @@ const StyledAutocompleteWrapper = styled.div`
       background: white;
       border: 1px solid black;
       padding: 0;
-      width: 90%;
+      width: 94%;
       max-height: calc(8.25 * 52px);
       overflow: auto;
-      top: 32px;
+      left: 50%;
+      transform: translate(-50%, -17px);
     }
   }
 
