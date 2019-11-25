@@ -138,6 +138,7 @@ class App extends Component {
                 <NavigationBar
                   onButtonClick={this.handleClick}
                   isActive={this.state.isNavActive}
+                  routes={routes}
                 />
                 <Overlay className={activeClass} onClick={this.handleClick} />
               </Suspense>
