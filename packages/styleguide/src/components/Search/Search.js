@@ -136,9 +136,6 @@ const StyledAutocompleteWrapper = styled.div`
   font-size: ${props => rem(props.theme.fontSizes.base)};
   line-height: ${props => props.theme.lineHeights.base};
 
-  padding: ${props => rem(props.theme.spaces.default)}
-    ${props => rem(props.theme.spaces.medium)} 0;
-
   .autocomplete__input {
     width: 100%;
     line-height: 20px;
