@@ -134,7 +134,7 @@ class App extends Component {
                   <PageSidebarFooter>{`v${version}`}</PageSidebarFooter>
                 </Sidebar>
                 <NavigationBar
-                  onClick={this.handleClick}
+                  onButtonClick={this.handleClick}
                   isActive={this.state.isNavActive}
                 />
                 <Overlay className={activeClass} onClick={this.handleClick} />
@@ -196,10 +196,10 @@ const PageContent = styled.main`
   overflow-x: hidden;
   overflow-y: auto;
   padding: ${props => rem(props.theme.sizes.headerHeight)} 0;
-  transition: margin-left 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
+  transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
 
   .is-active & {
-    margin-left: ${props => rem(props.theme.sizes.sidebarWidth)};
+    transform: translateX(${props => rem(props.theme.sizes.sidebarWidth)});
   }
 
   /* IE */

@@ -1,18 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { bool } from 'prop-types';
+import { bool, func } from 'prop-types';
 import cx from 'classnames';
 
 const propTypes = {
   isActive: bool,
+  onButtonClick: func,
 };
 
-const NavigationBar = ({ className, isActive, ...other }) => {
+const NavigationBar = ({ className, isActive,onButtonClick, ...other }) => {
   const classes = cx({ 'is-active': isActive }, 'navigation-bar', className);
 
   return (
     <StyledMenuButtonWrapper className={classes} {...other}>
-      <StyledMenuButton>
+      <StyledMenuButton onClick={onButtonClick}>
         <StyledButtonLine />
         <StyledButtonLine />
         <StyledButtonLine />
