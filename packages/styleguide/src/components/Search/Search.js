@@ -136,10 +136,6 @@ const StyledAutocompleteWrapper = styled.div`
   font-size: ${props => rem(props.theme.fontSizes.base)};
   line-height: ${props => props.theme.lineHeights.base};
 
-  .navigation-bar & {
-    margin-left: auto;
-  }
-
   .autocomplete__input {
     width: 100%;
     line-height: 20px;

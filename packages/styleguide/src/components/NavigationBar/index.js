@@ -1,23 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { bool, func, array } from 'prop-types';
+import { bool, func } from 'prop-types';
 import cx from 'classnames';
-
-import Search from './../Search';
 
 const propTypes = {
   isActive: bool,
   onButtonClick: func,
-  routes: array,
 };
 
-const NavigationBar = ({
-  className,
-  isActive,
-  onButtonClick,
-  routes,
-  ...other
-}) => {
+const NavigationBar = ({ className, isActive, onButtonClick, ...other }) => {
   const classes = cx({ 'is-active': isActive }, 'navigation-bar', className);
 
   return (
@@ -27,15 +18,12 @@ const NavigationBar = ({
         <StyledButtonLine />
         <StyledButtonLine />
       </StyledMenuButton>
-
-      <Search list={routes} />
     </StyledMenuButtonWrapper>
   );
 };
 
 const StyledMenuButtonWrapper = styled.a`
-  display: flex;
-  justify-content: space-between;
+  display: inline-block;
   position: fixed;
   width: 100%;
   top: 0;
