@@ -41,8 +41,10 @@ const PreviewCode = ({ children, language, inline }) => {
                 {highlight}
               </code>
             ) : (
-              <StyledPre className={`prism-code language-${language}`}>
-                {highlight}
+              <StyledPre className={`language-${language}`}>
+                <code className={`code prism-code language-${language}`}>
+                  {highlight}
+                </code>
               </StyledPre>
             )}
           </StyledHighlightWrapper>
@@ -81,9 +83,11 @@ PreviewCode.defaultProps = {
 export default PreviewCode;
 
 const StyledHighlightWrapper = styled.span`
-  display: ${({ inline }) => (inline ? 'inline' : 'block')} !important;
+  code {
+    display: ${({ inline }) => (inline ? 'inline' : 'block')} !important;
+  }
 
-  [class*='language-'] {
+  code[class*='language-'] {
     font-feature-settings: 'calt' 1;
     text-rendering: optimizeLegibility;
     font-family: 'Fira Code', monospace;
