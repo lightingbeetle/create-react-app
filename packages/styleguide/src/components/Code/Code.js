@@ -100,6 +100,10 @@ const StyledHighlightWrapper = styled.span`
     padding: ${em(3.5)} ${em(5)};
     border-radius: 0;
   }
+
+  .token.punctuation {
+    color: #abb2bf;
+  }
 `;
 
 const StyledPre = styled.pre`
