@@ -98,6 +98,7 @@ const StyledHighlightWrapper = styled.span`
 
   &:not(pre) code[class*='language-'] {
     padding: ${em(3.5)} ${em(5)};
+    border-radius: 0;
   }
 `;
 
