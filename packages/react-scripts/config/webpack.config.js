@@ -751,8 +751,9 @@ module.exports = function(webpackEnv, options = {}) {
             manifest[file.name] = file.path;
             return manifest;
           }, seed);
-          const entrypointFiles = entrypoints.main.filter(
-            fileName => !fileName.endsWith('.map')
+
+          const entrypointFiles = Object.keys(allEntries).map(entry =>
+            path.basename(allEntries[entry])
           );
 
           return {
