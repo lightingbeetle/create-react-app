@@ -733,9 +733,9 @@ module.exports = function(webpackEnv, options = {}) {
         // Options similar to the same options in webpackOptions.output
         // both options are optional
         // component stylesheets are renamed to style.css
-        filename: chunkData =>
-          chunkData.chunk.name.startsWith('components/')
-            ? `${chunkData.chunk.name.replace('index', 'style')}.css`
+        moduleFilename: ({ name }) =>
+          name.startsWith('components/')
+            ? `${name.replace('index', 'style')}.css`
             : '[name].css',
         chunkFilename: '[name].css',
       }),
