@@ -1,4 +1,4 @@
-## 3.1.1 (Jan 16, 2020)
+## 3.1.2 (Jan 16, 2020)
 
 #### :bug: Bug Fix
 
@@ -6,7 +6,11 @@
 
 #### :tada: version updates
 
-- `lighter-react-scripts@3.1.1`
+- `lighter-react-scripts@3.1.2`
+
+## 3.1.1 (Jan 16, 2020)
+
+Same as 3.1.0.
 
 ## 3.1.0 (Jan 16, 2020)
 
