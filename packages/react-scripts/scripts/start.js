@@ -46,6 +46,7 @@ const {
 const openBrowser = require('react-dev-utils/openBrowser');
 const paths = require('../config/paths');
 const getEntries = require('./utils/getEntries');
+const getPrefixedEntries = require('./utils/getPrefixedEntries');
 const getSpaPaths = require('./utils/getSpaPaths');
 const configFactory = require('../config/webpack.config');
 const createDevServerConfig = require('../config/webpackDevServer.config');
@@ -106,7 +107,7 @@ choosePort(HOST, DEFAULT_PORT)
       configFactory('development', {
         entries: {
           ...getEntries('', paths.appSrc, '/index.js'),
-          ...getEntries('lib', paths.libDir, '/*.js'),
+          ...getPrefixedEntries('lib', paths.libDir, '/*.js'),
           ...spaEntries,
         },
         spaHtmlPaths,
