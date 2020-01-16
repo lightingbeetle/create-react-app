@@ -1,4 +1,14 @@
-## 3.1.0 (Jan 5, 2020)
+## 3.1.1 (Jan 16, 2020)
+
+#### :bug: Bug Fix
+
+- [lighter-react-scripts] remove replacing slash with dash in entry name ([#170](https://github.com/lightingbeetle/lighter/pull/170))
+
+#### :tada: version updates
+
+- `lighter-react-scripts@3.1.1`
+
+## 3.1.0 (Jan 16, 2020)
 
 #### :rocket: New Feature
 
