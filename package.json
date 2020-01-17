@@ -19,6 +19,7 @@
     "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
     "compile:lockfile": "node tasks/compile-lockfile.js",
     "styleguide:install": "cd packages/styleguide && npm install",
+    "styleguide:install:ci": "cd packages/styleguide && npm ci",
     "styleguide": "cd packages/styleguide && npm start"
   },
   "devDependencies": {
