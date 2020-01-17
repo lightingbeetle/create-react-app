@@ -55,6 +55,9 @@
       "prettier --trailing-comma es5 --single-quote --write",
       "git add"
     ],
+    "*.md": [
+      "npm run alex"
+    ],
     "yarn.lock": [
       "git rm --cached"
     ]
