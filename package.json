@@ -58,5 +58,8 @@
     "yarn.lock": [
       "git rm --cached"
     ]
+  },
+  "dependencies": {
+    "@epegzz/sass-vars-loader": "^6.0.0"
   }
 }

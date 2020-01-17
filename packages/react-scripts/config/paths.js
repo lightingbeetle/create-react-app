@@ -100,6 +100,7 @@ module.exports = {
   servedPath: getServedPath(resolveApp('package.json')),
   libDir: resolveApp('src/lib'),
   icons: resolveApp('src/assets/icons'),
+  tokens: resolveApp('src/tokens/index.js'),
 };
 
 // @remove-on-eject-begin
