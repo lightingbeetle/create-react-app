@@ -32,6 +32,7 @@ verifyTypeScriptSetup();
 // @remove-on-eject-end
 
 const chalk = require('chalk');
+const path = require('path');
 const fs = require('fs-extra');
 const webpack = require('webpack');
 const configFactory = require('../config/webpack.config');
@@ -76,11 +77,15 @@ const spaHtmlPaths = Object.entries(spaPaths).reduce((acc, [key, value]) => {
   return acc;
 }, {});
 
+const staticPath = path.join(paths.appSrc, 'scripts', 'index.js');
+
 // Generate configuration
 const config = [
   configFactory('production', {
     entries: {
-      ...getEntries('', paths.appSrc, '/index.js'),
+      app: path.join(paths.appSrc, 'index.js'),
+      ...(fs.existsSync(staticPath) && { static: staticPath }),
+      ...getEntries('lib', paths.libDir, '/*.{js,scss,css}'),
       ...spaEntries,
     },
     spaHtmlPaths,
@@ -90,7 +95,6 @@ const config = [
       ...getEntries('components', paths.componentsDir, '/*.{js,scss,css}'),
       ...getEntries('components', paths.componentsDir, '/**/index.js'),
       ...getEntries('components', paths.componentsDir, '/**/*.static.js'),
-      ...getEntries('lib', paths.libDir, '/*.{js,scss,css}'),
     },
   }),
 ];

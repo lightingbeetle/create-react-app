@@ -32,6 +32,7 @@ verifyTypeScriptSetup();
 // @remove-on-eject-end
 
 const fs = require('fs');
+const path = require('path');
 const chalk = require('react-dev-utils/chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -102,10 +103,14 @@ choosePort(HOST, DEFAULT_PORT)
       {}
     );
 
+    const staticPath = path.join(paths.appSrc, 'scripts', 'index.js');
+
     const configs = [
       configFactory('development', {
         entries: {
-          ...getEntries('', paths.appSrc, '/index.js'),
+          app: path.join(paths.appSrc, 'index.js'),
+          ...(fs.existsSync(staticPath) && { static: staticPath }),
+          ...getEntries('lib', paths.libDir, '/*.{js,scss,css}'),
           ...spaEntries,
         },
         spaHtmlPaths,
