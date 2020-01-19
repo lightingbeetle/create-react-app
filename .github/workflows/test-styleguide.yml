@@ -1,0 +1,13 @@
+name: Test styleguide
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install
+        run: cd ./packages/styleguide && npm ci
+      - name: Test
+        run: cd ./packages/styleguide && npm test
