@@ -8,6 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install
-        run: cd ./packages/styleguide && npm ci
+        run: npm run styleguide:install:ci
       - name: Test
-        run: cd ./packages/styleguide && npm test -- --no-watchman --all
+        run: npm run styleguide:test:ci
