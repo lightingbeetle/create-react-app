@@ -10,4 +10,4 @@ jobs:
       - name: Install
         run: cd ./packages/styleguide && npm ci
       - name: Test
-        run: cd ./packages/styleguide && npm test
+        run: cd ./packages/styleguide && npm test -- --no-watchman --all
