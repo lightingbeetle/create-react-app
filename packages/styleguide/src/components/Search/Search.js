@@ -168,7 +168,8 @@ const StyledAutocompleteWrapper = styled.div`
       max-height: calc(8.25 * 52px);
       overflow: auto;
       left: 50%;
-      transform: translate(-50%, -17px);
+      transform: translate(-50%, 0);
+      margin: 0;
     }
   }
 
