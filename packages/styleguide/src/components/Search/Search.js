@@ -150,7 +150,8 @@ const StyledAutocompleteWrapper = styled.div`
   }
 
   .autocomplete__option--focused {
-    background: #eee;
+    color: ${props => props.theme.colors.black};
+    background: ${props => props.theme.colors.grey};
   }
 
   .autocomplete__menu {
