@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
-import { string, node, object } from 'prop-types';
+import { node, object } from 'prop-types';
 import cx from 'classnames';
 import MediaQuery from 'react-responsive';
 import { Link } from 'react-router-dom';
