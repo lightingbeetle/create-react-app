@@ -115,4 +115,8 @@ StyledDocsTable.defaultProps = {
 
 const StyledTitle = H3.withComponent('div');
 
+StyledTitle.defaultProps = {
+  theme,
+};
+
 export default ComponentDocs;
