@@ -79,7 +79,6 @@ PreviewCode.defaultProps = {
   children: '',
   inline: true,
   language: 'markup',
-  theme,
 };
 
 export default PreviewCode;
