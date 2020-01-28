@@ -2,7 +2,7 @@
   "name": "@lighting-beetle/lighter-styleguide",
   "version": "3.1.1",
   "description": "Lighter styleguide",
-  "main": "build/lib/styleguide.js",
+  "main": "build/components/index.js",
   "files": [
     "build/"
   ],
