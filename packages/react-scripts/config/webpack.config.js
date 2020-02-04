@@ -214,8 +214,8 @@ module.exports = function(webpackEnv, options = {}) {
           loader: require.resolve(preProcessor),
           options: {
             sourceMap: true,
-            sassOptions: {
-              importer: preProcessor === 'sass-loader' && globImporter(),
+            sassOptions: preProcessor === 'sass-loader' && {
+              importer: globImporter(),
             },
           },
         }
