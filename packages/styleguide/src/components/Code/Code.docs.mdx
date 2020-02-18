@@ -1,4 +1,4 @@
-import { Preview, ComponentDocs, Code, Badge } from './../';
+import { Preview, ComponentDocs, Code, Badge, Note, Link } from './../';
 
 # Code
 
@@ -140,6 +140,21 @@ Default theme is [One Dark Pro theme for VS Code](https://github.com/Binaryify/O
   return 'Dracula theme';
 }`}</Code>
 </Preview>
+
+<Note type="info" title="Default Fira Code font">
+  Code uses Fira Code as default font and fallbacks to system monospace font if
+  Fira Code is not installed on your computer. If you want to show Fira Code to
+  everybody, import{' '}
+  <Link href="https://github.com/tonsky/FiraCode">
+    Fira Code to your project
+  </Link>
+  .
+</Note>
+
+<Note type="info" title="Different font">
+  If you want to preview Code with different font, overide `codeFontFamily`
+  property in theme.
+</Note>
 
 ## Props
 

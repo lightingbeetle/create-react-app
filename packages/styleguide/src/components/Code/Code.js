@@ -6,8 +6,6 @@ import Highlight, { defaultProps } from 'prism-react-renderer';
 
 import oneDarkProTheme from './oneDarkProTheme';
 
-import 'firacode/distr/fira_code.css';
-
 import * as theme from './../../style/theme';
 import { rem } from '../../style/utils';
 
@@ -105,7 +103,7 @@ const StyledHighlightWrapper = styled.span`
   code[class*='language-'] {
     font-feature-settings: 'calt' 1;
     text-rendering: optimizeLegibility;
-    font-family: 'Fira Code', monospace;
+    font-family: ${props => props.theme.codeFontFamily};
     font-size: ${props =>
       em(props.theme.fontSizes.small, props.theme.fontSizes.base)};
     line-height: ${props =>
