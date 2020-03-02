@@ -43,7 +43,7 @@ const theme = {
     {
       types: ['attr-name'],
       style: {
-        fontStyle: 'italic',
+        color: '#d19a66',
       },
     },
     {
@@ -56,6 +56,12 @@ const theme = {
       types: ['comment'],
       style: {
         color: 'rgb(92, 99, 112)',
+      },
+    },
+    {
+      types: ['attr-value'],
+      style: {
+        color: '#98c379',
       },
     },
   ],
