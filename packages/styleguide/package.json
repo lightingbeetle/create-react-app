@@ -57,7 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@lighting-beetle/lighter-react-scripts": "~3.4.0",
+    "@lighting-beetle/lighter-react-scripts": "~3.5.0",
     "@testing-library/jest-dom": "~5.0.0",
     "@testing-library/react": "~9.4.0",
     "babel-plugin-react-docgen": "~2.0.0",
