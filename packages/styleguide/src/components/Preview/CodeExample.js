@@ -211,6 +211,7 @@ export default class CodeExample extends React.Component {
         <Code
           inline={false}
           ref={this.codeBlockRef}
+          data-testid={this.state.codePreviewType}
           language={
             this.state.codePreviewType === 'html'
               ? 'markup'
