@@ -167,7 +167,7 @@ export default class CodeExample extends React.Component {
   }
 
   render() {
-    const { children, codeJSXOptions, codeTypes, ...other } = this.props;
+    const { children, codeJSXOptions, codeTypes, theme, ...other } = this.props;
 
     let codeToShow;
     switch (this.state.codePreviewType) {

@@ -128,6 +128,7 @@ StyledHighlightWrapper.defaultProps = {
 };
 
 const StyledPre = styled.pre`
+  overflow: auto;
   pre[class*='language-']& {
     margin: 0 0 ${props => rem(props.theme.spaces.medium)};
   }

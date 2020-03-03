@@ -17,7 +17,7 @@
   },
   "homepage": "/",
   "dependencies": {
-    "@mdx-js/react": "~1.5.0",
+    "@mdx-js/react": "~1.5.7",
     "accessible-autocomplete": "~2.0.1",
     "array-includes": "~3.0.3",
     "chroma-js": "~2.0.2",
@@ -57,7 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@lighting-beetle/lighter-react-scripts": "~3.4.0",
+    "@lighting-beetle/lighter-react-scripts": "~3.5.0",
     "@testing-library/jest-dom": "~5.0.0",
     "@testing-library/react": "~9.4.0",
     "babel-plugin-react-docgen": "~2.0.0",
