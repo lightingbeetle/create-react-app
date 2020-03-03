@@ -1,3 +1,11 @@
+## 3.5.2 (Mar 3, 2020)
+
+This update is necessary due to incorrect publish of `lighter-stylegiude@3.3.1`
+
+#### :tata: version updates
+
+- `lighter-stylegiude@3.3.2`
+
 ## 3.5.1 (Mar 3, 2020)
 
 #### :bug: bug fix
