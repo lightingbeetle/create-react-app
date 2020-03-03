@@ -1,3 +1,17 @@
+## 3.5.1 (Mar 3, 2020)
+
+#### :bug: bug fix
+
+- [lighter-styleguide] fix syntax highliting ([#206](https://github.com/lightingbeetle/lighter/pull/206))
+  - color theme
+  - mdx language definition
+  - Preview component overflow
+  - prevent theme prop from falling through to first html element
+
+#### :tata: version updates
+
+- `lighter-stylegiude#3.3.1`
+
 ## 3.5.0 (Feb 19, 2020)
 
 #### :house: Internal
