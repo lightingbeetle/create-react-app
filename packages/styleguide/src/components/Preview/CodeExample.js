@@ -167,7 +167,7 @@ export default class CodeExample extends React.Component {
   }
 
   render() {
-    const { children, codeJSXOptions, codeTypes, theme, ...other } = this.props;
+    const { children, codeJSXOptions, codeTypes, ...other } = this.props;
 
     let codeToShow;
     switch (this.state.codePreviewType) {
@@ -175,10 +175,7 @@ export default class CodeExample extends React.Component {
         codeToShow = pretty(
           typeof children === 'string'
             ? unescape(children)
-            : renderToStaticMarkup({
-                ...children,
-                props: { ...children.props, theme },
-              }),
+            : renderToStaticMarkup(children),
           {
             ocd: true,
           }
