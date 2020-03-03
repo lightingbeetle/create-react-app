@@ -10,7 +10,7 @@
 
 #### :tata: version updates
 
-- `lighter-stylegiude#3.3.1`
+- `lighter-stylegiude@3.3.1`
 
 ## 3.5.0 (Feb 19, 2020)
 
