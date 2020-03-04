@@ -37,7 +37,7 @@ export const MDXComponents = {
   inlineCode: props => <Code {...props} />,
   code: props => (
     <CodeBlock
-      language={props.className && props.className.replace(/language-/, '')}
+      language={props.className?.replace(/language-/, '')}
       {...props}
     />
   ),
