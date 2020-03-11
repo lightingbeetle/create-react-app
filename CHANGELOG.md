@@ -1,4 +1,12 @@
-## 3.5.3 (Mar 4, 2020)
+## 3.5.1 (Mar 11, 2020)
+
+- [lighter-react-scripts] fix missing postcss-inline-svg ([#212](https://github.com/lightingbeetle/lighter/pull/212))
+
+#### :tata: version updates
+
+- `lighter-react-scripts@3.5.1`
+
+## 3.5.0 (Mar 4, 2020)
 
 - [lighter-styleguide] fix code preview crashing when rendering more than one child ([#209](https://github.com/lightingbeetle/lighter/pull/209))
 - [lighter-styleguide] fix MDX codeblock crashing when no language is specified ([#210](https://github.com/lightingbeetle/lighter/pull/210))
@@ -7,7 +15,7 @@
 
 - `lighter-stylegiude@3.3.3`
 
-## 3.5.2 (Mar 3, 2020)
+## 3.5.0 (Mar 3, 2020)
 
 This update is necessary due to incorrect publish of `lighter-stylegiude@3.3.1`
 
@@ -15,7 +23,7 @@ This update is necessary due to incorrect publish of `lighter-stylegiude@3.3.1`
 
 - `lighter-stylegiude@3.3.2`
 
-## 3.5.1 (Mar 3, 2020)
+## 3.5.0 (Mar 3, 2020)
 
 #### :bug: bug fix
 
