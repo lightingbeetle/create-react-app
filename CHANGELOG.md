@@ -1,3 +1,13 @@
+## 3.5.2 (Mar 19, 2020)
+
+#### :bug: Bug Fix
+
+- [lighter-react-scripts] fix support of TypeScript ([#214](https://github.com/lightingbeetle/lighter/pull/214))
+
+#### :tada: version updates
+
+- `lighter-react-scripts@3.5.0`
+
 ## 3.5.1 (Mar 11, 2020)
 
 - [lighter-react-scripts] fix missing postcss-inline-svg ([#212](https://github.com/lightingbeetle/lighter/pull/212))
