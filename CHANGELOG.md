@@ -1,4 +1,14 @@
-## 3.5.2 (Mar 3, 2020)
+## 3.5.2 (Mar 19, 2020)
+
+#### :bug: Bug Fix
+
+- [lighter-react-scripts] fix support of TypeScript ([#214](https://github.com/lightingbeetle/lighter/pull/214))
+
+#### :tada: version updates
+
+- `lighter-react-scripts@3.5.0`
+
+## 3.5.1 (Mar 3, 2020)
 
 This update is necessary due to incorrect publish of `lighter-stylegiude@3.3.1`
 
