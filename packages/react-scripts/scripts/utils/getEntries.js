@@ -16,7 +16,7 @@ function getEntries(type, dirPath, globRegex) {
 
     let entryName = path
       // get rid of extension from entry name
-      .join(type, localPath.split(/(\.js|\.css|\.scss)$/)[0])
+      .join(type, localPath.split(/(\.js|\.jsx|\.ts|\.tsx|\.css|\.scss)$/)[0])
       // remove leading slash
       .replace(/^\/|\/$/g, '');
 

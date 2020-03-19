@@ -78,6 +78,7 @@ module.exports = {
   libDir: resolveApp('src/lib'),
   icons: resolveApp('src/assets/icons'),
   tokens: resolveModule(resolveApp, 'src/lib/tokens'),
+  staticJs: resolveModule(resolveApp, 'src/scripts/index'),
 };
 
 // @remove-on-eject-begin
@@ -105,6 +106,7 @@ module.exports = {
   libDir: resolveApp('src/lib'),
   icons: resolveApp('src/assets/icons'),
   tokens: resolveModule(resolveApp, 'src/lib/tokens'),
+  staticJs: resolveModule(resolveApp, 'src/scripts/index'),
   // These properties only exist before ejecting:
   ownPath: resolveOwn('.'),
   ownNodeModules: resolveOwn('node_modules'), // This is empty on npm 3
@@ -142,8 +144,8 @@ if (
     publicUrlOrPath,
     componentsDir: resolveApp('src/components'),
     libDir: resolveApp('src/lib'),
-
     icons: resolveApp('src/assets/icons'),
+    staticJs: resolveModule(resolveApp, 'src/scripts/index'),
     // These properties only exist before ejecting:
     ownPath: resolveOwn('.'),
     ownNodeModules: resolveOwn('node_modules'),
