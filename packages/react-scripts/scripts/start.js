@@ -103,19 +103,15 @@ choosePort(HOST, DEFAULT_PORT)
       {}
     );
 
-    const staticPath = path.join(paths.appSrc, 'scripts', 'index.js');
-
-    const configs = [
-      configFactory('development', {
-        entries: {
-          app: path.join(paths.appSrc, 'index.js'),
-          ...(fs.existsSync(staticPath) && { static: staticPath }),
-          ...getEntries('lib', paths.libDir, '/*.{js,scss,css}'),
-          ...spaEntries,
-        },
-        spaHtmlPaths,
-      }),
-    ];
+    const configs = configFactory('development', {
+      entries: {
+        app: paths.appIndexJs,
+        ...(fs.existsSync(paths.staticJs) && { static: paths.staticJs }),
+        ...getEntries('lib', paths.libDir, '/*.{js,jsx,ts,tsx,scss,css}'),
+        ...spaEntries,
+      },
+      spaHtmlPaths,
+    });
 
     const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
     const appName = require(paths.appPackageJson).name;

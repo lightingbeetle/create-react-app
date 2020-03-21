@@ -1,3 +1,62 @@
+## 3.5.2 (Mar 19, 2020)
+
+#### :bug: Bug Fix
+
+- [lighter-react-scripts] fix support of TypeScript ([#214](https://github.com/lightingbeetle/lighter/pull/214))
+
+#### :tada: version updates
+
+- `lighter-react-scripts@3.5.0`
+
+## 3.5.1 (Mar 11, 2020)
+
+- [lighter-react-scripts] fix missing postcss-inline-svg ([#212](https://github.com/lightingbeetle/lighter/pull/212))
+
+#### :tata: version updates
+
+- `lighter-react-scripts@3.5.1`
+
+## 3.5.0 (Mar 4, 2020)
+
+- [lighter-styleguide] fix code preview crashing when rendering more than one child ([#209](https://github.com/lightingbeetle/lighter/pull/209))
+- [lighter-styleguide] fix MDX codeblock crashing when no language is specified ([#210](https://github.com/lightingbeetle/lighter/pull/210))
+
+#### :tata: version updates
+
+- `lighter-stylegiude@3.3.3`
+
+## 3.5.0 (Mar 3, 2020)
+
+This update is necessary due to incorrect publish of `lighter-stylegiude@3.3.1`
+
+#### :tata: version updates
+
+- `lighter-stylegiude@3.3.2`
+
+## 3.5.0 (Mar 3, 2020)
+
+#### :bug: bug fix
+
+- [lighter-styleguide] fix syntax highliting ([#206](https://github.com/lightingbeetle/lighter/pull/206))
+  - color theme
+  - mdx language definition
+  - Preview component overflow
+  - prevent theme prop from falling through to first html element
+
+#### :tata: version updates
+
+- `lighter-stylegiude@3.3.1`
+
+## 3.5.0 (Feb 19, 2020)
+
+#### :house: Internal
+
+- [lighter] update CRA to 3.4.0 ([#204](https://github.com/lightingbeetle/lighter/pull/204))
+
+#### :tada: version updates
+
+- `lighter-react-scripts@3.5.0`
+
 ## 3.4.0 (Feb 18, 2020)
 
 #### :rocket: New Feature

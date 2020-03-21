@@ -35,7 +35,12 @@ export const MDXComponents = {
   p: props => <P {...props} />,
   a: props => <Link {...props} />,
   inlineCode: props => <Code {...props} />,
-  code: props => <CodeBlock {...props} />,
+  code: props => (
+    <CodeBlock
+      language={props.className?.replace(/language-/, '')}
+      {...props}
+    />
+  ),
 };
 
 const MDXWrapper = props => (

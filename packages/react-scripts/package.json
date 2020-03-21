@@ -1,6 +1,6 @@
 {
   "name": "@lighting-beetle/lighter-react-scripts",
-  "version": "3.4.0",
+  "version": "3.5.2",
   "description": "Configuration and scripts for Lighter",
   "repository": "lighting-beetle/lighter",
   "license": "MIT",
@@ -65,6 +65,7 @@
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "pnp-webpack-plugin": "1.6.0",
     "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-inline-svg": "^4.1.0",
     "postcss-loader": "3.0.0",
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
