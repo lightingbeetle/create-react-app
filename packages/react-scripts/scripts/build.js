@@ -109,7 +109,9 @@ const componentsConfig = configFactory('lib', {
 
 const run = async () => {
   await runBuild(appConfig, 'app');
-  await runBuild(componentsConfig, 'components');
+  if (process.env.BUILD_COMPONENTS !== 'false') {
+    await runBuild(componentsConfig, 'components');
+  }
 };
 
 run();
