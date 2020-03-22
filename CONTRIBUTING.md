@@ -122,22 +122,42 @@ The reason code is reviewed, is to assure better quality, readability and knowle
 - Found something nice? Appreciate it!
 - Try to respond within 24 hours
 
-## Versioning
+## Release workflow
 
-[Semantic versioning (semver)](https://semver.org/) must be followed in process of releasing new version of this repository.
+[changesets](https://github.com/atlassian/changesets)
 
-### When to update version
+### Submit a PR
 
-After meaningful batch of work. Depends on project plan, but usually as soon as project/feature/fix is ready to be evaluated by other parties or publicly.
+Add a changeset as part of a PR if the changes impact the consumer. A changeset is a markdown file which also describes the size of the change (patch, minor or major).
 
-### How to determine version number
+```bash
+npx changeset add
+```
 
-- Follow [Semantic versioning (semver)](https://semver.org/) strictly.
-- In initial stage of project (pre 1.0.0) it's ok to make breaking changes without changing first digit of version (major). Same applies to beta versions.
-- Don't be afraid to change major version if you introduce breaking change (is the breaking change necessary?).
+A PR could theoretically have multiple changesets describing different changes.
+e.g.
 
-### How to update version
+- patch: Added new prop to Box
+- minor: Add new TextField label type cos we needed more
 
-1. Update `CHANGELOG.md` file with summary of changes since last version. Good example of how changelog should look like is [Create React App changelog](https://github.com/facebook/create-react-app/blob/master/CHANGELOG.md). Distinguish between packages with package name prefix such as `lighter-styleguide`, or `lighter-react-scripts`. Also reference pull request via link.
-2. Update version in `package.json` of each package which should be updated.
-3. If you have npm publish rights publish each updated package on npm via `npm publish --access public` or ask somebody who has publish rights.
+The [changeset-bot](https://github.com/apps/changeset-bot) will add a reminder on PRs without a changeset to add one. This can be ignored for PRs that don't have consumer facing changes.
+
+### Github action creates a changeset PR (kind of like renovate)
+
+After merging the PR to master, a new PR is automatically created that contains the result of `npx changeset version`.
+
+This:
+
+- Removes existing changeset files
+- Creates a changelog file by merging the changesets
+- Update the package.json version field
+
+We can then either, keep the PR open and it will self update as more changesets are added to master, or merge it.
+
+[changesets-action](https://github.com/changesets/action)
+
+[Example PR](https://github.com/atlassian/changesets/pull/279)
+
+### Changeset PR is merged
+
+Once the changeset PR is merged, the github action publishes the result to npm and push tags/release notes to github.

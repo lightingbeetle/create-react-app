@@ -9,7 +9,6 @@
     "create-react-app": "node tasks/cra.js",
     "e2e": "tasks/e2e-simple.sh",
     "e2e:docker": "tasks/local-test.sh",
-    "postinstall": "cd packages/react-error-overlay/ && yarn build:prod",
     "publish": "tasks/publish.sh",
     "start": "cd packages/react-scripts && node bin/react-scripts.js start",
     "screencast": "node ./tasks/screencast.js",
@@ -18,12 +17,14 @@
     "test": "cd packages/react-scripts && node bin/react-scripts.js test",
     "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
     "compile:lockfile": "node tasks/compile-lockfile.js",
+    "release": "npm run build && npx changeset publish",
     "styleguide:install": "cd packages/styleguide && npm install",
     "styleguide:install:ci": "cd packages/styleguide && npm ci",
     "styleguide:test:ci": "cd packages/styleguide && CI=true npm test",
     "styleguide": "cd packages/styleguide && npm start"
   },
   "devDependencies": {
+    "@changesets/cli": "~2.6.1",
     "@testing-library/jest-dom": "^4.2.0",
     "@testing-library/react": "^9.3.0",
     "@testing-library/user-event": "^7.1.2",
