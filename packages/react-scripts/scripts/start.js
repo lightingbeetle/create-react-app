@@ -217,6 +217,15 @@ choosePort(HOST, DEFAULT_PORT)
         process.exit();
       });
     });
+
+    if (isInteractive || process.env.CI !== 'true') {
+      // Gracefully exit when stdin ends
+      process.stdin.on('end', function() {
+        devServer.close();
+        process.exit();
+      });
+      process.stdin.resume();
+    }
   })
   .catch(err => {
     if (err && err.message) {
