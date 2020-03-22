@@ -1,5 +1,11 @@
 # @lighting-beetle/lighter-react-scripts
 
+## 3.7.0
+
+### Minor Changes
+
+- d06fc702: add option to disable building components using BUILD_COMPONENTS env
+
 ## 3.6.0
 
 ### Minor Changes
