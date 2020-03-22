@@ -1,5 +1,5 @@
 ---
-'@lighting-beetle/lighter-react-scripts': major
+'@lighting-beetle/lighter-react-scripts': patch
 ---
 
 fix root folder install
