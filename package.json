@@ -18,12 +18,14 @@
     "test": "cd packages/react-scripts && node bin/react-scripts.js test",
     "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
     "compile:lockfile": "node tasks/compile-lockfile.js",
+    "release": "npm run build && changeset publish",
     "styleguide:install": "cd packages/styleguide && npm install",
     "styleguide:install:ci": "cd packages/styleguide && npm ci",
     "styleguide:test:ci": "cd packages/styleguide && CI=true npm test",
     "styleguide": "cd packages/styleguide && npm start"
   },
   "devDependencies": {
+    "@changesets/cli": "~2.6.1",
     "@testing-library/jest-dom": "^4.2.0",
     "@testing-library/react": "^9.3.0",
     "@testing-library/user-event": "^7.1.2",
