@@ -72,6 +72,7 @@
     "postcss-safe-parser": "4.0.1",
     "react-app-polyfill": "^1.0.6",
     "react-dev-utils": "^10.2.1",
+    "react-docgen-typescript-loader": "~3.7.1",
     "remark-emoji": "^2.0.2",
     "resolve": "1.15.0",
     "resolve-url-loader": "3.1.1",
