@@ -1,5 +1,11 @@
 # @lighting-beetle/lighter-react-scripts
 
+## 3.8.0
+
+### Minor Changes
+
+- 49921a80: add support form generating react-docgen info from TS prop definitions
+
 ## 3.7.0
 
 ### Minor Changes
