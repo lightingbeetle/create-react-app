@@ -496,16 +496,11 @@ module.exports = function(webpackEnv, options = {}) {
                     docgenCollectionName: null,
                     savePropValueAsString: true,
                     propFilter: prop => {
-                      if (prop.parent === null) {
-                        return true;
+                      if (prop.parent) {
+                        // filter out external types
+                        return !prop.parent.fileName.includes('node_modules');
                       }
-
-                      // Filter out props which type definition is placed in react package
-                      return (
-                        prop.parent.fileName.indexOf(
-                          'node_modules/@types/react'
-                        ) < 0
-                      );
+                      return true;
                     },
                   },
                 },
