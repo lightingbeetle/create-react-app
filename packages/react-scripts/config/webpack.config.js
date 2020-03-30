@@ -495,6 +495,18 @@ module.exports = function(webpackEnv, options = {}) {
                     tsconfigPath: paths.appTsConfig,
                     docgenCollectionName: null,
                     savePropValueAsString: true,
+                    propFilter: prop => {
+                      if (prop.parent === null) {
+                        return true;
+                      }
+
+                      // Filter out props which type definition is placed in react package
+                      return (
+                        prop.parent.fileName.indexOf(
+                          'node_modules/@types/react'
+                        ) < 0
+                      );
+                    },
                   },
                 },
               ].filter(Boolean),
