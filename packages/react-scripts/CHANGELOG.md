@@ -1,5 +1,15 @@
 # @lighting-beetle/lighter-react-scripts
 
+## 3.9.0
+
+### Minor Changes
+
+- 6985ee1e: Fix imports outside src not working in windows
+
+### Patch Changes
+
+- 386ef8fe: Add propFilter to filter out unwanted type defs, i.e. all from `@types/react`.
+
 ## 3.8.0
 
 ### Minor Changes
