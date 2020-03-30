@@ -409,7 +409,7 @@ module.exports = function(webpackEnv, options = {}) {
         // Make sure your source files are compiled, as they will not be processed in any way.
         new ModuleScopePlugin(paths.appSrc, [
           paths.appPackageJson,
-          ...glob.sync(path.join(paths.appPath, '/*.md')),
+          ...glob.sync(path.join(paths.appPath, '/*.md'), { realpath: true }),
         ]),
       ],
     },
