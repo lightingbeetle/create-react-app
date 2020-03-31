@@ -1,5 +1,11 @@
 # @lighting-beetle/lighter-react-scripts
 
+## 3.8.2
+
+### Patch Changes
+
+- d87d58f6: Filter out all external prop types (TS-only)
+
 ## 3.8.1
 
 ### Patch Changes
