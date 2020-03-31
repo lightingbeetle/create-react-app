@@ -20,6 +20,10 @@ function getEntries(type, dirPath, globRegex) {
       // remove leading slash
       .replace(/^\/|\/$/g, '');
 
+    if (process.platform === "win32") {
+      entryName = entryName.replace(/\\/g, "/");
+    }  
+
     entries[entryName] = path.join(dirPath, localPath);
 
     return entries;
