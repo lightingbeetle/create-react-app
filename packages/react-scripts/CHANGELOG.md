@@ -1,5 +1,11 @@
 # @lighting-beetle/lighter-react-scripts
 
+## 3.8.3
+
+### Patch Changes
+
+- bccd7e42: fix lib entries on windows
+
 ## 3.8.2
 
 ### Patch Changes
