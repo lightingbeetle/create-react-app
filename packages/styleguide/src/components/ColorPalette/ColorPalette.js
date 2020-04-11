@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { string, object } from 'prop-types';
+import { string, object, oneOfType } from 'prop-types';
 import styled from 'styled-components';
 
 import * as theme from './../../style/theme';
@@ -11,17 +11,10 @@ const defaultShade = '500';
 const ColorPalette = ({ children, name, color, ...other }) => {
   const [currentShade, setCurrentShade] = useState(getDefaultShade());
 
-  function getSwatches() {
-    if (color && color.type === 'SassMap') {
-      return color.value;
-    }
-    return [];
-  }
-
   function getDefaultShade() {
-    if (color && color.type === 'SassMap') {
+    if (typeof color === 'object') {
       let shade = defaultShade;
-      if (!Object.prototype.hasOwnProperty.call(color.value, defaultShade)) {
+      if (!Object.prototype.hasOwnProperty.call(color, defaultShade)) {
         [shade] = Object.keys(color.value);
       }
       return shade;
@@ -32,26 +25,27 @@ const ColorPalette = ({ children, name, color, ...other }) => {
 
   function getBackroundColor(shade = currentShade) {
     if (shade) {
-      return color.value[shade].value.hex;
+      return color[shade];
     }
-    return color.value.hex;
+    return color;
   }
 
   function handleColorChange(e, shade) {
     setCurrentShade(shade);
   }
 
-  const colorSwatches = getSwatches();
-
-  const swatches = Object.entries(colorSwatches).map(([shade]) => (
-    <Swatch
-      key={shade}
-      shade={shade}
-      color={getBackroundColor(shade)}
-      isActive={shade === currentShade}
-      onClick={e => handleColorChange(e, shade)}
-    />
-  ));
+  let swatches;
+  if (typeof color === 'object') {
+    swatches = Object.entries(color).map(([shade]) => (
+      <Swatch
+        key={shade}
+        shade={shade}
+        color={getBackroundColor(shade)}
+        isActive={shade === currentShade}
+        onClick={e => handleColorChange(e, shade)}
+      />
+    ));
+  }
 
   return (
     <StyledColorPalette
@@ -60,17 +54,17 @@ const ColorPalette = ({ children, name, color, ...other }) => {
     >
       <StyledColorInfo>
         {name}&nbsp;
-        {swatches.length > 0 ? (
+        {swatches ? (
           <>
             <div>{currentShade}</div>&nbsp;
-            <div>{color.value[currentShade].value.hex}</div>
+            <div>{color[currentShade]}</div>
           </>
         ) : (
-          <div>{color.value.hex}</div>
+          <div>{color}</div>
         )}
       </StyledColorInfo>
 
-      {swatches.length > 0 && (
+      {swatches && (
         <StyledSwatches>
           <StyledSwatchSpacer />
           {swatches}
@@ -85,41 +79,21 @@ ColorPalette.displayName = 'ColorPalette';
 
 ColorPalette.propTypes = {
   /** 
-   * Color object could have these two shapes:
-   * just one color
+   * Color could be string
+   * ```js
+"#ff5722"
+   * ```
+   * or object of multiple shades with shade number as key
    * ```js
 {
-type: 'SassColor',
-value: {
-  hex: '#ff5722'
-}
+  '300': "#ff6b6b",
+  '500': "#fa5252",
 }
    * ```
-   * or multiple shades with shade number as key
-   * ```js
-{
-type: 'SassMap',
-value: {
-  '300': {
-    type: 'SassColor',
-    value: {
-      hex: '#ff6b6b'
-    }
-  },
-  '500': {
-    type: 'SassColor',
-    value: {
-      hex: '#fa5252'
-    }
-  }
-}
-}
-   * ```
-   * 
    */
-  color: object,
+  color: oneOfType([string, object]).isRequired,
   /** Name of the color */
-  name: string,
+  name: string.isRequired,
 };
 
 export default ColorPalette;
