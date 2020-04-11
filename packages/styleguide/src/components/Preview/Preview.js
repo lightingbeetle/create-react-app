@@ -11,8 +11,8 @@ import {
 import cx from 'classnames';
 import Select from 'react-select';
 import styled from 'styled-components';
-import chroma from 'chroma-js';
 import ReactGA from 'react-ga';
+import { hex } from 'wcag-contrast';
 
 import * as theme from './../../style/theme';
 
@@ -29,18 +29,20 @@ import Button from './../Button';
 const CLASS_ROOT = '';
 
 const getBackgroundsAsArray = (previewBackgrounds, excludedColors = []) =>
-  Object.keys(previewBackgrounds).reduce(
-    (acc, name) => [
-      ...acc,
-      !excludedColors.includes(name)
-        ? {
-            value: previewBackgrounds[name],
-            label: name,
-          }
-        : {},
-    ],
-    []
-  );
+  Object.keys(previewBackgrounds)
+    .reduce(
+      (acc, name) => [
+        ...acc,
+        !excludedColors.includes(name)
+          ? {
+              value: previewBackgrounds[name],
+              label: name,
+            }
+          : undefined,
+      ],
+      []
+    )
+    .filter(Boolean);
 
 const Preview = ({
   bgTheme,
@@ -116,11 +118,10 @@ const Preview = ({
 
   const colourStyles = {
     option: (styles, { data, isActive }) => {
-      const color = chroma(data.value);
       return {
         ...styles,
-        backgroundColor: isActive ? 'black' : data.value,
-        color: chroma.contrast(color, 'white') > 2 ? 'white' : 'black',
+        backgroundColor: isActive ? 'black' : data?.value,
+        color: hex(data?.value ?? '#fff', '#fff') > 2 ? 'white' : 'black',
         cursor: 'pointer',
       };
     },
