@@ -103,22 +103,36 @@ is used to generate JSX in code example. To overide options of this library, use
 
 ### Preview HTML string
 
-<Preview code={<Preview html="<div class='html'>This is HTML string</div>" />}>
+<Preview
+  code={
+    <Preview
+      html={`
+<div class='html'>
+  <div>This is HTML string</div>
+</div>
+`}
+    />
+  }
+>
   This is HTML string
 </Preview>
 
 ### Preview interactiveProps
 
-`interactiveProps` are used as a pipe for sending special props to Interactive elements renderer. 
+`interactiveProps` are used as a pipe for sending special props to Interactive elements renderer.
 
 Every component in the `Preview` gets their own Interactive component to `render`.  
 `render` prop is prefilled with parsed component from `Preview`.  
 `filterProps` is set of values that ensures, that user cannot edit these props interactively.  
-`skipChildren` is used to make just the parent element interactive not the children elements.  
+`skipChildren` is used to make just the parent element interactive not the children elements.
 
 ## Props
 
-<ComponentDocs title="<Preview />" component={PreviewForDocs} excludes={['isIframe', 'iframeHead', 'iframeScripts']}/>
+<ComponentDocs
+  title="<Preview />"
+  component={PreviewForDocs}
+  excludes={['isIframe', 'iframeHead', 'iframeScripts']}
+/>
 
 ## Props for interactive component
 
