@@ -18,7 +18,6 @@ import * as theme from './../../style/theme';
 
 import PreviewTitleBar from './PreviewTitleBar';
 import CodeExample from './CodeExample';
-import Frame from './Frame';
 import Interact from './Interact/Interact';
 
 import Card from './../Card';
@@ -55,10 +54,7 @@ const Preview = ({
   enableFullscreen,
   hasCodePreview,
   html,
-  iframeHead,
-  iframeScripts,
   interactiveProps,
-  isIframe,
   isInteractive,
   ...other
 }) => {
@@ -208,14 +204,6 @@ const Preview = ({
     childrenToRender ||
     html;
 
-  const content = isIframe ? (
-    <Frame head={iframeHead} scripts={iframeScripts}>
-      {toRender}
-    </Frame>
-  ) : (
-    toRender
-  );
-
   return (
     <StyledPreview className={wrapperClasses}>
       <PreviewTitleBar actions={actions} />
@@ -234,7 +222,7 @@ const Preview = ({
           ))
         ) : (
           <>
-            <StyledPreviewLive>{content}</StyledPreviewLive>
+            <StyledPreviewLive>{toRender}</StyledPreviewLive>
             {isCodeShown && hasCodePreview && toCode && (
               <CodeExample
                 {...(html ? { codeTypes: ['html'] } : {})}
@@ -269,14 +257,8 @@ Preview.propTypes = {
   hasCodePreview: bool,
   /** Pass HTML as string to preview HTML code. */
   html: string,
-  /** (unstable) Iframe custom <head /> */
-  iframeHead: node,
-  /** (unstable) Iframe custom JavaScripts. */
-  iframeScripts: string,
   /** Props for interactive component */
   interactiveProps: object,
-  /** (unstable) Display preview in inframe. */
-  isIframe: bool,
   /** Preview with interactivity */
   isInteractive: bool,
 };
