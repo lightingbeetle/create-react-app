@@ -87,9 +87,9 @@ const StyledComponentDocs = styled(Card)`
 `;
 
 const StyledHeader = styled.header`
-  padding-top: ${props => props.theme.spaces.medium};
-  padding-left: ${props => props.theme.spaces.medium};
-  padding-right: ${props => props.theme.spaces.medium};
+  padding-top: ${(props) => props.theme.spaces.medium};
+  padding-left: ${(props) => props.theme.spaces.medium};
+  padding-right: ${(props) => props.theme.spaces.medium};
 `;
 
 StyledHeader.defaultProps = {
@@ -100,8 +100,8 @@ const StyledDocsTable = styled(DocsTable)`
   margin-bottom: 0;
   th,
   td {
-    font-family: ${props => props.theme.fontFamily};
-    font-size: ${props => props.theme.fontSizes.small};
+    font-family: ${(props) => props.theme.fontFamily};
+    font-size: ${(props) => props.theme.fontSizes.small};
   }
 
   td > div > *:last-child {

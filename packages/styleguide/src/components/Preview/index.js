@@ -7,9 +7,9 @@ import * as theme from './../../style/theme';
 
 import Preview from './Preview';
 
-const ThemedPreview = props => (
+const ThemedPreview = (props) => (
   <ThemeConsumer>
-    {theme => (
+    {(theme) => (
       <Preview
         bgThemeColors={theme?.previewBackgrounds ?? { white: '#fff' }}
         {...props}

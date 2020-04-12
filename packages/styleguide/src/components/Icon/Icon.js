@@ -48,8 +48,8 @@ const StyledIcon = styled.svg`
   display: inline-block;
   vertical-align: middle;
   fill: currentColor;
-  width: ${props => iconSizes[props.size]};
-  height: ${props => iconSizes[props.size]};
+  width: ${(props) => iconSizes[props.size]};
+  height: ${(props) => iconSizes[props.size]};
 `;
 
 export default Icon;

@@ -55,7 +55,7 @@ const StyledComponentInfo = styled.div`
   h3 + &,
   h4 + &,
   h5 + & {
-    margin-top: -${props => props.theme.spaces.small};
+    margin-top: -${(props) => props.theme.spaces.small};
   }
 `;
 

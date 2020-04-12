@@ -10,7 +10,7 @@ const propTypes = {
 const getRoutes = (nodes, path = '') => {
   const result = [];
 
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     const modifiedNode = {
       ...node,
       leaf: !node.nodes,
@@ -29,8 +29,8 @@ const getRoutes = (nodes, path = '') => {
 const Sitemap = ({ routes = [] }) => {
   // create styleguide routes
   const styleguideRoutes = getRoutes(routes)
-    .filter(route => route.render)
-    .map(route => (
+    .filter((route) => route.render)
+    .map((route) => (
       <Route
         key={route.absolutePath}
         path={route.absolutePath}

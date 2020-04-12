@@ -17,7 +17,7 @@ const PropsGroup = ({ id, showId }) => (
             {propCount ? (
               statePropNames.map((name, index) => {
                 return props.filterProps.find(
-                  filtered => filtered === name
+                  (filtered) => filtered === name
                 ) ? null : (
                   <PropFormField key={index.toString()} {...{ id, name }} />
                 );

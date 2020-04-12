@@ -103,10 +103,10 @@ const StyledHighlightWrapper = styled.span`
   code[class*='language-'] {
     font-feature-settings: 'calt' 1;
     text-rendering: optimizeLegibility;
-    font-family: ${props => props.theme.codeFontFamily};
-    font-size: ${props =>
+    font-family: ${(props) => props.theme.codeFontFamily};
+    font-size: ${(props) =>
       em(props.theme.fontSizes.small, props.theme.fontSizes.base)};
-    line-height: ${props =>
+    line-height: ${(props) =>
       (stripUnit(props.theme.fontSizes.base) * props.theme.lineHeights.base) /
       stripUnit(props.theme.fontSizes.small)};
     white-space: pre-wrap;
@@ -130,7 +130,7 @@ StyledHighlightWrapper.defaultProps = {
 const StyledPre = styled.pre`
   overflow: auto;
   pre[class*='language-']& {
-    margin: 0 0 ${props => rem(props.theme.spaces.medium)};
+    margin: 0 0 ${(props) => rem(props.theme.spaces.medium)};
   }
 `;
 

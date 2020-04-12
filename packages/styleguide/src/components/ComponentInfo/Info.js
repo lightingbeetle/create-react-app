@@ -15,7 +15,7 @@ const Info = ({ values = [], what, ...other }) => (
     {what && <BarItem>{what}</BarItem>}
     <BarItem>
       <Bar>
-        {values.map(value => (
+        {values.map((value) => (
           <BarItem space="tiny" key={value}>
             <InfoBadge value={value} {...other} />
           </BarItem>

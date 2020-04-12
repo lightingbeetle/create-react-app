@@ -29,15 +29,15 @@ const StyledMenuButtonWrapper = styled.button`
   position: fixed;
   width: 100%;
   top: 0;
-  padding: ${props => props.theme.spaces.default};
-  z-index: ${props => props.theme.zIndex.menuButton};
-  background: ${props => props.theme.colors.white};
+  padding: ${(props) => props.theme.spaces.default};
+  z-index: ${(props) => props.theme.zIndex.menuButton};
+  background: ${(props) => props.theme.colors.white};
   transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
-  border: 1px solid ${props => props.theme.colors.grey};
-  box-shadow: ${props => props.theme.shadows.default};
+  border: 1px solid ${(props) => props.theme.colors.grey};
+  box-shadow: ${(props) => props.theme.shadows.default};
 
   &.is-active {
-    transform: translateX(${props => props.theme.sizes.sidebarWidth});
+    transform: translateX(${(props) => props.theme.sizes.sidebarWidth});
 
     > span {
       transform: rotate(180deg);
@@ -64,7 +64,7 @@ const StyledMenuButtonWrapper = styled.button`
     }
   }
 
-  @media (min-width: ${props => props.theme.breakpoints.l}) {
+  @media (min-width: ${(props) => props.theme.breakpoints.l}) {
     display: none;
   }
 `;
@@ -108,7 +108,7 @@ const StyledButtonLine = styled.span`
   left: 0;
   margin: auto;
   border-radius: 5px;
-  background-color: ${props => props.theme.colors.greyDark};
+  background-color: ${(props) => props.theme.colors.greyDark};
   transition: all 0.2s ease-in-out 0s;
   transition-property: transform, opacity, width;
 

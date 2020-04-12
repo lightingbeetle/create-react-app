@@ -11,7 +11,7 @@ import { H1, H2, H3, H4, H5, P, Link } from '../Typography';
  * Example: Hello 1 - anchor element, all you need
  * Turns into: hello-1-anchor-element-all-you-need
  */
-const createHeaderId = props => {
+const createHeaderId = (props) => {
   const childrenArr = React.Children.toArray(props.children);
   const text = childrenArr.reduce(
     (acc, cur) => (typeof cur === 'string' ? acc + cur : acc),
@@ -25,17 +25,17 @@ const createHeaderId = props => {
 };
 
 export const MDXComponents = {
-  h1: props => <H1 id={`${createHeaderId(props)}`} {...props} />,
-  h2: props => <H2 id={`${createHeaderId(props)}`} {...props} />,
-  h3: props => <H3 id={`${createHeaderId(props)}`} {...props} />,
-  h4: props => <H4 id={`${createHeaderId(props)}`} {...props} />,
-  h5: props => <H5 id={`${createHeaderId(props)}`} {...props} />,
+  h1: (props) => <H1 id={`${createHeaderId(props)}`} {...props} />,
+  h2: (props) => <H2 id={`${createHeaderId(props)}`} {...props} />,
+  h3: (props) => <H3 id={`${createHeaderId(props)}`} {...props} />,
+  h4: (props) => <H4 id={`${createHeaderId(props)}`} {...props} />,
+  h5: (props) => <H5 id={`${createHeaderId(props)}`} {...props} />,
   // eslint-disable-next-line jsx-a11y/heading-has-content
-  h6: props => <h6 id={`${createHeaderId(props)}`} {...props} />,
-  p: props => <P {...props} />,
-  a: props => <Link {...props} />,
-  inlineCode: props => <Code {...props} />,
-  code: props => (
+  h6: (props) => <h6 id={`${createHeaderId(props)}`} {...props} />,
+  p: (props) => <P {...props} />,
+  a: (props) => <Link {...props} />,
+  inlineCode: (props) => <Code {...props} />,
+  code: (props) => (
     <CodeBlock
       language={props.className?.replace(/language-/, '')}
       {...props}
@@ -43,7 +43,7 @@ export const MDXComponents = {
   ),
 };
 
-const MDXWrapper = props => (
+const MDXWrapper = (props) => (
   <MDXProvider components={MDXComponents} {...props} />
 );
 

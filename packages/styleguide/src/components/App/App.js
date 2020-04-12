@@ -150,8 +150,8 @@ const Overlay = styled('div')`
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: ${props => props.theme.zIndex.overlay};
-    background-color: ${props => props.theme.colors.overlay};
+    z-index: ${(props) => props.theme.zIndex.overlay};
+    background-color: ${(props) => props.theme.colors.overlay};
   }
 `;
 
@@ -161,9 +161,9 @@ const PageBody = styled.div`
   flex: 1 1 auto;
   min-height: 0;
   align-items: flex-start;
-  z-index: ${props => props.theme.zIndex.content};
+  z-index: ${(props) => props.theme.zIndex.content};
   
-  @media (max-width: calc(${props => props.theme.breakpoints.l} - 1px)) {
+  @media (max-width: calc(${(props) => props.theme.breakpoints.l} - 1px)) {
     &.is-active {
       overflow-x: hidden;
       overflow-y: auto;
@@ -177,26 +177,26 @@ const PageContent = styled.main`
   align-self: stretch;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: ${props => rem(props.theme.sizes.headerHeight)} 0;
+  padding: ${(props) => rem(props.theme.sizes.headerHeight)} 0;
   transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s;
 
   .is-active & {
-    transform: translateX(${props => rem(props.theme.sizes.sidebarWidth)});
+    transform: translateX(${(props) => rem(props.theme.sizes.sidebarWidth)});
   }
 
   /* IE */
-  @media (min-width: ${props =>
+  @media (min-width: ${(props) =>
       props.theme.breakpoints.l}) and (-ms-high-contrast: none) {
     max-width: calc(100vw - 16.75em);
-    transform: translateX(${props => rem(props.theme.sizes.sidebarWidth)});
+    transform: translateX(${(props) => rem(props.theme.sizes.sidebarWidth)});
     .is-active & {
-      left: ${props => rem(props.theme.sizes.sidebarWidth)};
+      left: ${(props) => rem(props.theme.sizes.sidebarWidth)};
     }
   }
 
-  @media (min-width: ${props => props.theme.breakpoints.l}) {
+  @media (min-width: ${(props) => props.theme.breakpoints.l}) {
     padding-left: 0;
-    padding: ${props => rem(props.theme.spaces.default)} 0;
+    padding: ${(props) => rem(props.theme.spaces.default)} 0;
     .is-active & {
       transform: translateX(0);
       opacity: 1;
@@ -214,10 +214,10 @@ const PageSidebarHeader = styled(Header)`
 `;
 
 const PageSidebarFooter = styled('p')`
-  color: ${props => props.theme.colors.greyText};
-  font-size: ${props => props.theme.fontSizes.base};
+  color: ${(props) => props.theme.colors.greyText};
+  font-size: ${(props) => props.theme.fontSizes.base};
   margin: 0;
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props) => props.theme.fontFamily};
 `;
 
 export default App;

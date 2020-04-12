@@ -42,7 +42,7 @@ const ColorPalette = ({ children, name, color, ...other }) => {
         shade={shade}
         color={getBackroundColor(shade)}
         isActive={shade === currentShade}
-        onClick={e => handleColorChange(e, shade)}
+        onClick={(e) => handleColorChange(e, shade)}
       />
     ));
   }
@@ -105,10 +105,10 @@ const StyledColorPalette = styled.div`
   padding: 150px 0 0;
   list-style-type: none;
   transition: background ease-out 200ms;
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props) => props.theme.fontFamily};
 
   &:last-of-type {
-    margin-bottom: ${props => props.theme.spaces.default};
+    margin-bottom: ${(props) => props.theme.spaces.default};
   }
 `;
 
@@ -118,11 +118,11 @@ StyledColorPalette.defaultProps = {
 
 const StyledColorInfo = styled.div`
   position: absolute;
-  top: ${props => props.theme.spaces.medium};
-  left: ${props => props.theme.spaces.medium};
+  top: ${(props) => props.theme.spaces.medium};
+  left: ${(props) => props.theme.spaces.medium};
   display: inline-flex;
   background: white;
-  padding: ${props => props.theme.spaces.tiny};
+  padding: ${(props) => props.theme.spaces.tiny};
 `;
 
 StyledColorInfo.defaultProps = {
@@ -131,7 +131,7 @@ StyledColorInfo.defaultProps = {
 
 const StyledSwatches = styled.div`
   display: flex;
-  padding: ${props => props.theme.spaces.large} 0 0 0;
+  padding: ${(props) => props.theme.spaces.large} 0 0 0;
   overflow-x: auto;
   overflow-y: visible;
 `;
@@ -142,7 +142,7 @@ StyledSwatches.defaultProps = {
 
 const StyledSwatchSpacer = styled.div`
   height: 1px;
-  flex: 0 0 ${props => props.theme.spaces.medium};
+  flex: 0 0 ${(props) => props.theme.spaces.medium};
 `;
 
 StyledSwatchSpacer.defaultProps = {

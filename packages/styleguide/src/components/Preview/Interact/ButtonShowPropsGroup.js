@@ -10,7 +10,7 @@ const ButtonShowPropsGroup = ({ id, componentName, deepness }) => (
     {({ handleShowProps, state }) => (
       <Button
         fontSize="base"
-        onClick={e => {
+        onClick={(e) => {
           handleShowProps(e, id);
         }}
         style={{ paddingLeft: 0 }}
@@ -33,7 +33,8 @@ const Triangle = styled.span`
     content: '▾';
     font-size: 18px;
     display: inline-block;
-    transform: ${props => (props.variant === 'up' ? 'rotate(180deg)' : 'none')};
+    transform: ${(props) =>
+      props.variant === 'up' ? 'rotate(180deg)' : 'none'};
     transition: transform 0.3s;
   }
 `;

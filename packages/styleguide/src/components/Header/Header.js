@@ -32,7 +32,7 @@ const Header = ({
 
   const classes = cx(CLASS_ROOT, className);
 
-  const getLogo = isLarge => (
+  const getLogo = (isLarge) => (
     <StyledLink to="/">{isLarge ? project : projectSmall}</StyledLink>
   );
 
@@ -51,11 +51,11 @@ const Header = ({
 };
 
 const StyledLink = styled(Link)`
-  color: ${props => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.black};
   text-decoration: none;
 
   &:visited {
-    ${props => props.theme.colors.black};
+    ${(props) => props.theme.colors.black};
   }
 `;
 
@@ -64,7 +64,7 @@ StyledLink.defaultProps = {
 };
 
 const StyledBar = styled(Bar)`
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props) => props.theme.fontFamily};
 `;
 
 StyledBar.defaultProps = {
@@ -75,7 +75,7 @@ const StyledProjectText = styled('div')`
   font-size: ${rem(24)};
   font-weight: 700;
 
-  @media (min-width: ${props => props.theme.breakpoints.s}) {
+  @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     font-size: ${rem(36)};
   }
 `;
@@ -87,9 +87,9 @@ StyledProjectText.defaultProps = {
 const StyledProjectLogo = styled('div')`
   img {
     height: ${rem(35)};
-    margin-bottom: ${props => rem(props.theme.spaces.tiny)};
+    margin-bottom: ${(props) => rem(props.theme.spaces.tiny)};
 
-    @media (min-width: ${props => props.theme.breakpoints.m}) {
+    @media (min-width: ${(props) => props.theme.breakpoints.m}) {
       height: ${rem(50)};
       margin-bottom: 0;
     }

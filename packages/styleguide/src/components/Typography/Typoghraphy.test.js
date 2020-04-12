@@ -6,7 +6,7 @@ import { H1, H2, H3, H4, H5, P, Link } from '.';
 const headings = [H1, H2, H3, H4, H5];
 
 describe('rendering', () => {
-  test.each(headings)('heading', El => {
+  test.each(headings)('heading', (El) => {
     const { getByRole } = render(<El>Heading</El>);
     expect(getByRole('heading')).toBeInTheDocument();
   });

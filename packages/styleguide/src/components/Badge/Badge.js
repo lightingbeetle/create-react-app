@@ -16,12 +16,12 @@ const Badge = ({ children, color = 'black', ...other }) => (
 );
 
 const StyledBadge = styled.span`
-  color: ${props => props.theme.colors.white};
-  background-color: ${props => props.theme.colors[props.color]};
+  color: ${(props) => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors[props.color]};
 
   padding: ${rem(1)} ${rem(10)} ${rem(2)};
 
-  font-size: ${props => rem(props.theme.fontSizes.small)};
+  font-size: ${(props) => rem(props.theme.fontSizes.small)};
   text-transform: capitalize;
 `;
 
