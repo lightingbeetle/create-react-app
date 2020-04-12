@@ -5,7 +5,6 @@ import { object, arrayOf, oneOf } from 'prop-types';
 
 import unescape from 'unescape-html';
 import reactElementToJSXString from 'react-element-to-jsx-string';
-import pretty from 'pretty';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import Code from '../Code/';
@@ -172,14 +171,10 @@ export default class CodeExample extends React.Component {
     let codeToShow;
     switch (this.state.codePreviewType) {
       case 'html':
-        codeToShow = pretty(
+        codeToShow =
           typeof children === 'string'
             ? unescape(children)
-            : renderToStaticMarkup(children),
-          {
-            ocd: true,
-          }
-        );
+            : renderToStaticMarkup(children);
         break;
       case 'jsx':
         codeToShow = getJSXAsStringFromMarkup(children, codeJSXOptions);

@@ -11,14 +11,13 @@ import {
 import cx from 'classnames';
 import Select from 'react-select';
 import styled from 'styled-components';
-import chroma from 'chroma-js';
 import ReactGA from 'react-ga';
+import { hex } from 'wcag-contrast';
 
 import * as theme from './../../style/theme';
 
 import PreviewTitleBar from './PreviewTitleBar';
 import CodeExample from './CodeExample';
-import Frame from './Frame';
 import Interact from './Interact/Interact';
 
 import Card from './../Card';
@@ -29,18 +28,20 @@ import Button from './../Button';
 const CLASS_ROOT = '';
 
 const getBackgroundsAsArray = (previewBackgrounds, excludedColors = []) =>
-  Object.keys(previewBackgrounds).reduce(
-    (acc, name) => [
-      ...acc,
-      !excludedColors.includes(name)
-        ? {
-            value: previewBackgrounds[name],
-            label: name,
-          }
-        : {},
-    ],
-    []
-  );
+  Object.keys(previewBackgrounds)
+    .reduce(
+      (acc, name) => [
+        ...acc,
+        !excludedColors.includes(name)
+          ? {
+              value: previewBackgrounds[name],
+              label: name,
+            }
+          : undefined,
+      ],
+      []
+    )
+    .filter(Boolean);
 
 const Preview = ({
   bgTheme,
@@ -53,10 +54,7 @@ const Preview = ({
   enableFullscreen,
   hasCodePreview,
   html,
-  iframeHead,
-  iframeScripts,
   interactiveProps,
-  isIframe,
   isInteractive,
   ...other
 }) => {
@@ -116,11 +114,10 @@ const Preview = ({
 
   const colourStyles = {
     option: (styles, { data, isActive }) => {
-      const color = chroma(data.value);
       return {
         ...styles,
-        backgroundColor: isActive ? 'black' : data.value,
-        color: chroma.contrast(color, 'white') > 2 ? 'white' : 'black',
+        backgroundColor: isActive ? 'black' : data?.value,
+        color: hex(data?.value ?? '#fff', '#fff') > 2 ? 'white' : 'black',
         cursor: 'pointer',
       };
     },
@@ -207,14 +204,6 @@ const Preview = ({
     childrenToRender ||
     html;
 
-  const content = isIframe ? (
-    <Frame head={iframeHead} scripts={iframeScripts}>
-      {toRender}
-    </Frame>
-  ) : (
-    toRender
-  );
-
   return (
     <StyledPreview className={wrapperClasses}>
       <PreviewTitleBar actions={actions} />
@@ -233,7 +222,7 @@ const Preview = ({
           ))
         ) : (
           <>
-            <StyledPreviewLive>{content}</StyledPreviewLive>
+            <StyledPreviewLive>{toRender}</StyledPreviewLive>
             {isCodeShown && hasCodePreview && toCode && (
               <CodeExample
                 {...(html ? { codeTypes: ['html'] } : {})}
@@ -268,14 +257,8 @@ Preview.propTypes = {
   hasCodePreview: bool,
   /** Pass HTML as string to preview HTML code. */
   html: string,
-  /** (unstable) Iframe custom <head /> */
-  iframeHead: node,
-  /** (unstable) Iframe custom JavaScripts. */
-  iframeScripts: string,
   /** Props for interactive component */
   interactiveProps: object,
-  /** (unstable) Display preview in inframe. */
-  isIframe: bool,
   /** Preview with interactivity */
   isInteractive: bool,
 };

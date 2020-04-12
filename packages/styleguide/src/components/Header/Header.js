@@ -2,13 +2,13 @@ import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { node, object } from 'prop-types';
 import cx from 'classnames';
-import MediaQuery from 'react-responsive';
 import { Link } from 'react-router-dom';
 
 import { Bar, BarItem } from './../Bar';
 
 import * as theme from './../../style/theme';
 import { rem } from '../../style/utils';
+import { useViewport } from '../../utils';
 
 const CLASS_ROOT = 'sg-header';
 
@@ -26,25 +26,25 @@ const Header = ({
   theme,
   ...other
 }) => {
+  const { width } = useViewport();
+
+  const isLarge = width > parseInt(theme.breakpoints.l);
+
   const classes = cx(CLASS_ROOT, className);
 
-  const getLogo = matches => (
-    <StyledLink to="/">{matches ? project : projectSmall}</StyledLink>
+  const getLogo = isLarge => (
+    <StyledLink to="/">{isLarge ? project : projectSmall}</StyledLink>
   );
 
   return (
     <StyledBar className={classes} {...other}>
       {children && <BarItem shrink>{children}</BarItem>}
       <BarItem isFilling shrink>
-        <MediaQuery minDeviceWidth={theme.breakpoints.m}>
-          {matches =>
-            typeof project === 'string' ? (
-              <StyledProjectText>{getLogo(matches)}</StyledProjectText>
-            ) : (
-              <StyledProjectLogo>{getLogo(matches)}</StyledProjectLogo>
-            )
-          }
-        </MediaQuery>
+        {typeof project === 'string' ? (
+          <StyledProjectText>{getLogo(isLarge)}</StyledProjectText>
+        ) : (
+          <StyledProjectLogo>{getLogo(isLarge)}</StyledProjectLogo>
+        )}
       </BarItem>
     </StyledBar>
   );
