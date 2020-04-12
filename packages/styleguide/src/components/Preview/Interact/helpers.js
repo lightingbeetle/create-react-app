@@ -2,7 +2,7 @@
  * Cleanup docgen prop value of string which has this form:
  * "'string'" and converts it to "string"
  */
-export const cleanValue = s =>
+export const cleanValue = (s) =>
   typeof s === 'string' ? s.replace(/(^['"]|['"]$)/g, '') : s;
 
 /**
@@ -10,7 +10,7 @@ export const cleanValue = s =>
  * if it's an html element we parse just first level of text to be editable
  * if it's just a string we create docgen type of string
  */
-export const getDocgenProps = component => {
+export const getDocgenProps = (component) => {
   const componentType = component.type;
 
   if (typeof componentType === 'function') {
@@ -46,7 +46,7 @@ export const getDocgenProps = component => {
 /**
  * parse displayName of component or create custom name
  */
-export const getDisplayName = component =>
+export const getDisplayName = (component) =>
   (component.type && component.type.displayName) ||
   (typeof component === 'string'
     ? 'PlainText'

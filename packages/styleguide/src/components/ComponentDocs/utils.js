@@ -8,8 +8,8 @@ function printEnums(values) {
 
 function printShape(values) {
   const keyValues = Object.keys(values)
-    .map(name => name + ': ' + getType(values[name]))
-    .map(value => `\t${value}`)
+    .map((name) => name + ': ' + getType(values[name]))
+    .map((value) => `\t${value}`)
     .join(', \r\n');
 
   return codeBlock`
@@ -53,7 +53,7 @@ function printType(type) {
 function getType(type) {
   switch (type.name) {
     case 'union':
-      return type.value.map(value => printType(value)).join(' | ');
+      return type.value.map((value) => printType(value)).join(' | ');
     default:
       return printType(type);
   }

@@ -9,18 +9,18 @@ import { rem } from './../../style/utils';
 const StyledButton = styled.button`
   display: inline-block;
   min-height: ${rem(24)};
-  margin-bottom: ${props => props.theme.spaces.small};
-  padding: 0 ${props => props.theme.spaces.small};
+  margin-bottom: ${(props) => props.theme.spaces.small};
+  padding: 0 ${(props) => props.theme.spaces.small};
   vertical-align: middle;
   text-align: center;
   cursor: pointer;
   appearance: none;
   border: 0px solid transparent;
   background: transparent;
-  font-family: ${props => props.theme.fontFamily};
-  font-weight: ${props => props.theme.fontWeights.bold};
-  font-size: ${props => props.theme.fontSizes[props.fontSize]};
-  color: ${props => props.theme.colors.black};
+  font-family: ${(props) => props.theme.fontFamily};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+  font-size: ${(props) => props.theme.fontSizes[props.fontSize]};
+  color: ${(props) => props.theme.colors.black};
 
   .icon {
     margin-right: 1em;

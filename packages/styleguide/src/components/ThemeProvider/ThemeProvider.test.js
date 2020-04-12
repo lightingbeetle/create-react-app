@@ -8,7 +8,7 @@ import { colors } from '../../style/theme';
 import ThemeProvider from '.';
 
 const ThemeConsumer = styled.div`
-  color: ${props => props.theme.colors.accent};
+  color: ${(props) => props.theme.colors.accent};
 `;
 
 describe('rendering', () => {

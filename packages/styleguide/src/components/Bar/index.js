@@ -6,8 +6,8 @@ export const BarItem = styled.div`
   flex: 0 0 auto;
   min-width: 0%;
   align-items: center;
-  margin-top: ${props => props.theme.spaces.tiny};
-  margin-right: ${props => props.theme.spaces[props.space]};
+  margin-top: ${(props) => props.theme.spaces.tiny};
+  margin-right: ${(props) => props.theme.spaces[props.space]};
 
   &:last-child {
     margin-right: 0;
@@ -17,13 +17,13 @@ export const BarItem = styled.div`
     margin-bottom: 0;
   }
 
-  ${props =>
+  ${(props) =>
     props.isFilling &&
     `
     flex: 1 0 1px;
   `};
 
-  ${props =>
+  ${(props) =>
     props.shrink &&
     `
     flex-shrink: 1;
@@ -47,8 +47,8 @@ export const Bar = styled.div`
   flex-wrap: wrap;
   align-items: center;
 
-  margin-top: -${props => props.theme.spaces.tiny};
-  margin-bottom: ${props => props.theme.spaces[props.space]};
+  margin-top: -${(props) => props.theme.spaces.tiny};
+  margin-bottom: ${(props) => props.theme.spaces[props.space]};
 
   & & {
     margin-bottom: 0;

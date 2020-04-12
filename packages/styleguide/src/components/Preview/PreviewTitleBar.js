@@ -38,7 +38,7 @@ PreviewTitleBar.displayName = 'PreviewTitleBar';
 PreviewTitleBar.propTypes = propTypes;
 
 const StyledBar = styled(Bar)`
-  margin-bottom: ${props => props.theme.spaces.small};
+  margin-bottom: ${(props) => props.theme.spaces.small};
 `;
 
 StyledBar.defaultProps = {

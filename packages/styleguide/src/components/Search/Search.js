@@ -22,7 +22,7 @@ const Search = ({ list, placeholder }) => {
   let history = useHistory();
 
   const formatMatches = (matches, parentPath, parentTitle) =>
-    matches.map(match => ({
+    matches.map((match) => ({
       title: match.original.title,
       path: parentPath + match.original.path,
       string: match.string,
@@ -111,16 +111,16 @@ const Search = ({ list, placeholder }) => {
         displayMenu="overlay"
         source={(value, syncResults) => {
           const filteredResults = search(value, list);
-          syncResults(filteredResults.filter(result => !result.isHidden));
+          syncResults(filteredResults.filter((result) => !result.isHidden));
         }}
         templates={{
           inputValue: () => '',
-          suggestion: result =>
+          suggestion: (result) =>
             result &&
             `<div>${result.string.title}</div>
             <small>${result.string.path}</small>`,
         }}
-        onConfirm={confirmed => {
+        onConfirm={(confirmed) => {
           if (!confirmed) return false;
           const path = confirmed.path;
           history.push(path);
@@ -131,11 +131,11 @@ const Search = ({ list, placeholder }) => {
 };
 
 const StyledAutocompleteWrapper = styled.div`
-  width: ${props => rem(props.theme.sizes.menuWidth)};
+  width: ${(props) => rem(props.theme.sizes.menuWidth)};
   box-sizing: content-box;
-  font-family: ${props => props.theme.fontFamily};
-  font-size: ${props => rem(props.theme.fontSizes.base)};
-  line-height: ${props => props.theme.lineHeights.base};
+  font-family: ${(props) => props.theme.fontFamily};
+  font-size: ${(props) => rem(props.theme.fontSizes.base)};
+  line-height: ${(props) => props.theme.lineHeights.base};
 
   .autocomplete__input {
     width: 100%;
@@ -145,14 +145,14 @@ const StyledAutocompleteWrapper = styled.div`
   }
 
   .autocomplete__option {
-    padding: ${props => rem(props.theme.spaces.tiny)}
-      ${props => rem(props.theme.spaces.small)};
+    padding: ${(props) => rem(props.theme.spaces.tiny)}
+      ${(props) => rem(props.theme.spaces.small)};
     line-height: 1.2em;
   }
 
   .autocomplete__option--focused {
-    color: ${props => props.theme.colors.black};
-    background: ${props => props.theme.colors.grey};
+    color: ${(props) => props.theme.colors.black};
+    background: ${(props) => props.theme.colors.grey};
   }
 
   .autocomplete__menu {

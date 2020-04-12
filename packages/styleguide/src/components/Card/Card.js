@@ -10,11 +10,11 @@ const Card = ({ bgColor, ...other }) => (
 );
 
 const StyledCard = styled.div`
-  background-color: ${props => props.bgColor};
-  margin-bottom: ${props => props.theme.contentSpacing};
-  padding: ${props => props.theme.spaces.medium};
-  border: 1px solid ${props => props.theme.colors.grey};
-  box-shadow: ${props => props.theme.shadows.default};
+  background-color: ${(props) => props.bgColor};
+  margin-bottom: ${(props) => props.theme.contentSpacing};
+  padding: ${(props) => props.theme.spaces.medium};
+  border: 1px solid ${(props) => props.theme.colors.grey};
+  box-shadow: ${(props) => props.theme.shadows.default};
 `;
 
 Card.displayName = 'Card';

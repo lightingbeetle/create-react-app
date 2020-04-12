@@ -12,16 +12,16 @@ const Tooltip = ({ children, dialog, ...other }) => (
 
 const StyledTooltip = styled.div`
   position: relative;
-  color: ${props => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.white};
 
   .tooltip-title {
     pointer-events: none;
     position: absolute;
     width: 200px;
     text-align: center;
-    padding: ${props => props.theme.spaces.small};
+    padding: ${(props) => props.theme.spaces.small};
     background: black;
-    border-radius: ${props => props.theme.spaces.tiny};
+    border-radius: ${(props) => props.theme.spaces.tiny};
     left: 0;
     top: 50%;
     transform: translate(-105%, -50%);
@@ -37,7 +37,7 @@ const StyledTooltip = styled.div`
       border-style: solid;
       border-width: 6px 0 6px 8px;
       border-color: transparent transparent transparent
-        ${props => props.theme.colors.black};
+        ${(props) => props.theme.colors.black};
     }
   }
 
@@ -46,8 +46,8 @@ const StyledTooltip = styled.div`
   }
 
   .tooltip-trigger {
-    background: ${props => props.theme.colors.portage};
-    color: ${props => props.theme.colors.white};
+    background: ${(props) => props.theme.colors.portage};
+    color: ${(props) => props.theme.colors.white};
     font-weight: bold;
     text-align: center;
     font-size: 14px;

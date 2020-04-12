@@ -3,7 +3,7 @@ import { Preview, ComponentDocs } from './../';
 
 # App
 
-This is styleguide application base component. 
+This is styleguide application base component.
 
 ```js
 import React from 'react';
@@ -11,7 +11,10 @@ import ReactDOM from 'react-dom';
 import { MDXProvider } from '@mdx-js/react';
 
 import '@lighting-beetle/lighter-styleguide/build/lib/styleguide.css';
-import { App as StyleguideApp, MDXComponents } from '@lighting-beetle/lighter-styleguide';
+import {
+  App as StyleguideApp,
+  MDXComponents,
+} from '@lighting-beetle/lighter-styleguide';
 
 ReactDOM.render(
   <MDXProvider components={MDXComponents}>

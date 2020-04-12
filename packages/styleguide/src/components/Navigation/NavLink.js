@@ -38,24 +38,24 @@ const StyledNavLink = styled(NavLink)`
   & {
     display: block;
     position: relative;
-    padding: ${props => props.theme.nav.listTopBottomIndent} 0;
+    padding: ${(props) => props.theme.nav.listTopBottomIndent} 0;
     outline: none !important;
-    color: ${props => props.theme.colors.greyDark};
+    color: ${(props) => props.theme.colors.greyDark};
     font-weight: bold;
     z-index: 1;
     text-decoration: none;
   }
   &.${activeClassName} {
-    color: ${props => props.theme.colors.accent};
+    color: ${(props) => props.theme.colors.accent};
 
     &:before {
       content: '';
-      width: calc(100% + ${props => rem(props.theme.spaces.medium)});
+      width: calc(100% + ${(props) => rem(props.theme.spaces.medium)});
       height: 100%;
       position: absolute;
       top: 0;
-      left: -${props => rem(props.theme.spaces.medium)};
-      background: ${props => getColor(props.theme.colors.accent, 50)};
+      left: -${(props) => rem(props.theme.spaces.medium)};
+      background: ${(props) => getColor(props.theme.colors.accent, 50)};
       z-index: -1;
     }
   }

@@ -47,7 +47,7 @@ const Table = ({ columns = [], data = [], isResponsive, ...other }) => {
       <tbody>
         {data.map((row, i) => (
           <tr key={i.toString()}>
-            {columns.map(column =>
+            {columns.map((column) =>
               column.render ? (
                 column.render(row[column.key], column)
               ) : (
@@ -81,38 +81,38 @@ StyledResponsiveTable.defaultProps = {
 };
 
 const StyledTable = styled.table`
-  font-family: ${props => props.theme.fontFamily};
-  color: ${props => props.theme.colors.black};
-  font-size: ${props => rem(props.theme.fontSizes.base)};
-  line-height: ${props => props.theme.lineHeights.base};
+  font-family: ${(props) => props.theme.fontFamily};
+  color: ${(props) => props.theme.colors.black};
+  font-size: ${(props) => rem(props.theme.fontSizes.base)};
+  line-height: ${(props) => props.theme.lineHeights.base};
 
   border-collapse: collapse;
   border-spacing: 0;
-  margin-bottom: ${props => props.theme.contentSpacing};
+  margin-bottom: ${(props) => props.theme.contentSpacing};
   max-width: 100%;
   width: 100%;
 
-  font-size: ${props => rem(props.theme.fontSizes.tiny)};
+  font-size: ${(props) => rem(props.theme.fontSizes.tiny)};
 
   thead tr {
-    background-color: ${props => props.theme.colors.grey};
+    background-color: ${(props) => props.theme.colors.grey};
   }
 
   th {
-    border: ${props => border(props.theme)};
+    border: ${(props) => border(props.theme)};
     border-width: 0 1px;
     vertical-align: middle;
     text-align: left;
 
-    font-weight: ${props => props.theme.fontWeights.normal};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
   }
 
   th,
   td {
-    padding: ${props => rem(props.theme.spaces.small)};
+    padding: ${(props) => rem(props.theme.spaces.small)};
 
     &:first-child {
-      ${props =>
+      ${(props) =>
         !props.hasOutsideBorder &&
         `
           border-left-width: 0;
@@ -120,7 +120,7 @@ const StyledTable = styled.table`
     }
 
     &:last-child {
-      ${props =>
+      ${(props) =>
         !props.hasOutsideBorder &&
         `
           border-right-width: 0;
@@ -130,7 +130,7 @@ const StyledTable = styled.table`
 
   td {
     min-height: ${rem('48px')};
-    border: ${props => border(props.theme)};
+    border: ${(props) => border(props.theme)};
     vertical-align: top;
 
     & > *:last-child {
@@ -139,7 +139,7 @@ const StyledTable = styled.table`
   }
 
   tr:last-child td {
-    ${props =>
+    ${(props) =>
       !props.hasOutsideBorder &&
       `
         border-bottom-width: 0;

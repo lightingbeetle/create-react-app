@@ -192,7 +192,7 @@ class Interact extends React.Component {
   setDeepState(target, name, value) {
     const id = target.getAttribute('data-component-id');
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       liveProps: {
         ...(prevState.liveProps || {}),
         [id]: {
@@ -211,7 +211,7 @@ class Interact extends React.Component {
    * @param string id
    */
   handleShowProps(e, id) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       showProps: {
         ...prevState.showProps,
         [id]: !prevState.showProps[id],
@@ -472,7 +472,7 @@ class Interact extends React.Component {
 }
 
 const StyledInteract = styled.div`
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props) => props.theme.fontFamily};
 `;
 
 StyledInteract.defaultProps = {
@@ -485,9 +485,9 @@ const Grid = styled.div`
 
 const GridCol = styled.div`
   flex: 1 0 auto;
-  padding: ${props => props.theme.spaces.small};
+  padding: ${(props) => props.theme.spaces.small};
 
-  ${props =>
+  ${(props) =>
     props.size &&
     `
     width: ${(props.size / 12) * 100 + '%'}

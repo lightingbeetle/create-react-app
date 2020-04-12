@@ -16,7 +16,7 @@ import * as theme from '../../style/theme';
  * Remove props that are undefined or null
  * Don't show React.Fragment in code example
  */
-const cleanUpCode = markup => {
+const cleanUpCode = (markup) => {
   const markupProps = markup.props || {};
 
   return Object.keys(markupProps).reduce((acc, curr) => {
@@ -25,7 +25,7 @@ const cleanUpCode = markup => {
     let newProp;
     // clean up child code
     if (curr === 'children' && typeof currProp !== 'string') {
-      newProp = React.Children.map(currProp, child => {
+      newProp = React.Children.map(currProp, (child) => {
         // hide fragments if containing just strings
         const isFragmentString =
           child.type === React.Fragment &&
@@ -60,8 +60,8 @@ const getJSXAsStringFromMarkup = (markup, options) => {
   const reactElementToJSXStringOptions = {
     showDefaultProps: false,
     showFunctions: true,
-    functionValue: fn => fn.name,
-    displayName: ReactElement => ReactElement.props.mdxType,
+    functionValue: (fn) => fn.name,
+    displayName: (ReactElement) => ReactElement.props.mdxType,
     filterProps: ['mdxType', 'originalType', ...filterProps],
     ...otherOptions,
   };
@@ -81,7 +81,7 @@ const getJSXAsStringFromMarkup = (markup, options) => {
   // if it's array, we need to pass elemenets one by one
   if (Array.isArray(markup)) {
     return markup
-      .map(markupItem =>
+      .map((markupItem) =>
         reactElementToJSXString(markupItem, reactElementToJSXStringOptions)
       )
       .join('\n');
@@ -185,11 +185,11 @@ export default class CodeExample extends React.Component {
 
     return (
       <StyledWrapper {...other}>
-        {codeTypes.map(codeType => (
+        {codeTypes.map((codeType) => (
           <StyledCodeTypeToggle
             key={codeType}
             role="button"
-            onClick={e => this.handleCodePreviewTypeToggle(e, codeType)}
+            onClick={(e) => this.handleCodePreviewTypeToggle(e, codeType)}
             className={
               this.state.codePreviewType === codeType ? 'is-active' : ''
             }
@@ -199,7 +199,7 @@ export default class CodeExample extends React.Component {
         ))}
         <StyledCopyButton
           className={this.state.copyButtonClass}
-          onClick={e => this.handleCopyCode(e, this.codeBlockRef.current)}
+          onClick={(e) => this.handleCopyCode(e, this.codeBlockRef.current)}
         >
           {this.state.copyButtonText}
         </StyledCopyButton>
@@ -227,18 +227,18 @@ const StyledCopyButton = styled(Button)`
   transform: translateY(100%);
   margin-bottom: 0;
 
-  background: ${props => props.theme.colors.white};
+  background: ${(props) => props.theme.colors.white};
 
   &:hover {
-    background: ${props => props.theme.colors.grey};
+    background: ${(props) => props.theme.colors.grey};
   }
 
   &.success {
-    background: ${props => props.theme.colors.success};
+    background: ${(props) => props.theme.colors.success};
   }
 
   &.error {
-    background: ${props => props.theme.colors.error};
+    background: ${(props) => props.theme.colors.error};
   }
 `;
 
@@ -252,16 +252,16 @@ const StyledWrapper = styled.div`
 
 const StyledCodeTypeToggle = styled(Button)`
   margin-bottom: 0;
-  border-top-left-radius: ${props => props.theme.borderRadius.default};
-  border-top-right-radius: ${props => props.theme.borderRadius.default};
+  border-top-left-radius: ${(props) => props.theme.borderRadius.default};
+  border-top-right-radius: ${(props) => props.theme.borderRadius.default};
 
   &:hover {
-    background: ${props => props.theme.colors.grey};
+    background: ${(props) => props.theme.colors.grey};
   }
 
   &.is-active {
-    background-color: ${props => props.theme.colors.black};
-    color: ${props => props.theme.colors.white};
+    background-color: ${(props) => props.theme.colors.black};
+    color: ${(props) => props.theme.colors.white};
   }
 `;
 
