@@ -44,8 +44,8 @@
     "eject": "react-scripts eject"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css}": [
-      "prettier --single-quote --trailing-comma --write",
+    "src/**/*.{js,jsx,json,css,ts,tsx,mdx,md}": [
+      "prettier --write",
       "git add"
     ]
   },
