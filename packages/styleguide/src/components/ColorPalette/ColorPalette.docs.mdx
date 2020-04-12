@@ -10,15 +10,7 @@ Convey meaning through color. ColorPalette is intended to display one color hue 
 ### Default
 
 <Preview>
-  <ColorPallete
-    name="primary"
-    color={{
-      type: 'SassColor',
-      value: {
-        hex: '#ff5722'
-      }
-    }}
-  />
+  <ColorPallete name="primary" color="#ff5722" />
 </Preview>
 
 ### Multiple shades
@@ -27,22 +19,9 @@ Convey meaning through color. ColorPalette is intended to display one color hue 
   <ColorPallete
     name="error"
     color={{
-  type: 'SassMap',
-  value: {
-    '300': {
-      type: 'SassColor',
-      value: {
-        hex: '#ff6b6b'
-      }
-    },
-    '500': {
-      type: 'SassColor',
-      value: {
-        hex: '#fa5252'
-      }
-    }
-  }
-}}
+      '300': '#ff6b6b',
+      '500': '#fa5252',
+    }}
   />
 </Preview>
 
