@@ -1,6 +1,6 @@
 {
   "name": "@lighting-beetle/lighter-styleguide",
-  "version": "3.3.5",
+  "version": "4.0.0",
   "description": "Lighter styleguide",
   "main": "build/components/index.js",
   "files": [

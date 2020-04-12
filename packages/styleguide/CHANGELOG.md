@@ -1,5 +1,23 @@
 # @lighting-beetle/lighter-styleguide
 
+## 4.0.0
+
+### Major Changes
+
+- e440a529: remove Preview isIframe option (it was not working)
+- e440a529: remove `<Preview />` `html` prop pretty printing
+- e440a529: remove `<Preview />` `isIframe` prop (no iframe support right know
+- 27451320: simplify color prop of ColorPallete
+
+### Patch Changes
+
+- 7ec3398b: replace custom polyfills with react-app-polyfill
+- e440a529: update depenedencies
+- e440a529: replace `chorma-js` with `wcag-contrast`
+- e440a529: remove unnecessary dependencies
+- e440a529: replace `react-responsive` with `useViewport` hook
+- 46992a8a: remove unnecessary dependencies
+
 ## 3.3.5
 
 ### Patch Changes
