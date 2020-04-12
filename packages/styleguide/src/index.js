@@ -1,3 +1,5 @@
+import './lib/polyfills';
+
 import React from 'react';
 import styleguide from './lib/styleguide';
 import pkg from '../package.json';
