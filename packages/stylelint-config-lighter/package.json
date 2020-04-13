@@ -23,12 +23,12 @@
   },
   "homepage": "https://github.com/lightingbeetle/lighter#readme",
   "dependencies": {
-    "stylelint": "~9.2.0",
-    "stylelint-config-sass-guidelines": "~5.0.0",
-    "stylelint-config-standard": "~18.2.0",
-    "stylelint-scss": "~3.0.0"
+    "stylelint-config-prettier": "~8.0.1",
+    "stylelint-config-sass-guidelines": "^7.0.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "~3.16.1"
   },
   "peerDependencies": {
-    "stylelint": "^9.0.0"
+    "stylelint": "^13.0.0"
   }
 }
