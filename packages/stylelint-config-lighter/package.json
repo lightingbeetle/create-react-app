@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lightingbeetle/stylelint-config-light.git"
+    "url": "git+https://github.com/lightingbeetle/lighter.git"
   },
   "keywords": [
     "stylelint",
@@ -19,9 +19,9 @@
   "author": "Adam Mockor",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lightingbeetle/stylelint-config-light/issues"
+    "url": "https://github.com/lighting-beetle/lighter/issues"
   },
-  "homepage": "https://github.com/lightingbeetle/stylelint-config-light#readme",
+  "homepage": "https://github.com/lighting-beetle/lighter#readme",
   "dependencies": {
     "stylelint": "~9.2.0",
     "stylelint-config-sass-guidelines": "~5.0.0",
