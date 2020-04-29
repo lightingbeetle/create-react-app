@@ -51,6 +51,7 @@ const Preview = ({
   className,
   code,
   codeJSXOptions,
+  codeTypes,
   enableFullscreen,
   hasCodePreview,
   html,
@@ -225,8 +226,8 @@ const Preview = ({
             <StyledPreviewLive>{toRender}</StyledPreviewLive>
             {isCodeShown && hasCodePreview && toCode && (
               <CodeExample
-                {...(html ? { codeTypes: ['html'] } : {})}
                 codeJSXOptions={codeJSXOptions}
+                codeTypes={codeTypes}
               >
                 {toCode}
               </CodeExample>
@@ -251,6 +252,8 @@ Preview.propTypes = {
   code: oneOfType([node, func]),
   /** Pass [react-element-to-jsx-string](https://github.com/algolia/react-element-to-jsx-string) options to code preview. */
   codeJSXOptions: object,
+  /** Pass which code types to show in code preview */
+  codeTypes: CodeExample.propTypes.codeTypes,
   /** Enable fullscreen toggle */
   enableFullscreen: bool,
   /** Disables code preview. */
