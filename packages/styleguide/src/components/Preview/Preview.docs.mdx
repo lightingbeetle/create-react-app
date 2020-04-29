@@ -101,6 +101,24 @@ is used to generate JSX in code example. To overide options of this library, use
   </div>
 </Preview>
 
+### Code example types
+
+If you need to adjust visible code example types use `codeTypes` property.
+
+<Preview 
+  code={
+    <Preview codeTypes={['html', 'jsx']}>
+      <p>
+        This preview has html as a main code example type
+      </p>
+    </Preview>
+  } 
+  codeTypes={['html', 'jsx']}>
+  <p>
+    This preview has html as a main code example type
+  </p>
+</Preview>
+
 ### Preview HTML string
 
 <Preview
