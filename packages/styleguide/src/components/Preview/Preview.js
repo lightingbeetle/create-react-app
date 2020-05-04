@@ -214,7 +214,7 @@ const Preview = ({
         {...other}
       >
         {showInteract ? (
-          React.Children.map(children, (child) => (
+          React.Children.map(children, child => (
             <Interact
               showCode={isCodeShown}
               render={child}
@@ -227,7 +227,7 @@ const Preview = ({
             {isCodeShown && hasCodePreview && toCode && (
               <CodeExample
                 codeJSXOptions={codeJSXOptions}
-                codeTypes={codeTypes}
+                codeTypes={html ? ['html'] : codeTypes}
               >
                 {toCode}
               </CodeExample>
@@ -285,7 +285,7 @@ const StyledPreviewLive = styled.div`
 const StyledSelect = styled(Select)`
   &.select-wrapper {
     position: relative;
-    font-family: ${(props) => props.theme.fontFamily};
+    font-family: ${props => props.theme.fontFamily};
     font-size: 14px;
   }
 
@@ -333,7 +333,7 @@ const StyledPreview = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    z-index: ${(props) => props.theme.zIndex.fullScreenPreview};
+    z-index: ${props => props.theme.zIndex.fullScreenPreview};
   }
 `;
 
