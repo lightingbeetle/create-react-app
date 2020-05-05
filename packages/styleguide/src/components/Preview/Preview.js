@@ -51,6 +51,7 @@ const Preview = ({
   className,
   code,
   codeJSXOptions,
+  codeTypes,
   enableFullscreen,
   hasCodePreview,
   html,
@@ -213,7 +214,7 @@ const Preview = ({
         {...other}
       >
         {showInteract ? (
-          React.Children.map(children, (child) => (
+          React.Children.map(children, child => (
             <Interact
               showCode={isCodeShown}
               render={child}
@@ -225,8 +226,8 @@ const Preview = ({
             <StyledPreviewLive>{toRender}</StyledPreviewLive>
             {isCodeShown && hasCodePreview && toCode && (
               <CodeExample
-                {...(html ? { codeTypes: ['html'] } : {})}
                 codeJSXOptions={codeJSXOptions}
+                codeTypes={html ? ['html'] : codeTypes}
               >
                 {toCode}
               </CodeExample>
@@ -251,6 +252,8 @@ Preview.propTypes = {
   code: oneOfType([node, func]),
   /** Pass [react-element-to-jsx-string](https://github.com/algolia/react-element-to-jsx-string) options to code preview. */
   codeJSXOptions: object,
+  /** Pass which code types to show in code preview */
+  codeTypes: CodeExample.propTypes.codeTypes,
   /** Enable fullscreen toggle */
   enableFullscreen: bool,
   /** Disables code preview. */
@@ -282,7 +285,7 @@ const StyledPreviewLive = styled.div`
 const StyledSelect = styled(Select)`
   &.select-wrapper {
     position: relative;
-    font-family: ${(props) => props.theme.fontFamily};
+    font-family: ${props => props.theme.fontFamily};
     font-size: 14px;
   }
 
@@ -330,7 +333,7 @@ const StyledPreview = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    z-index: ${(props) => props.theme.zIndex.fullScreenPreview};
+    z-index: ${props => props.theme.zIndex.fullScreenPreview};
   }
 `;
 
