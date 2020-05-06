@@ -1,5 +1,16 @@
 # @lighting-beetle/lighter-styleguide
 
+## 4.1.0
+
+### Minor Changes
+
+- ea4e282b: Add property codeTypes to Preview component
+
+### Patch Changes
+
+- cff1f681: Update monospace font stack for better legibility
+- e63ccec8: Bring back Preview html example pretty formatting
+
 ## 4.0.0
 
 ### Major Changes
