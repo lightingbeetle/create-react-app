@@ -6,6 +6,7 @@ import { object, arrayOf, oneOf } from 'prop-types';
 import unescape from 'unescape-html';
 import reactElementToJSXString from 'react-element-to-jsx-string';
 import { renderToStaticMarkup } from 'react-dom/server';
+import pretty from 'pretty';
 
 import Code from '../Code/';
 import Button from '../Button';
@@ -175,7 +176,7 @@ export default class CodeExample extends React.Component {
         codeToShow =
           typeof children === 'string'
             ? unescape(children)
-            : renderToStaticMarkup(children);
+            : pretty(renderToStaticMarkup(children));
         break;
       case 'jsx':
         codeToShow = getJSXAsStringFromMarkup(children, codeJSXOptions);
