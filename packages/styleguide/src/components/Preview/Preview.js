@@ -214,27 +214,25 @@ const Preview = ({
         {...other}
       >
         {showInteract ? (
-          React.Children.map(children, child => (
-            <Interact
-              showCode={isCodeShown}
-              render={child}
-              {...interactiveProps}
-            />
+          React.Children.map(children, (child) => (
+            <Interact render={child} {...interactiveProps} />
           ))
         ) : (
           <>
             <StyledPreviewLive>{toRender}</StyledPreviewLive>
-            {isCodeShown && hasCodePreview && toCode && (
-              <CodeExample
-                codeJSXOptions={codeJSXOptions}
-                codeTypes={html ? ['html'] : codeTypes}
-              >
-                {toCode}
-              </CodeExample>
-            )}
           </>
         )}
       </StyledCard>
+      {isCodeShown && hasCodePreview && toCode && (
+        <StyledCard className="code-example">
+          <CodeExample
+            codeJSXOptions={codeJSXOptions}
+            codeTypes={html ? ['html'] : codeTypes}
+          >
+            {toCode}
+          </CodeExample>
+        </StyledCard>
+      )}
     </StyledPreview>
   );
 };
@@ -285,7 +283,7 @@ const StyledPreviewLive = styled.div`
 const StyledSelect = styled(Select)`
   &.select-wrapper {
     position: relative;
-    font-family: ${props => props.theme.fontFamily};
+    font-family: ${(props) => props.theme.fontFamily};
     font-size: 14px;
   }
 
@@ -325,6 +323,7 @@ StyledSelect.defaultProps = {
 const StyledPreview = styled.div`
   display: flex;
   flex-flow: column;
+  margin-bottom: ${(props) => props.theme.contentSpacing};
 
   &.is-fullscreen {
     background-color: white;
@@ -333,7 +332,7 @@ const StyledPreview = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    z-index: ${props => props.theme.zIndex.fullScreenPreview};
+    z-index: ${(props) => props.theme.zIndex.fullScreenPreview};
   }
 `;
 
@@ -342,6 +341,8 @@ StyledPreview.defaultProps = {
 };
 
 const StyledCard = styled(Card)`
+  margin-bottom: 0;
+
   .is-fullscreen & {
     flex: 1 1 auto;
     margin-bottom: 0;
