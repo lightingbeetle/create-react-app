@@ -2,7 +2,6 @@
 import React from 'react';
 import { arrayOf, string, bool, element, func, oneOfType } from 'prop-types';
 import styled from 'styled-components';
-import CodeExample from '../CodeExample';
 
 import * as theme from './../../../style/theme';
 
@@ -28,8 +27,6 @@ class Interact extends React.Component {
     render: oneOfType([element, func]).isRequired,
     /** Parser should skip children */
     skipChildren: bool,
-    /** Show code */
-    showCode: bool,
   };
 
   static defaultProps = {
@@ -76,7 +73,6 @@ class Interact extends React.Component {
     */
 
     this.state = {
-      showCode: this.props.showCode,
       liveProps: this.generateProps('live', this.component),
       showProps: this.generateProps('show', this.component),
     };
@@ -415,17 +411,6 @@ class Interact extends React.Component {
                 <h3 className="h4 text-bold">{componentName}</h3>
 
                 {this.renderInteractive(this.component)}
-
-                {this.props.showCode && (
-                  <CodeExample
-                    codeJSXOptions={{
-                      cleanProps: true,
-                      filterProps: ['key'],
-                    }}
-                  >
-                    {this.renderInteractive(this.component)}
-                  </CodeExample>
-                )}
               </StyledSticky>
             </GridCol>
             <GridCol size={5}>
