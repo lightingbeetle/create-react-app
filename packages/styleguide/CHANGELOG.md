@@ -1,5 +1,11 @@
 # @lighting-beetle/lighter-styleguide
 
+## 4.1.1
+
+### Patch Changes
+
+- 294291c8: Improve readability of code example when using dark preview background
+
 ## 4.1.0
 
 ### Minor Changes
